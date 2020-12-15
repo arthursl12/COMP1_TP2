@@ -83,14 +83,24 @@ void findTokens(std::string program){
         }
         // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
         if (isDelimiter(std::string(1,program[right])) && left == right){
-            if (isOperator(std::string(1,program[right]))){
-                printf("Valid operator : '%c'\n", program[right]);
+            std::cout << "PR1:" << program[right] << std::endl;
+            if (isOperator(program.substr(right,2))){
+                std::cout << "Valid operator (2-char): " << \
+                    program.substr(right,2) << std::endl;
+                right += 2;
+                left = right; 
+            }else if (isOperator(program.substr(right,1))){
+                std::cout << "Valid operator (1-char): " << 
+                    program[right] << std::endl;
+                right++;
+                left = right;
+            }else{
+                right++;
+                left = right;
             }
-            right++;
-            left = right;
         }else if(isDelimiter(std::string(1,program[right])) && 
                  left != right || (right == length && left != right)){
-            
+            std::cout << "PR2:" << program[right] << std::endl;
             std::string subStr = subString(program, left, right - 1);
             std::cout << "Substr: " << subStr << std::endl;
             // if (isValidKeyword(subStr) == true)
@@ -106,13 +116,15 @@ void findTokens(std::string program){
                      !isDelimiter(std::to_string(program[right - 1])))
                 std::cout << "Invalid Identifier : " << subStr << std::endl;
             left = right;
+            std::cout << std::endl;
         }
-        // std::cout << "right = " << right << " left = " << left << std::endl;
+        std::cout << "right = " << right << " left = " << left << std::endl;
+        
     }
 }
 
 int main(int argc, char* argv[]){
-    std::string entrada = "var1 + var2";
+    std::string entrada = "var1 <> var2";
     std::cout << "Programa: " << entrada << std::endl;
     findTokens(entrada);
     return 0;
