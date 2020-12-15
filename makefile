@@ -6,7 +6,7 @@ BUILDDIR := build
 TARGET := main
 
 SRCEXT := cpp
-CFLAGS := -O3 -std=c++14
+CFLAGS := -O3 -std=c++14 -Wall
 LIBS := 
 INC := -I include -I third-party
 

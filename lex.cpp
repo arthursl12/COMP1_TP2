@@ -40,16 +40,14 @@ bool isRelOp(std::string op){
 
 bool isOperator(std::string op){
     if (isAddOp(op) || isMulOp(op) || isSpecOp(op) || isRelOp(op))
-        return (true);
-    return (false);
+        return true;
+    return false;
 }
 
 bool isDelimiter(std::string ch) {
-    // std::cout << isspace(ch[0]) << std::endl;
     if (
         isspace(ch[0]) != 0 || isOperator(ch) ||
-        ch == "," || ch == ";" || ch == "(" || ch == ")" 
-        || ch == "\n" || ch == " "
+        ch == "," || ch == "(" || ch == ")"
     ){
         return (true);
     }else{
@@ -60,14 +58,12 @@ bool isDelimiter(std::string ch) {
 bool isIdentifier(std::string str){
     // Não pode começar com número
     if (!isalpha(str[0])){
-        return (false);
+        return false;
     }
-
-    return (true);
+    return true;
 }
 
 std::string subString(std::string str, int left, int right) {
-   int i;
    std::string subStr = str.substr(left, right - left + 1);
    return subStr;
 }
@@ -96,8 +92,8 @@ void findTokens(std::string program){
                 right++;
                 left = right;
             }
-        }else if(isDelimiter(std::string(1,program[right])) && 
-                 left != right || (right == length && left != right)){
+        }else if((isDelimiter(std::string(1,program[right])) && 
+                 left != right) || (right == length && left != right)){
             std::cout << "PR2:" << program[right] << std::endl;
             std::string subStr = subString(program, left, right - 1);
             std::cout << "Substr: " << subStr << std::endl;
