@@ -8,7 +8,7 @@ TARGET := main
 SRCEXT := cpp
 CFLAGS := -O3 -std=c++14
 LIBS := 
-INC := -I include
+INC := -I include -I third-party
 
 
 MODULES = lex
@@ -16,7 +16,7 @@ SOURCES = $(addsuffix .cpp,$(MODULES))
 OBJECTS = $(patsubst %.cpp, %.o, $(SOURCES))
 TESTS = $(addprefix test_,$(SOURCES))
 TESTSEXE = $(addsuffix .exe,$(TESTS))
-TESTSEXEDIR = $(addprefix bin/,$(TESTSEXE))
+TESTSEXEDIR = $(addprefix /tests/bin/,$(TESTSEXE))
 COVER = $(addsuffix .gcov,$(SOURCES))
 
 SOURCEDIR = $(addprefix ,$(SOURCES))
@@ -38,6 +38,15 @@ $(TGTDIR): $(OBJDIR)
 	$(CC) $(INC) $(CFLAGS) $(OBJDIR) $(TARGET).cpp $(LIBS) -o $(TGTDIR)
 	@./$(TGTDIR)
 
+tester: $(TESTS)
+$(TESTS): tests/test_%.o : tests/test_%.cpp
+	$(shell mkdir -p tests)
+	$(shell mkdir -p tests/bin)
+	@echo ""
+	@echo TESTE: $@
+	$(CC) $(INC) $(T_CFLAGS) tests/$@ $(OBJDIR) -o tests/bin/$(patsubst %.cpp,%,$@)
+	tests/bin/$(patsubst %.cpp,%,$@)
+	$(RM) test_*.gcno
 
 comp: $(TGTDIR)
 	$(CC) $(INC) $(CFLAGS) $(OBJDIR) $(TARGET).cpp $(LIBS) -o $(TGTDIR)
@@ -47,6 +56,6 @@ run:
 	@./main
 
 clean:
-	$(RM) -r build/* coverage/* *.gcda *.gcno *.gcov *.exe *.o bin/*
+	$(RM) -r build/* coverage/* *.gcda *.gcno *.gcov *.exe *.o bin/* tests/bin/*
 
 .PHONY: clean
