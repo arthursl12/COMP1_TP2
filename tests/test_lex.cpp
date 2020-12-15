@@ -146,3 +146,87 @@ TEST_CASE("subString"){
     CHECK(subString("01234",2,2) == "2");
 }
 
+TEST_CASE("isUnsignedInteger"){
+    SUBCASE("Verdadeiro"){
+        CHECK(isUnsignedInteger("0"));
+        CHECK(isUnsignedInteger("12"));
+        CHECK(isUnsignedInteger("000002"));
+        CHECK(isUnsignedInteger("2000"));
+    }
+    SUBCASE("Falso"){
+        CHECK_FALSE(isUnsignedInteger("1a"));
+        CHECK_FALSE(isUnsignedInteger(".a"));
+        CHECK_FALSE(isUnsignedInteger("_s"));
+        CHECK_FALSE(isUnsignedInteger(""));
+        CHECK_FALSE(isUnsignedInteger("  a"));
+        CHECK_FALSE(isUnsignedInteger("0000a"));
+        CHECK_FALSE(isUnsignedInteger("-100"));
+        CHECK_FALSE(isUnsignedInteger("10.01"));
+        CHECK_FALSE(isUnsignedInteger("123E8"));
+    }
+}
+/*
+TEST_CASE("isUnsignedReal"){
+    SUBCASE("Verdadeiro: inteiros"){
+        CHECK(isUnsignedReal("0"));
+        CHECK(isUnsignedReal("12"));
+        CHECK(isUnsignedReal("000002"));
+        CHECK(isUnsignedReal("2000"));
+        CHECK(isUnsignedReal("000002"));
+        CHECK(isUnsignedReal("2000"));
+    }
+    SUBCASE("Verdadeiro: decimais"){
+        CHECK(isUnsignedReal("12.00001"));
+        CHECK(isUnsignedReal("0.0000000"));
+        CHECK(isUnsignedReal("0.0000001"));
+        CHECK(isUnsignedReal("0.0000000"));
+
+        // Sem parte decimal, mas com ponto
+        CHECK(isUnsignedReal("0."));
+        CHECK(isUnsignedReal("12."));
+        CHECK(isUnsignedReal("1233456."));
+    }
+    SUBCASE("Verdadeiro: inteiro + expoente"){
+        CHECK(isUnsignedReal("0E1"));
+        CHECK(isUnsignedReal("00000E1"));
+        CHECK(isUnsignedReal("0E-1"));
+        CHECK(isUnsignedReal("00000E-1"));
+        CHECK(isUnsignedReal("123E-3"));
+        CHECK(isUnsignedReal("123E3"));
+        CHECK(isUnsignedReal("123E+3"));
+    }
+    SUBCASE("Verdadeiro: real completo"){
+        CHECK(isUnsignedReal("0.E1"));
+        CHECK(isUnsignedReal("0.0E-1"));
+        CHECK(isUnsignedReal("0000.0000E-11"));
+        CHECK(isUnsignedReal("12.00001E+12"));
+        CHECK(isUnsignedReal("12.00001E12"));
+        CHECK(isUnsignedReal("12.00001E-12"));
+    }
+    SUBCASE("Falso"){
+        CHECK_FALSE(isUnsignedReal("1a"));
+        CHECK_FALSE(isUnsignedReal("_s"));
+        CHECK_FALSE(isUnsignedReal(""));
+        CHECK_FALSE(isUnsignedReal("  a"));
+        CHECK_FALSE(isUnsignedReal("0000a"));
+
+        // Sem parte inteira
+        CHECK_FALSE(isUnsignedReal(".a"));
+        CHECK_FALSE(isUnsignedReal(".0001"));
+        CHECK_FALSE(isUnsignedReal(".001E1"));
+
+        // Expoente Decimal
+        CHECK_FALSE(isUnsignedReal("1.001E1.001"));
+        CHECK_FALSE(isUnsignedReal("1.001E+1.00"));
+        CHECK_FALSE(isUnsignedReal("1.001E-1.001"));
+        CHECK_FALSE(isUnsignedReal("1.001E1."));
+
+        // Espaços indevidos
+        CHECK_FALSE(isUnsignedReal("1.1E 1"));
+        CHECK_FALSE(isUnsignedReal("1.1 E1"));
+        CHECK_FALSE(isUnsignedReal("1.1E 1"));
+        CHECK_FALSE(isUnsignedReal("1. 1E1"));
+        CHECK_FALSE(isUnsignedReal("1 .1E1"));
+    }
+}
+*/
