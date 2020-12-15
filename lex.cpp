@@ -81,6 +81,74 @@ bool isUnsignedInteger(std::string str){
     return true;
 }
 
+bool isUnsignedReal(std::string str){
+    // Verifica a parte inteira
+    if (str.length() < 1) return false;
+    unsigned int i = 0;
+    for (i = 0; i < str.length(); i++){
+        if (str[i] != '0' && str[i] != '1' && str[i] != '2' &&
+            str[i] != '3' && str[i] != '4' && str[i] != '5' &&
+            str[i] != '6' && str[i] != '7' && str[i] != '8' &&
+            str[i] != '9'){
+                break;
+        }
+    }
+    // String acabou: número inteiro puro (ainda conta como real)
+    if (i == str.length()){
+        return true;
+    }
+    // Caractere que não ponto ou E (da potência); parte inteira vazia
+    if ((str[i] != '.' && str[i] != 'E') || i < 1){
+        return false;
+    }
+
+
+    // Verifica a parte decimal
+    bool decimal = false;
+    if (str[i] == '.') decimal = true;
+    unsigned int j = i;
+    if (decimal){
+        j = j+1;
+        for (; j < str.length(); j++){
+            if (str[j] != '0' && str[j] != '1' && str[j] != '2' &&
+                str[j] != '3' && str[j] != '4' && str[j] != '5' &&
+                str[j] != '6' && str[j] != '7' && str[j] != '8' &&
+                str[j] != '9'){
+                    break;
+            }
+        }
+    }
+
+    // String acabou: número decimal (sem potência)
+    if (j == str.length()){
+        return true;
+    }
+    // Caractere seguinte não é o E da potência
+    if (str[j] != 'E'){
+        return false;
+    }
+
+    // Verifica potência
+    bool factor = false;
+    if (str[j] == 'E') factor = true;
+    unsigned int k = j+1;
+    if (str[k] == '+' || str[k] == '-') k++;
+    for (; k < str.length(); k++){
+        if (str[k] != '0' && str[k] != '1' && str[k] != '2' &&
+            str[k] != '3' && str[k] != '4' && str[k] != '5' &&
+            str[k] != '6' && str[k] != '7' && str[k] != '8' &&
+            str[k] != '9'){
+                break;
+        }
+    }
+    // String acabou: número real válido
+    if (k == str.length()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 void findTokens(std::string program){
     int left = 0, right = 0;
     int length = program.length();

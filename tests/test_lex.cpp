@@ -165,7 +165,7 @@ TEST_CASE("isUnsignedInteger"){
         CHECK_FALSE(isUnsignedInteger("123E8"));
     }
 }
-/*
+
 TEST_CASE("isUnsignedReal"){
     SUBCASE("Verdadeiro: inteiros"){
         CHECK(isUnsignedReal("0"));
@@ -229,4 +229,3 @@ TEST_CASE("isUnsignedReal"){
         CHECK_FALSE(isUnsignedReal("1 .1E1"));
     }
 }
-*/

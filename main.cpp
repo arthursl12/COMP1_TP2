@@ -22,6 +22,8 @@ int main(int argc, char* argv[]){
 
     std::cout << std::stod("-12.001E10") << std::endl;
 
+    isUnsignedReal("12.001");
+
 
 
     return 0;

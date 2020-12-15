@@ -6,7 +6,7 @@ BUILDDIR := build
 TARGET := main
 
 SRCEXT := cpp
-CFLAGS := -O3 -std=c++14 -Wall
+CFLAGS := -g -std=c++14 -Wall 
 LIBS := 
 INC := -I include -I third-party
 
@@ -36,7 +36,6 @@ $(TGTDIR): $(OBJDIR)
 	@echo ""
 	@echo COMPILANDO MAIN
 	$(CC) $(INC) $(CFLAGS) $(OBJDIR) $(TARGET).cpp $(LIBS) -o $(TGTDIR)
-	@./$(TGTDIR)
 
 tester: $(TESTS)
 $(TESTS): tests/test_%.o : tests/test_%.cpp

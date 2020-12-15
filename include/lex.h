@@ -11,6 +11,7 @@ bool isOperator(std::string op);
 bool isDelimiter(std::string ch);
 bool isIdentifier(std::string str);
 bool isUnsignedInteger(std::string str);
+bool isUnsignedReal(std::string str);
 std::string subString(std::string str, int left, int right);
 void findTokens(std::string program);
 
