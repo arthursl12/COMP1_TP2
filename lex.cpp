@@ -158,6 +158,21 @@ bool isConstant(std::string str){
     }
 }
 
+bool isValidSign(std::string const& program, int const left, int const right){
+    std::string oper = program.substr(right,1);
+    if (oper != "+" && oper != "-"){
+        return false;
+    }else if (isDelimiter(program.substr(right+1,1))){
+        return false;
+    }else if (program[left-1] == 'E'){
+        return false;
+    }else if (isdigit(program[left-1])){
+        return false;
+    }else {
+        return true;
+    }
+}
+
 void findTokens(std::string program){
     int left = 0, right = 0;
     int length = program.length();
@@ -173,7 +188,7 @@ void findTokens(std::string program){
                     program.substr(right,2) << std::endl;
                 right += 2;
                 left = right; 
-            }else if (isOperator(program.substr(right,1))){
+            }else if (isOperator(program.substr(right,1)) && !isValidSign(program, left, right)){
                 std::cout << "Valid operator (1-char): " << 
                     program[right] << std::endl;
                 right++;

@@ -230,7 +230,6 @@ TEST_CASE("isUnsignedReal"){
     }
 }
 
-
 TEST_CASE("isConstant"){
     // Vamos assumir que um real e um inteiro sem sinal são sempre corretamente
     // identificados
@@ -300,4 +299,30 @@ TEST_CASE("isConstant"){
         CHECK_FALSE(isConstant("- 20.0E-2"));
         CHECK_FALSE(isConstant("- 123.001"));
     }
+}
+
+TEST_CASE("isValidSign"){
+    std::string prog = "12+12";
+    CHECK_FALSE(isValidSign(prog,2,2));
+    prog = "12 + 12";
+    CHECK_FALSE(isValidSign(prog,4,4));
+
+    prog = "12+ +12";
+    CHECK_FALSE(isValidSign(prog,2,2));
+    CHECK(isValidSign(prog,4,4));
+
+    prog = "12+ -12";
+    CHECK_FALSE(isValidSign(prog,2,2));
+    CHECK(isValidSign(prog,4,4));
+
+    prog = "12+(-12)";
+    CHECK_FALSE(isValidSign(prog,2,2));
+    CHECK(isValidSign(prog,4,4));
+
+    prog = "1E+5";
+    CHECK_FALSE(isValidSign(prog,2,2));
+    prog = "5+1E+5";
+    CHECK_FALSE(isValidSign(prog,1,1));
+    prog = "5+(-1E+5)";
+    CHECK(isValidSign(prog,3,3));
 }

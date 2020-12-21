@@ -13,6 +13,7 @@ bool isIdentifier(std::string str);
 bool isUnsignedInteger(std::string str);
 bool isUnsignedReal(std::string str);
 bool isConstant(std::string str);
+bool isValidSign(std::string const& programa, int const left, int const right);
 std::string subString(std::string str, int left, int right);
 void findTokens(std::string program);
 
