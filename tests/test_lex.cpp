@@ -229,3 +229,75 @@ TEST_CASE("isUnsignedReal"){
         CHECK_FALSE(isUnsignedReal("1 .1E1"));
     }
 }
+
+
+TEST_CASE("isConstant"){
+    // Vamos assumir que um real e um inteiro sem sinal são sempre corretamente
+    // identificados
+    SUBCASE("Verdadeiro: sem sinal"){
+        CHECK(isConstant("0"));
+        CHECK(isConstant("1"));
+        CHECK(isConstant("861654"));
+        CHECK(isConstant("1E1"));
+        CHECK(isConstant("1E+1"));
+        CHECK(isConstant("20.0E-2"));
+        CHECK(isConstant("123.001"));
+    }
+    SUBCASE("Verdadeiro: com sinal"){
+        CHECK(isConstant("+0"));
+        CHECK(isConstant("+1"));
+        CHECK(isConstant("+861654"));
+        CHECK(isConstant("+1E1"));
+        CHECK(isConstant("+1E+1"));
+        CHECK(isConstant("+20.0E-2"));
+        CHECK(isConstant("+123.001"));
+        CHECK(isConstant("-0"));
+        CHECK(isConstant("-1"));
+        CHECK(isConstant("-861654"));
+        CHECK(isConstant("-1E1"));
+        CHECK(isConstant("-1E+1"));
+        CHECK(isConstant("-20.0E-2"));
+        CHECK(isConstant("-123.001"));
+    }
+    SUBCASE("Falso"){
+        CHECK_FALSE(isConstant("1a"));
+        CHECK_FALSE(isConstant("_s"));
+        CHECK_FALSE(isConstant(""));
+        CHECK_FALSE(isConstant("  a"));
+        CHECK_FALSE(isConstant("0000a"));
+
+        // Sem parte inteira
+        CHECK_FALSE(isConstant(".a"));
+        CHECK_FALSE(isConstant(".0001"));
+        CHECK_FALSE(isConstant(".001E1"));
+
+        // Expoente Decimal
+        CHECK_FALSE(isConstant("1.001E1.001"));
+        CHECK_FALSE(isConstant("1.001E+1.00"));
+        CHECK_FALSE(isConstant("1.001E-1.001"));
+        CHECK_FALSE(isConstant("1.001E1."));
+
+        // Espaços indevidos
+        CHECK_FALSE(isConstant("1.1E 1"));
+        CHECK_FALSE(isConstant("1.1 E1"));
+        CHECK_FALSE(isConstant("1.1E 1"));
+        CHECK_FALSE(isConstant("1. 1E1"));
+        CHECK_FALSE(isConstant("1 .1E1"));
+
+        // Sinal com espaço
+        CHECK_FALSE(isConstant("+ 0"));
+        CHECK_FALSE(isConstant("+ 1"));
+        CHECK_FALSE(isConstant("+ 861654"));
+        CHECK_FALSE(isConstant("+ 1E1"));
+        CHECK_FALSE(isConstant("+ 1E+1"));
+        CHECK_FALSE(isConstant("+ 20.0E-2"));
+        CHECK_FALSE(isConstant("+ 123.001"));
+        CHECK_FALSE(isConstant("- 0"));
+        CHECK_FALSE(isConstant("- 1"));
+        CHECK_FALSE(isConstant("- 861654"));
+        CHECK_FALSE(isConstant("- 1E1"));
+        CHECK_FALSE(isConstant("- 1E+1"));
+        CHECK_FALSE(isConstant("- 20.0E-2"));
+        CHECK_FALSE(isConstant("- 123.001"));
+    }
+}

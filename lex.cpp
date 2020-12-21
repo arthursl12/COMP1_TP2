@@ -102,7 +102,6 @@ bool isUnsignedReal(std::string str){
         return false;
     }
 
-
     // Verifica a parte decimal
     bool decimal = false;
     if (str[i] == '.') decimal = true;
@@ -129,8 +128,6 @@ bool isUnsignedReal(std::string str){
     }
 
     // Verifica potência
-    bool factor = false;
-    if (str[j] == 'E') factor = true;
     unsigned int k = j+1;
     if (str[k] == '+' || str[k] == '-') k++;
     for (; k < str.length(); k++){
@@ -144,6 +141,18 @@ bool isUnsignedReal(std::string str){
     // String acabou: número real válido
     if (k == str.length()){
         return true;
+    }else{
+        return false;
+    }
+}
+
+bool isConstant(std::string str){
+    if ((str[0] == '+' || str[0] == '-') && 
+        (!isDelimiter(std::string(1,str[1])))){
+        std::string num = str.substr(1);
+        return (isUnsignedInteger(num) || isUnsignedReal(num));
+    }else if (str[0] != '+' && str[0] != '-'){
+        return (isUnsignedInteger(str) || isUnsignedReal(str));
     }else{
         return false;
     }
@@ -177,7 +186,7 @@ void findTokens(std::string program){
                  left != right) || (right == length && left != right)){
             // std::cout << "PR2:" << program[right] << std::endl;
             std::string subStr = subString(program, left, right - 1);
-            // std::cout << "Substr: " << subStr << std::endl;
+
             // if (isValidKeyword(subStr) == true)
             //     printf("Valid keyword : '%s'\n", subStr);
             // else if (isValidInteger(subStr) == true)

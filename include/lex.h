@@ -12,6 +12,7 @@ bool isDelimiter(std::string ch);
 bool isIdentifier(std::string str);
 bool isUnsignedInteger(std::string str);
 bool isUnsignedReal(std::string str);
+bool isConstant(std::string str);
 std::string subString(std::string str, int left, int right);
 void findTokens(std::string program);
 
