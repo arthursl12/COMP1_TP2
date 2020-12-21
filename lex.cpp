@@ -189,16 +189,18 @@ void findTokens(std::string program){
 
             // if (isValidKeyword(subStr) == true)
             //     printf("Valid keyword : '%s'\n", subStr);
-            // else if (isValidInteger(subStr) == true)
-            //     printf("Valid Integer : '%s'\n", subStr);
+
             // else if (isRealNumber(subStr) == true)
             //     printf("Real Number : '%s'\n", subStr);
             if (isIdentifier(subStr) &&
-                !isDelimiter(std::to_string(program[right - 1])))
+                !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Valid Identifier : " << subStr << std::endl;
-            else if (!isIdentifier(subStr) && 
-                     !isDelimiter(std::to_string(program[right - 1])))
+            }else if (isConstant(subStr) == true){
+                 std::cout << "Valid Constant : " << subStr << std::endl;
+            }else if (!isIdentifier(subStr) && 
+                     !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Invalid Identifier : " << subStr << std::endl;
+            }
             left = right;
             // std::cout << std::endl;
         }
