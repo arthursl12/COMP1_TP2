@@ -162,6 +162,8 @@ bool isValidSign(std::string const& program, int const left, int const right){
     std::string oper = program.substr(right,1);
     if (oper != "+" && oper != "-"){
         return false;
+    }else if (left != right){
+        return false;
     }else if (isDelimiter(program.substr(right+1,1))){
         return false;
     }else if (program[left-1] == 'E'){
@@ -176,12 +178,26 @@ bool isValidSign(std::string const& program, int const left, int const right){
 void findTokens(std::string program){
     int left = 0, right = 0;
     int length = program.length();
+    // std::cout << "LEN: " << length << std::endl;
     while (right <= length && left <= right) {
         if (!isDelimiter(std::string(1,program[right]))){
             right++;
         }
+        if (right > length){
+            break;
+        }
         // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
-        if (isDelimiter(std::string(1,program[right])) && left == right){
+        if (isValidSign(program, left, right)){
+            right++;
+            while (right < length && !isDelimiter(std::string(1,program[right])))
+                right++;
+            std::string subStr = subString(program, left, right - 1);
+            // std::cout << "\tsubstr1: " << subStr << std::endl;
+            if (isConstant(subStr) == true){
+                 std::cout << "Valid Signed Constant : " << subStr << std::endl;
+            }
+            left = right;
+        }else if (isDelimiter(std::string(1,program[right])) && left == right) {
             // std::cout << "PR1:" << program[right] << std::endl;
             if (isOperator(program.substr(right,2))){
                 std::cout << "Valid operator (2-char): " << \
@@ -201,7 +217,7 @@ void findTokens(std::string program){
                  left != right) || (right == length && left != right)){
             // std::cout << "PR2:" << program[right] << std::endl;
             std::string subStr = subString(program, left, right - 1);
-
+            // std::cout << "\tsubstr: " << subStr << std::endl;
             // if (isValidKeyword(subStr) == true)
             //     printf("Valid keyword : '%s'\n", subStr);
 
@@ -211,7 +227,7 @@ void findTokens(std::string program){
                 !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Valid Identifier : " << subStr << std::endl;
             }else if (isConstant(subStr) == true){
-                 std::cout << "Valid Constant : " << subStr << std::endl;
+                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
             }else if (!isIdentifier(subStr) && 
                      !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Invalid Identifier : " << subStr << std::endl;
