@@ -2,10 +2,6 @@
 #include "doctest.h"
 #include "symbol.h"
 
-TEST_CASE("symbol: não instancia"){
-    CHECK_THROWS(Symbol());
-}
-
 TEST_CASE("Terminal: construção"){
     SUBCASE("Normais"){
         CHECK_NOTHROW(Terminal("a"));
@@ -53,4 +49,14 @@ TEST_CASE("NaoTerminal: construção"){
         CHECK_THROWS(NaoTerminal(" "));
         CHECK_THROWS(NaoTerminal(" B1"));
     }
+}
+
+TEST_CASE("isTerminal"){
+    CHECK(Terminal("a").isTerminal() == true);
+    CHECK(NaoTerminal("expr").isTerminal() == false);
+}
+
+TEST_CASE("Print"){
+    CHECK_NOTHROW(std::cout << Terminal("a") << std::endl);
+    CHECK_NOTHROW(std::cout << NaoTerminal("EXPR") << std::endl);
 }

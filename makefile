@@ -11,7 +11,7 @@ LIBS :=
 INC := -I include -I third-party
 
 
-MODULES = lex
+MODULES = lex symbol
 SOURCES = $(addsuffix .cpp,$(MODULES))
 OBJECTS = $(patsubst %.cpp, %.o, $(SOURCES))
 TESTS = $(addprefix test_,$(SOURCES))
