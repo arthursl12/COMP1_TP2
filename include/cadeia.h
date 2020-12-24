@@ -14,6 +14,7 @@ class Cadeia{
         Cadeia(std::shared_ptr<Symbol>& s);
         Cadeia(std::vector<std::shared_ptr<Symbol>>& _seq);
         Symbol& operator[](int idx);
+        bool operator==(Cadeia const& rhs) const;
 };
 
 #endif /* CADEIA_H */

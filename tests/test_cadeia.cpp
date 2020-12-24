@@ -38,3 +38,87 @@ TEST_CASE("Cadeia: operador []"){
         CHECK(c[5] == NaoTerminal("B1"));
         CHECK_THROWS(c[10]);
 }
+
+TEST_CASE("Cadeia: operador comparação igualdade"){
+        SUBCASE("Qtd elementos"){
+            std::vector<std::shared_ptr<Symbol>> v1;
+            v1.push_back(std::make_shared<Terminal>("a"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c1 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("b"));
+            Cadeia c2 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("a"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c3 = Cadeia(v1);
+
+            CHECK_FALSE(c1 == c2);
+            CHECK_FALSE(c1 == c3);
+        }
+        SUBCASE("Tipo dos elementos"){
+            std::vector<std::shared_ptr<Symbol>> v1;
+            v1.push_back(std::make_shared<Terminal>("a"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c1 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<NaoTerminal>("a"));
+            v1.push_back(std::make_shared<NaoTerminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c2 = Cadeia(v1);
+
+            CHECK_FALSE(c1 == c2);
+        }
+        SUBCASE("Teste simples"){
+            std::vector<std::shared_ptr<Symbol>> v1;
+            v1.push_back(std::make_shared<Terminal>("a"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c1 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c2 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("a"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<Terminal>("b"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            v1.push_back(std::make_shared<NaoTerminal>("B1"));
+            Cadeia c3 = Cadeia(v1);
+
+            CHECK_FALSE(c1 == c2);
+            CHECK(c1 == c3);
+        }
+}
