@@ -83,11 +83,13 @@ TEST_CASE("Gramática: conjunto terminais"){
     std::set<Terminal> conj_terminais;
     conj_terminais.insert(Terminal("+"));
     conj_terminais.insert(Terminal("("));
+    conj_terminais.insert(Terminal("*"));
     conj_terminais.insert(Terminal(")"));
     conj_terminais.insert(Terminal("id"));
 
     std::set<Terminal> out;
-    g.conjuntoTerminais(out)
+    g.conjuntoTerminais(out);
+
     CHECK(out == conj_terminais);
 }
 
@@ -103,7 +105,7 @@ TEST_CASE("Gramática: conjunto não-terminais"){
     conj_n_terminais.insert(NaoTerminal("F"));
 
     std::set<NaoTerminal> out;
-    g.conjuntoNaoTerminais(out)
+    g.conjuntoNaoTerminais(out);
     CHECK(out == conj_n_terminais);
 }
 

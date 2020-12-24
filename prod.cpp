@@ -38,9 +38,9 @@ std::ostream& operator<< (std::ostream &out, const Producao& p){
     return out;
 }
 
+/* Retorna a união dos conjuntos passados */
 template <typename T>
-std::set<T> getUnion(const std::set<T>& a, const std::set<T>& b)
-{
+std::set<T> getUnion(const std::set<T>& a, const std::set<T>& b){
   std::set<T> result = a;
   result.insert(b.begin(), b.end());
   return result;

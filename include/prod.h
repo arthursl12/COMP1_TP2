@@ -21,4 +21,7 @@ class Producao{
 
 };
 
+template <typename T>
+std::set<T> getUnion(const std::set<T>& a, const std::set<T>& b);
+
 #endif /* PROD_H */
