@@ -18,6 +18,9 @@ class Gramatica{
 
         void conjuntoTerminais(std::set<Terminal>& out);
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
+        void encontraNaoTerminais(std::set<NaoTerminal>& usados, \
+                                  std::set<NaoTerminal>& inicios);
+        void verificaIntegridade();
 
 
 };
