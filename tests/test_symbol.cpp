@@ -6,6 +6,8 @@ TEST_CASE("Terminal: construção"){
     SUBCASE("Normais"){
         CHECK_NOTHROW(Terminal("a"));
         CHECK_NOTHROW(Terminal("1"));
+        CHECK_NOTHROW(Terminal("else"));
+        CHECK_NOTHROW(Terminal("id"));
     }
     SUBCASE("Especiais"){
         CHECK_NOTHROW(Terminal(""));
@@ -14,7 +16,6 @@ TEST_CASE("Terminal: construção"){
         CHECK_NOTHROW(Terminal(","));
     }
     SUBCASE("Inválidos"){
-        CHECK_THROWS(Terminal("12"));
         CHECK_THROWS(Terminal(" "));
     }
 }
@@ -48,6 +49,8 @@ TEST_CASE("NaoTerminal: construção"){
         CHECK_THROWS(NaoTerminal("12"));
         CHECK_THROWS(NaoTerminal(" "));
         CHECK_THROWS(NaoTerminal(" B1"));
+        CHECK_THROWS(NaoTerminal(" B   "));
+        CHECK_THROWS(NaoTerminal(" B\t"));
     }
 }
 

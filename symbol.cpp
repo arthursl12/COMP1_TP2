@@ -11,7 +11,6 @@ bool Symbol::operator==(Symbol const& rhs) const{
 
 /* Métodos de Terminal */
 Terminal::Terminal(std::string _symbol){
-    if (_symbol.size() > 1) throw "Terminal com mais de um caractere";
     if (isspace(_symbol[0])) throw "Terminal espaço é inválido";
     
     symbol = _symbol;
