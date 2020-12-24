@@ -4,6 +4,11 @@
 #include <iostream>
 #include <ctype.h>
 
+/* Métodos de Symbol */
+bool Symbol::operator==(Symbol const& rhs) const{
+    return this->symbol == rhs.symbol;
+}
+
 /* Métodos de Terminal */
 Terminal::Terminal(std::string _symbol){
     if (_symbol.size() > 1) throw "Terminal com mais de um caractere";

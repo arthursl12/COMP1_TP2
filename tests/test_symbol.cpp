@@ -60,3 +60,21 @@ TEST_CASE("Print"){
     CHECK_NOTHROW(std::cout << Terminal("a") << std::endl);
     CHECK_NOTHROW(std::cout << NaoTerminal("EXPR") << std::endl);
 }
+
+TEST_CASE("Comparador de Igualdade"){
+    SUBCASE("Terminais"){
+        CHECK(Terminal("") == Terminal(""));
+        CHECK(Terminal("$") == Terminal("$"));
+        CHECK(Terminal("a") == Terminal("a"));
+        CHECK_FALSE(Terminal("") == Terminal("a"));
+        CHECK_FALSE(Terminal("$") == Terminal("a"));
+    }
+    SUBCASE("Não-terminais"){
+        CHECK(NaoTerminal("B1") == NaoTerminal("B1"));
+        CHECK(NaoTerminal("expr") == NaoTerminal("expr"));
+        CHECK(NaoTerminal("A") == NaoTerminal("A"));
+        CHECK_FALSE(NaoTerminal("B1") == NaoTerminal("B2"));
+        CHECK_FALSE(NaoTerminal("expr") == NaoTerminal("EXPR"));
+    }
+
+}

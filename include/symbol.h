@@ -10,6 +10,7 @@ class Symbol {
     public:
         Symbol(){};
         virtual bool isTerminal() = 0;
+        bool operator==(Symbol const& rhs) const;
         
 };
 
