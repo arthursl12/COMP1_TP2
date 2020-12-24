@@ -64,8 +64,14 @@ void producoes(std::vector<std::shared_ptr<Producao>>& prods){
 TEST_CASE("Gramática: construção"){
     std::vector<std::shared_ptr<Producao>> prods;
     producoes(prods);
-    for (auto it = prods.begin(); it != prods.end(); it++){
-        std::cout << (**it) << std::endl;
-    }
-    // CHECK_NOTHROW(Gramatica(prods));
+    CHECK_NOTHROW(Gramatica(prods));
+    CHECK_NOTHROW(Gramatica());
+}
+
+TEST_CASE("Gramática: print"){
+    std::vector<std::shared_ptr<Producao>> prods;
+    producoes(prods);
+    CHECK_NOTHROW(std::cout << Gramatica(prods) << std::endl);
+    CHECK_NOTHROW(std::cout << Gramatica() << std::endl);
+
 }

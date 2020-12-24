@@ -1,8 +1,10 @@
 #include "prod.h"
 
 Producao::Producao()
-:lhs("ZZZ")
+:lhs("S")
 {
+
+    rhs.push_back(std::make_shared<Cadeia>());
 }
 
 Producao::Producao(

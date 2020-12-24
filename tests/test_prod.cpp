@@ -21,6 +21,7 @@ TEST_CASE("Produção: construção"){
     prods.push_back(std::make_shared<Cadeia>(v1));
 
     CHECK_NOTHROW(Producao(NaoTerminal("B1"),prods));
+    CHECK_NOTHROW(Producao());
 }
 
 
@@ -98,5 +99,6 @@ TEST_CASE("Print"){
     p1 = std::make_shared<Terminal>("");
     prods1.push_back(std::make_shared<Cadeia>(p1));
     CHECK_NOTHROW(std::cout << Producao(NaoTerminal("E\'"),prods1) << std::endl);
+    CHECK_NOTHROW(std::cout << Producao() << std::endl);
 }
 

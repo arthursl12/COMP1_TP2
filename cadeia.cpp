@@ -6,6 +6,8 @@
 
 Cadeia::Cadeia(){
     seq.clear();
+    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("");
+    seq.push_back(sym);
 }
 
 Cadeia::Cadeia(std::shared_ptr<Symbol>& s){

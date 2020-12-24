@@ -21,6 +21,9 @@ TEST_CASE("Cadeia: construção"){
         v1.push_back(std::make_shared<NaoTerminal>("B1"));
         CHECK_NOTHROW(Cadeia(v1));
     }
+    SUBCASE("Construtor default"){
+        CHECK_NOTHROW(Cadeia());
+    }
 }
 
 TEST_CASE("Cadeia: operador []"){
@@ -135,5 +138,7 @@ TEST_CASE("Print"){
     v1.push_back(std::make_shared<NaoTerminal>("B1"));
     v1.push_back(std::make_shared<NaoTerminal>("B1"));
     CHECK_NOTHROW(std::cout << Cadeia(v1) << std::endl);
+
+    CHECK_NOTHROW(std::cout << Cadeia() << std::endl);
 }
 
