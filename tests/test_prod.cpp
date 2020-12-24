@@ -75,3 +75,28 @@ TEST_CASE("Produção: acesso"){
     CHECK(p[2] == Cadeia(v1));
     CHECK_THROWS(p[3]);
 }
+
+TEST_CASE("Print"){
+    std::vector<std::shared_ptr<Cadeia>> prods;
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    CHECK_NOTHROW(std::cout << Producao(NaoTerminal("B1"),prods) << std::endl);
+
+    std::vector<std::shared_ptr<Cadeia>> prods1;
+    p1 = std::make_shared<Terminal>("");
+    prods1.push_back(std::make_shared<Cadeia>(p1));
+    CHECK_NOTHROW(std::cout << Producao(NaoTerminal("E\'"),prods1) << std::endl);
+}
+

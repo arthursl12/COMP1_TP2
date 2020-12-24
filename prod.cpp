@@ -24,3 +24,14 @@ NaoTerminal Producao::label(){
     return lhs;
 }
 
+
+std::ostream& operator<< (std::ostream &out, const Producao& p){
+    out << p.lhs << " ===> ";
+    out << *p.rhs[0];
+
+    for (auto it = (p.rhs.begin() + 1); it != p.rhs.end(); it++){
+        out << std::endl;
+        out << "\t | " << **it;
+    }
+    return out;
+}

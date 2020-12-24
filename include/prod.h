@@ -15,6 +15,7 @@ class Producao{
         Producao(NaoTerminal _lhs, std::vector<std::shared_ptr<Cadeia>> _rhs);
         Cadeia& operator[](int idx);
         NaoTerminal label(); 
+        friend std::ostream& operator<< (std::ostream &out, const Producao& p); 
 
 };
 
