@@ -54,7 +54,7 @@ TEST_CASE("NaoTerminal: construção"){
     }
 }
 
-TEST_CASE("isTerminal"){
+TEST_CASE("Symbol: isTerminal"){
     CHECK(Terminal("a").isTerminal() == true);
     CHECK(NaoTerminal("expr").isTerminal() == false);
 }
@@ -64,7 +64,7 @@ TEST_CASE("Print"){
     CHECK_NOTHROW(std::cout << NaoTerminal("EXPR") << std::endl);
 }
 
-TEST_CASE("Comparador de Igualdade"){
+TEST_CASE("Symbol: Comparador de Igualdade"){
     SUBCASE("Terminais"){
         CHECK(Terminal("") == Terminal(""));
         CHECK(Terminal("$") == Terminal("$"));
@@ -79,5 +79,11 @@ TEST_CASE("Comparador de Igualdade"){
         CHECK_FALSE(NaoTerminal("B1") == NaoTerminal("B2"));
         CHECK_FALSE(NaoTerminal("expr") == NaoTerminal("EXPR"));
     }
+}
 
+TEST_CASE("Symbol: menor que"){
+    CHECK(Terminal("A") < Terminal("a"));
+    CHECK(Terminal("a") < Terminal("b"));
+    CHECK(NaoTerminal("B") < NaoTerminal("B1"));
+    CHECK(Terminal("") < Terminal("a"));
 }

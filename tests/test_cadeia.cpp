@@ -142,3 +142,87 @@ TEST_CASE("Print"){
     CHECK_NOTHROW(std::cout << Cadeia() << std::endl);
 }
 
+TEST_CASE("Cadeia: conjunto terminais"){
+    SUBCASE("Geral"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        Cadeia c = Cadeia(v1);
+
+        std::set<Terminal> conj_terminais;
+        conj_terminais.insert(Terminal("a"));
+        conj_terminais.insert(Terminal("b"));
+
+        std::set<Terminal> out;
+        c.conjuntoTerminais(out)
+        CHECK(out == conj_terminais);
+    }
+    SUBCASE("Vazio1"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        Cadeia c = Cadeia(v1);
+        std::set<Terminal> conj_terminais;
+        std::set<Terminal> out;
+        c.conjuntoTerminais(out)
+        CHECK(out == conj_terminais);
+        CHECK(out.empty() == true);
+        CHECK(v1.empty());
+        CHECK(conj_terminais.empty());
+    }
+    SUBCASE("Vazio2"){
+        Cadeia c = Cadeia();
+
+        std::set<Terminal> conj_terminais;
+        std::set<Terminal> out;
+        c.conjuntoTerminais(out)
+        CHECK(out == conj_terminais);
+        CHECK(out.empty() == true);
+        CHECK(conj_terminais.empty());
+    }
+
+}
+
+TEST_CASE("Cadeia: conjunto não-terminais"){
+    SUBCASE("Geral"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<NaoTerminal>("B2"));
+        Cadeia c = Cadeia(v1);
+
+        std::set<NaoTerminal> conj_n_terminais;
+        conj_n_terminais.insert(NaoTerminal("B1"));
+        conj_n_terminais.insert(NaoTerminal("B2"));
+
+        std::set<NaoTerminal> out;
+        c.conjuntoNaoTerminais(out)
+        CHECK(out == conj_n_terminais);
+    }
+    SUBCASE("Vazio1"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        Cadeia c = Cadeia(v1);
+        std::set<NaoTerminal> conj_n_terminais;
+        std::set<NaoTerminal> out;
+        c.conjuntoNaoTerminais(out)
+        CHECK(out == conj_n_terminais);
+        CHECK(out.empty() == true);
+        CHECK(v1.empty());
+        CHECK(conj_n_terminais.empty());
+    }
+    SUBCASE("Vazio2"){
+        Cadeia c = Cadeia();
+
+        std::set<NaoTerminal> conj_n_terminais;
+        std::set<NaoTerminal> out;
+        c.conjuntoNaoTerminais(out)
+        CHECK(out == conj_n_terminais);
+        CHECK(out.empty() == true);
+        CHECK(conj_n_terminais.empty());
+    }
+}

@@ -23,3 +23,11 @@ std::ostream& operator<< (std::ostream &out, const Gramatica& g){
     out << "========================" << std::endl;
     return out;
 }
+
+void conjuntoTerminais(std::set<Terminal>& out){
+    
+}
+
+void conjuntoNaoTerminais(std::set<NaoTerminal>& out){
+
+}

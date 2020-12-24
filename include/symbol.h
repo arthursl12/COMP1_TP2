@@ -11,6 +11,7 @@ class Symbol {
         Symbol(){};
         virtual bool isTerminal() = 0;
         bool operator==(Symbol const& rhs) const; 
+        bool operator<(Symbol const& d) const;
 };
 
 class Terminal : public Symbol {

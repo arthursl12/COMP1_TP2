@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <set>
 #include <ostream>
 
 class Gramatica{
@@ -14,6 +15,10 @@ class Gramatica{
         Gramatica();
         Gramatica(std::vector<std::shared_ptr<Producao>>& _prods);
         friend std::ostream& operator<< (std::ostream &out, const Gramatica& g);
+
+        void conjuntoTerminais(std::set<Terminal>& out);
+        void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
+
 
 };
 

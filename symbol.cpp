@@ -9,6 +9,10 @@ bool Symbol::operator==(Symbol const& rhs) const{
     return this->symbol == rhs.symbol;
 }
 
+bool Symbol::operator<(Symbol const& d) const{
+    return (this->symbol < d.symbol); 
+}
+
 /* Métodos de Terminal */
 Terminal::Terminal(std::string _symbol){
     if (isspace(_symbol[0])) throw "Terminal espaço é inválido";

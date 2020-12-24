@@ -6,6 +6,7 @@
 #include <ostream>
 #include <vector>
 #include <memory>
+#include <set>
 
 class Cadeia{
     protected:
@@ -17,6 +18,8 @@ class Cadeia{
         Symbol& operator[](int idx);
         bool operator==(Cadeia const& rhs) const;
         friend std::ostream& operator<< (std::ostream &out, const Cadeia &c); 
+        void conjuntoTerminais(std::set<Terminal>& out);
+        void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
 };
 
 #endif /* CADEIA_H */
