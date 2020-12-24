@@ -157,8 +157,8 @@ TEST_CASE("Cadeia: conjunto terminais"){
         conj_terminais.insert(Terminal("a"));
         conj_terminais.insert(Terminal("b"));
 
-        std::set<Terminal> out;
-        c.conjuntoTerminais(out)
+        std::set<Terminal> out;;
+        c.conjuntoTerminais(out);
         CHECK(out == conj_terminais);
     }
     SUBCASE("Vazio1"){
@@ -166,7 +166,7 @@ TEST_CASE("Cadeia: conjunto terminais"){
         Cadeia c = Cadeia(v1);
         std::set<Terminal> conj_terminais;
         std::set<Terminal> out;
-        c.conjuntoTerminais(out)
+        c.conjuntoTerminais(out);
         CHECK(out == conj_terminais);
         CHECK(out.empty() == true);
         CHECK(v1.empty());
@@ -177,7 +177,7 @@ TEST_CASE("Cadeia: conjunto terminais"){
 
         std::set<Terminal> conj_terminais;
         std::set<Terminal> out;
-        c.conjuntoTerminais(out)
+        c.conjuntoTerminais(out);
         CHECK(out == conj_terminais);
         CHECK(out.empty() == true);
         CHECK(conj_terminais.empty());
@@ -201,7 +201,7 @@ TEST_CASE("Cadeia: conjunto não-terminais"){
         conj_n_terminais.insert(NaoTerminal("B2"));
 
         std::set<NaoTerminal> out;
-        c.conjuntoNaoTerminais(out)
+        c.conjuntoNaoTerminais(out);
         CHECK(out == conj_n_terminais);
     }
     SUBCASE("Vazio1"){
@@ -209,7 +209,7 @@ TEST_CASE("Cadeia: conjunto não-terminais"){
         Cadeia c = Cadeia(v1);
         std::set<NaoTerminal> conj_n_terminais;
         std::set<NaoTerminal> out;
-        c.conjuntoNaoTerminais(out)
+        c.conjuntoNaoTerminais(out);
         CHECK(out == conj_n_terminais);
         CHECK(out.empty() == true);
         CHECK(v1.empty());
@@ -220,7 +220,7 @@ TEST_CASE("Cadeia: conjunto não-terminais"){
 
         std::set<NaoTerminal> conj_n_terminais;
         std::set<NaoTerminal> out;
-        c.conjuntoNaoTerminais(out)
+        c.conjuntoNaoTerminais(out);
         CHECK(out == conj_n_terminais);
         CHECK(out.empty() == true);
         CHECK(conj_n_terminais.empty());

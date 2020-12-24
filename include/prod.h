@@ -16,6 +16,8 @@ class Producao{
         Cadeia& operator[](int idx);
         NaoTerminal label(); 
         friend std::ostream& operator<< (std::ostream &out, const Producao& p); 
+        void conjuntoTerminais(std::set<Terminal>& out);
+        void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
 
 };
 

@@ -77,7 +77,7 @@ TEST_CASE("Produção: acesso"){
     CHECK_THROWS(p[3]);
 }
 
-TEST_CASE("Print"){
+TEST_CASE("Produção: print"){
     std::vector<std::shared_ptr<Cadeia>> prods;
     std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
     prods.push_back(std::make_shared<Cadeia>(p1));
@@ -101,4 +101,88 @@ TEST_CASE("Print"){
     CHECK_NOTHROW(std::cout << Producao(NaoTerminal("E\'"),prods1) << std::endl);
     CHECK_NOTHROW(std::cout << Producao() << std::endl);
 }
+
+TEST_CASE("Produção: conjunto terminais"){
+    SUBCASE("Geral"){
+        // B -> (vazio) | a | abAbBC
+        std::vector<std::shared_ptr<Cadeia>> prods;
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        p1 = std::make_shared<Terminal>("a");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("A"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        prods.push_back(std::make_shared<Cadeia>(v1));
+
+        Producao p = Producao(NaoTerminal("B"),prods);
+
+        std::set<Terminal> conj_terminais;
+        conj_terminais.insert(Terminal("a"));
+        conj_terminais.insert(Terminal("b"));
+
+        std::set<Terminal> out;
+        p.conjuntoTerminais(out);
+        CHECK(out == conj_terminais);
+    }
+    SUBCASE("Vazio"){
+        Producao p = Producao();
+        std::set<Terminal> conj_terminais;
+        std::set<Terminal> out;
+        p.conjuntoTerminais(out);
+        CHECK(out == conj_terminais);
+        CHECK(out.empty() == true);
+        CHECK(conj_terminais.empty());
+    }
+    
+}
+
+TEST_CASE("Produção: conjunto não-terminais"){
+    SUBCASE("Geral"){
+        // B -> (vazio) | a | abAbBC
+        std::vector<std::shared_ptr<Cadeia>> prods;
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        p1 = std::make_shared<Terminal>("a");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("A"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        prods.push_back(std::make_shared<Cadeia>(v1));
+
+        Producao p = Producao(NaoTerminal("B"),prods);
+        
+        std::set<NaoTerminal> conj_n_terminais;
+        conj_n_terminais.insert(NaoTerminal("A"));
+        conj_n_terminais.insert(NaoTerminal("B"));
+        conj_n_terminais.insert(NaoTerminal("C"));
+
+        std::set<NaoTerminal> out;
+        p.conjuntoNaoTerminais(out);
+        CHECK(out == conj_n_terminais);
+    }
+    SUBCASE("Vazio"){
+        Producao p = Producao();
+        std::set<NaoTerminal> conj_n_terminais;
+        std::set<NaoTerminal> out;
+        p.conjuntoNaoTerminais(out);
+        CHECK(out == conj_n_terminais);
+        CHECK(out.empty() == true);
+        CHECK(conj_n_terminais.empty());
+    }
+}
+
+
 
