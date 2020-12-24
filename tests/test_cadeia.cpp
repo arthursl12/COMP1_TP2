@@ -122,3 +122,18 @@ TEST_CASE("Cadeia: operador comparação igualdade"){
             CHECK(c1 == c3);
         }
 }
+
+TEST_CASE("Print"){
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    CHECK_NOTHROW(std::cout << Cadeia(p1) << std::endl);
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    CHECK_NOTHROW(std::cout << Cadeia(v1) << std::endl);
+}
+

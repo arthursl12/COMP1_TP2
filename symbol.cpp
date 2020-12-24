@@ -32,7 +32,11 @@ bool Terminal::isTerminal(){
     return true;
 }
 std::ostream& operator<< (std::ostream &out, const Terminal &t){
-    out << "\'" << t.symbol << "\'";
+    if (t.isVazio){
+        out << "(vazio)";
+    }else{
+        out << t.symbol;
+    }
     return out; 
 } 
 
@@ -50,7 +54,7 @@ bool NaoTerminal::isTerminal(){
     return false;
 }
 std::ostream& operator<< (std::ostream &out, const NaoTerminal &nt){
-    out << " :" << nt.symbol << ": ";
+    out << "<" << nt.symbol << ">";
     return out; 
 }
 
