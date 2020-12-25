@@ -59,7 +59,7 @@ void producoes(std::vector<std::shared_ptr<Producao>>& prods){
 TEST_CASE("Gramática: construção"){
     std::vector<std::shared_ptr<Producao>> prods;
     producoes(prods);
-    CHECK_NOTHROW(Gramatica(prods));
+    CHECK_NOTHROW(Gramatica prods );
     CHECK_NOTHROW(Gramatica());
 }
 
