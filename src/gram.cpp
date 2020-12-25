@@ -2,6 +2,7 @@
 #include "prod.h"
 
 #include <ostream>
+#include <iostream>
 #include <set>
 #include <memory>
 
@@ -95,8 +96,12 @@ void Gramatica::firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out
             cadk = std::make_shared<NaoTerminal>(nt);
         }
         first(cadk, out1);
-        out = getUnion(out, out1);
-
+        std::set<Terminal> out2 = out1;
+        if (out2.find(Terminal("")) != out2.end()){
+            out2.erase(out2.find(Terminal("")));
+        }
+        out = getUnion(out, out2);
+        
         int j = 1;
         // Enquanto FIRST(Yi) possuir (vazio),
         // adicione FIRST(Y+1) a FIRST(X)
@@ -110,7 +115,11 @@ void Gramatica::firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out
                 cadk = std::make_shared<NaoTerminal>(nt);
             }
             first(cadk, out1);
-            out = getUnion(out, out1);
+            std::set<Terminal> out2 = out1;
+            if (out2.find(Terminal("")) != out2.end()){
+                out2.erase(out2.find(Terminal("")));
+            }
+            out = getUnion(out, out2);
             
             j++;
             if (j == cad.qtdSimbolos()){

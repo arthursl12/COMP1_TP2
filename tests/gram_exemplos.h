@@ -8,7 +8,7 @@
 #include <vector>
 #include <memory>
 
-void cria_gram(Gramatica& gram){
+void cria_gram_1(Gramatica& gram){
     std::vector<std::shared_ptr<Producao>> prods;
     prods.clear();
 
@@ -74,7 +74,7 @@ void cria_gram(Gramatica& gram){
     gram = Gramatica(prods);
 }
 
-void cria_outra_gram(Gramatica& gram){
+void cria_gram_2(Gramatica& gram){
     std::vector<std::shared_ptr<Producao>> prods;
     prods.clear();
 
@@ -173,7 +173,7 @@ void cria_gram_3(Gramatica& gram){
     gram = Gramatica(prods);
 }
 
-inline void cria_gram_4(Gramatica& gram){
+void cria_gram_4(Gramatica& gram){
     std::vector<std::shared_ptr<Producao>> prods;
     prods.clear();
 
@@ -244,6 +244,153 @@ inline void cria_gram_4(Gramatica& gram){
 
     gram = Gramatica(prods);
 }
+
+void cria_gram_5(Gramatica& gram){
+    std::vector<std::shared_ptr<Producao>> prods;
+    prods.clear();
+
+    std::vector<std::shared_ptr<Cadeia>> v;
+    std::vector<std::shared_ptr<Symbol>> cad;
+    std::shared_ptr<Symbol> sym;
+    std::shared_ptr<Producao> p;
+
+    // S -> A
+    v.clear();
+    cad.clear();
+    sym = std::make_shared<NaoTerminal>("A");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("S"), v);
+    prods.push_back(p);
+
+    // A -> aBA'
+    v.clear();
+    cad.clear();
+    cad.push_back(std::make_shared<Terminal>("a"));
+    cad.push_back(std::make_shared<NaoTerminal>("B"));
+    cad.push_back(std::make_shared<NaoTerminal>("A\'"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    p = std::make_shared<Producao>(NaoTerminal("A"), v);
+    prods.push_back(p);
+
+    // A' -> dA' | (vazio)
+    v.clear();
+    cad.clear();
+    cad.push_back(std::make_shared<Terminal>("d"));
+    cad.push_back(std::make_shared<NaoTerminal>("A\'"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    sym = std::make_shared<Terminal>("");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("A\'"), v);
+    prods.push_back(p);
+
+    // B -> b
+    v.clear();
+    cad.clear();
+    sym = std::make_shared<Terminal>("b");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("B"), v);
+    prods.push_back(p);
+
+    // C -> g
+    v.clear();
+    cad.clear();
+    sym = std::make_shared<Terminal>("g");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("C"), v);
+    prods.push_back(p);
+
+    gram = Gramatica(prods);
+}
+
+void cria_gram_6(Gramatica& gram){
+    std::vector<std::shared_ptr<Producao>> prods;
+    prods.clear();
+
+    std::vector<std::shared_ptr<Cadeia>> v;
+    std::vector<std::shared_ptr<Symbol>> cad;
+    std::shared_ptr<Symbol> sym;
+    std::shared_ptr<Producao> p;
+
+    // S -> (L) | a
+    v.clear();
+    cad.clear();
+    cad.push_back(std::make_shared<Terminal>("("));
+    cad.push_back(std::make_shared<NaoTerminal>("L"));
+    cad.push_back(std::make_shared<Terminal>(")"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    sym = std::make_shared<Terminal>("a");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("S"), v);
+    prods.push_back(p);
+
+    // L -> SL'
+    v.clear();
+    cad.clear();
+    cad.push_back(std::make_shared<NaoTerminal>("S"));
+    cad.push_back(std::make_shared<NaoTerminal>("L\'"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    p = std::make_shared<Producao>(NaoTerminal("L"), v);
+    prods.push_back(p);
+
+    // L' -> ,SL' | (vazio)
+    v.clear();
+    cad.clear();
+    cad.push_back(std::make_shared<Terminal>(","));
+    cad.push_back(std::make_shared<NaoTerminal>("S"));
+    cad.push_back(std::make_shared<NaoTerminal>("L\'"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    sym = std::make_shared<Terminal>("");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("L\'"), v);
+    prods.push_back(p);
+
+    gram = Gramatica(prods);
+}
+
+void cria_gram_7(Gramatica& gram){
+    std::vector<std::shared_ptr<Producao>> prods;
+    prods.clear();
+
+    std::vector<std::shared_ptr<Cadeia>> v;
+    std::vector<std::shared_ptr<Symbol>> cad;
+    std::shared_ptr<Symbol> sym;
+    std::shared_ptr<Producao> p;
+
+    // S -> AaAb | BbBa
+    v.clear();
+    cad.clear();
+    cad.push_back(std::make_shared<NaoTerminal>("A"));
+    cad.push_back(std::make_shared<Terminal>("a"));
+    cad.push_back(std::make_shared<NaoTerminal>("A"));
+    cad.push_back(std::make_shared<Terminal>("b"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    cad.clear();
+    cad.push_back(std::make_shared<NaoTerminal>("B"));
+    cad.push_back(std::make_shared<Terminal>("b"));
+    cad.push_back(std::make_shared<NaoTerminal>("B"));
+    cad.push_back(std::make_shared<Terminal>("a"));
+    v.push_back(std::make_shared<Cadeia>(cad));
+    p = std::make_shared<Producao>(NaoTerminal("S"), v);
+    prods.push_back(p);
+
+    // A -> (vazio)
+    v.clear();
+    sym = std::make_shared<Terminal>("");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("A"), v);
+    prods.push_back(p);
+
+    
+    // B -> (vazio)
+    v.clear();
+    sym = std::make_shared<Terminal>("");
+    v.push_back(std::make_shared<Cadeia>(sym));
+    p = std::make_shared<Producao>(NaoTerminal("B"), v);
+    prods.push_back(p);
+    
+    gram = Gramatica(prods);
+}
+
 
 
 #endif // GRAM_EXEMPLOS_H
