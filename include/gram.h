@@ -25,6 +25,8 @@ class Gramatica{
 
         void firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out);
         void first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out);
+        void follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out);
+
 
 };
 
