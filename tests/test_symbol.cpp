@@ -59,7 +59,7 @@ TEST_CASE("Symbol: isTerminal"){
     CHECK(NaoTerminal("expr").isTerminal() == false);
 }
 
-TEST_CASE("Print"){
+TEST_CASE("Symbol: print"){
     CHECK_NOTHROW(std::cout << Terminal("a") << std::endl);
     CHECK_NOTHROW(std::cout << NaoTerminal("EXPR") << std::endl);
 }

@@ -7,7 +7,6 @@
 #include <vector>
 
 class Producao{
-    friend class Gramatica;
     protected:
         NaoTerminal lhs;
         std::vector<std::shared_ptr<Cadeia>> rhs;

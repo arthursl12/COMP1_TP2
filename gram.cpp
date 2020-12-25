@@ -94,22 +94,57 @@ void Gramatica::first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out){
         }
 
         // Se houver produção X->(vazio) adicione (vazio) ao conjunto
-        for (auto it = p->rhs.begin(); it != p->rhs.end(); it++){
+        for (int i = 0; i < p->qtdCadeias(); i++){
+            Cadeia cad = (*p)[i];
             std::shared_ptr<Symbol> vazio = std::make_shared<Terminal>("");
-            if ((**it) == Cadeia(vazio)){
+            if (cad == Cadeia(vazio)){
                 out.insert(Terminal(""));
                 break;
             }
         }
 
-        // Para todas as produções
-        for (auto it = p->rhs.begin(); it != p->rhs.end(); it++){
+        // Para todas as produções do tipo X = Y1 Y2 ... Yn
+        for (int i = 0; i < p->qtdCadeias(); i++){
+            Cadeia cad = (*p)[i];
             std::shared_ptr<Symbol> vazio = std::make_shared<Terminal>("");
-            if ((**it) == Cadeia(vazio)){
+            if (cad == Cadeia(vazio)){
                 continue;
             }
 
-            std::shared_ptr<Cadeia> cad = *it;
+            // FIRST(X) = FIRST(Y1)
+            std::set<Terminal> out1;
+            std::shared_ptr<Symbol> cadk;
+            if (cad[0].isTerminal()){
+                Terminal& t = dynamic_cast<Terminal&>(cad[0]);
+                cadk = std::make_shared<Terminal>(t);
+            }else{
+                NaoTerminal& nt = dynamic_cast<NaoTerminal&>(cad[0]);
+                cadk = std::make_shared<NaoTerminal>(nt);
+            }
+            first(cadk, out1);
+            out = getUnion(out, out1);
+
+            int j = 1;
+            // Enquanto FIRST(Yi) possuir (vazio),
+            // adicione FIRST(Y+1) a FIRST(X)
+            while(  !(out1.find(Terminal("")) == out1.end())  ){
+                out1.clear();
+                if (cad[j].isTerminal()){
+                    Terminal& t = dynamic_cast<Terminal&>(cad[j]);
+                    cadk = std::make_shared<Terminal>(t);
+                }else{
+                    NaoTerminal& nt = dynamic_cast<NaoTerminal&>(cad[j]);
+                    cadk = std::make_shared<NaoTerminal>(nt);
+                }
+                first(cadk, out1);
+                out = getUnion(out, out1);
+                
+                j++;
+                if (j == cad.qtdSimbolos()){
+                    out.insert(Terminal(""));
+                    break;
+                }
+            }
         }
 
     }

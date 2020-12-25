@@ -9,7 +9,6 @@
 #include <set>
 
 class Cadeia{
-    friend class Gramatica;
     protected:
         std::vector<std::shared_ptr<Symbol>> seq;
     public:

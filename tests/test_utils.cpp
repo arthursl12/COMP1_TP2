@@ -204,7 +204,7 @@ TEST_CASE("FIRST: gramática 1"){
         conj_first.insert(Terminal(""));
 
         out.clear();
-        std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("T\'");
+        sym = std::make_shared<NaoTerminal>("T\'");
         g.first(sym, out);
         CHECK(out == conj_first);
     }
@@ -260,7 +260,7 @@ TEST_CASE("FIRST: gramática 2"){
         conj_first.insert(Terminal("g"));
         conj_first.insert(Terminal(""));
         out.clear();
-        std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("B");
+        sym = std::make_shared<NaoTerminal>("B");
         g.first(sym, out);
         CHECK(out == conj_first);
     }
