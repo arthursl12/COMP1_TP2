@@ -8,11 +8,6 @@
 #include <memory>
 #include <set>
 
-/*
-Conjunto de Terminais
-Conjunto de Nomes de produção
-Integridade das produções (todas referenciadas existem)
-*/
 void producoes(std::vector<std::shared_ptr<Producao>>& prods){
     prods.clear();
 

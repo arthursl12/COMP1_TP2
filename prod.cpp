@@ -62,3 +62,7 @@ void Producao::conjuntoNaoTerminais(std::set<NaoTerminal>& out){
         out = getUnion(out, temp1);
     }
 }
+
+int Producao::qtdCadeias(){
+    return rhs.size();
+}

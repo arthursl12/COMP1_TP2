@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <set>
+#include <memory>
 
 
 Gramatica::Gramatica(){
@@ -72,4 +73,44 @@ void Gramatica::conjuntoNaoTerminais(std::set<NaoTerminal>& out){
     std::set<NaoTerminal> inicios;
     encontraNaoTerminais(usados, inicios);
     out = getUnion(usados, inicios);
+}
+
+void Gramatica::first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out){
+    if (sym->isTerminal()){
+        // FIRST de terminal só possui ele
+        std::shared_ptr<Terminal> t = std::dynamic_pointer_cast<Terminal>(sym);
+        out.insert(*t);
+    }else{
+        std::shared_ptr<NaoTerminal> nt = \
+                    std::dynamic_pointer_cast<NaoTerminal>(sym);
+
+        // Acha as produções do não terminal
+        std::shared_ptr<Producao> p;
+        for (auto it = prods.begin(); it != prods.end(); it++){
+            std::shared_ptr<Producao> p_it = *it;
+            if (p_it->label() == *nt){
+                p = p_it;
+            }
+        }
+
+        // Se houver produção X->(vazio) adicione (vazio) ao conjunto
+        for (auto it = p->rhs.begin(); it != p->rhs.end(); it++){
+            std::shared_ptr<Symbol> vazio = std::make_shared<Terminal>("");
+            if ((**it) == Cadeia(vazio)){
+                out.insert(Terminal(""));
+                break;
+            }
+        }
+
+        // Para todas as produções
+        for (auto it = p->rhs.begin(); it != p->rhs.end(); it++){
+            std::shared_ptr<Symbol> vazio = std::make_shared<Terminal>("");
+            if ((**it) == Cadeia(vazio)){
+                continue;
+            }
+
+            std::shared_ptr<Cadeia> cad = *it;
+        }
+
+    }
 }

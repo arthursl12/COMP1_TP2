@@ -2,6 +2,7 @@
 #define GRAM_H
 
 #include "prod.h"
+#include "symbol.h"
 
 #include <vector>
 #include <memory>
@@ -22,6 +23,7 @@ class Gramatica{
                                   std::set<NaoTerminal>& inicios);
         void verificaIntegridade();
 
+        void first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out);
 
 };
 

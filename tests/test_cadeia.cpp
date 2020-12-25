@@ -42,6 +42,22 @@ TEST_CASE("Cadeia: operador []"){
         CHECK_THROWS(c[10]);
 }
 
+TEST_CASE("Cadeia: tamanho da cadeia"){
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    CHECK(Cadeia(p1).qtdSimbolos() == 0);
+    
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    CHECK(Cadeia(v1).qtdSimbolos() == 6);
+    
+    CHECK(Cadeia().qtdSimbolos() == 0);
+}
+
 TEST_CASE("Cadeia: operador comparação igualdade"){
         SUBCASE("Qtd elementos"){
             std::vector<std::shared_ptr<Symbol>> v1;
@@ -126,7 +142,7 @@ TEST_CASE("Cadeia: operador comparação igualdade"){
         }
 }
 
-TEST_CASE("Print"){
+TEST_CASE("Cadeia: print"){
     std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
     CHECK_NOTHROW(std::cout << Cadeia(p1) << std::endl);
 

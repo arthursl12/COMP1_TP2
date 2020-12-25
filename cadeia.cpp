@@ -93,3 +93,11 @@ void Cadeia::conjuntoNaoTerminais(std::set<NaoTerminal>& out){
         }
     }
 }
+
+int Cadeia::qtdSimbolos(){
+    if (*seq[0] == Terminal("")){
+        return 0;
+    }else{
+        return seq.size();
+    }   
+}

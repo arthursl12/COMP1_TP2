@@ -7,6 +7,7 @@
 #include <vector>
 
 class Producao{
+    friend class Gramatica;
     protected:
         NaoTerminal lhs;
         std::vector<std::shared_ptr<Cadeia>> rhs;
@@ -18,6 +19,7 @@ class Producao{
         friend std::ostream& operator<< (std::ostream &out, const Producao& p); 
         void conjuntoTerminais(std::set<Terminal>& out);
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
+        int qtdCadeias();
 
 };
 

@@ -9,6 +9,7 @@
 #include <set>
 
 class Cadeia{
+    friend class Gramatica;
     protected:
         std::vector<std::shared_ptr<Symbol>> seq;
     public:
@@ -20,6 +21,7 @@ class Cadeia{
         friend std::ostream& operator<< (std::ostream &out, const Cadeia &c); 
         void conjuntoTerminais(std::set<Terminal>& out);
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
+        int qtdSimbolos();
 };
 
 #endif /* CADEIA_H */
