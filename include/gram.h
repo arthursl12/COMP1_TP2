@@ -23,6 +23,7 @@ class Gramatica{
                                   std::set<NaoTerminal>& inicios);
         void verificaIntegridade();
 
+        void firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out);
         void first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out);
 
 };
