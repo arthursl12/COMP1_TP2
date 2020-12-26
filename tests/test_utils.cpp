@@ -25,8 +25,6 @@ TEST_CASE("Utils: gramaticaEstendida"){
     std::set<NaoTerminal> nt2;
     g1.conjuntoNaoTerminais(nt2);
 
-    CHECK(ts1 != ts2);
-    ts2.erase(Terminal("."));
     CHECK(ts1 == ts2);
 
     CHECK(nt1 != nt2);

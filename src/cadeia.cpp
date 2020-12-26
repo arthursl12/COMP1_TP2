@@ -18,9 +18,20 @@ Cadeia::Cadeia(std::shared_ptr<Symbol>& s){
 Cadeia::Cadeia(std::vector<std::shared_ptr<Symbol>>& _seq){
     seq.clear();
     for (auto it = _seq.begin(); it != _seq.end(); it++){
-        seq.push_back(*it);
+        if ((*it)->isTerminal()){
+            std::shared_ptr<Terminal> t = \
+                        std::dynamic_pointer_cast<Terminal>(*it);
+            std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(*t);
+            seq.push_back(sym);
+        }else{
+            std::shared_ptr<NaoTerminal> t = \
+                        std::dynamic_pointer_cast<NaoTerminal>(*it);
+            std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>(*t);
+            seq.push_back(sym);
+        }
     }
 }
+
 Symbol& Cadeia::operator[](int idx){
     if (idx > (int) seq.size() - 1) throw "Índice fora do intervalo";
     return *seq[idx];

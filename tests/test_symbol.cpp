@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "symbol.h"
+#include <memory>
 
 TEST_CASE("Terminal: construção"){
     SUBCASE("Normais"){
@@ -86,4 +87,36 @@ TEST_CASE("Symbol: menor que"){
     CHECK(Terminal("a") < Terminal("b"));
     CHECK(NaoTerminal("B") < NaoTerminal("B1"));
     CHECK(Terminal("") < Terminal("a"));
+}
+
+TEST_CASE("Symbol: copy-constructor"){
+    SUBCASE("Terminal"){
+        Terminal t1 = Terminal("t");
+        std::shared_ptr<Terminal> ptr1 = std::make_shared<Terminal>(t1);
+        *ptr1 = Terminal("s");
+
+        CHECK(t1 == Terminal("t"));
+        CHECK(*ptr1 == Terminal("s"));
+        CHECK_FALSE(*ptr1 == t1);
+
+        std::shared_ptr<Terminal> ptr = std::make_shared<Terminal>("id");
+        std::shared_ptr<Terminal> ptr2 = std::make_shared<Terminal>(*ptr);
+        *ptr = Terminal("z");
+
+        CHECK(*ptr2 == Terminal("id"));
+        CHECK_FALSE(*ptr == Terminal("id"));
+
+    }
+    SUBCASE("Não-terminal"){
+        std::shared_ptr<NaoTerminal> ptr = std::make_shared<NaoTerminal>("id");
+        NaoTerminal t1 = NaoTerminal("t");
+
+        std::shared_ptr<NaoTerminal> ptr1 = std::make_shared<NaoTerminal>(t1);
+        *ptr1 = NaoTerminal("s");
+        CHECK_FALSE(*ptr1 == t1);
+
+        std::shared_ptr<NaoTerminal> ptr2 = std::make_shared<NaoTerminal>(*ptr);
+        *ptr = NaoTerminal("z");
+        CHECK_FALSE(*ptr == NaoTerminal("id"));
+    }
 }

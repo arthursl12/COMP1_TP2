@@ -465,3 +465,35 @@ TEST_CASE("Cadeia: itemLR0"){
         CHECK(c == c1);
     }
 }
+
+TEST_CASE("Cadeia: copy-construtor"){
+    std::shared_ptr<Symbol> s1 = std::make_shared<Terminal>("");
+    std::shared_ptr<Cadeia> c1 = std::make_shared<Cadeia>(s1);
+
+    std::shared_ptr<Symbol> s2 = std::make_shared<Terminal>("a");
+    std::shared_ptr<Cadeia> c2 = std::make_shared<Cadeia>(s2);
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    std::shared_ptr<Terminal> t1 = std::make_shared<Terminal>("b");
+    v1.push_back(t1);
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    std::shared_ptr<Cadeia> c3 = std::make_shared<Cadeia>(v1);
+
+    std::vector<std::shared_ptr<Symbol>> v2;
+    v2.push_back(std::make_shared<Terminal>("a"));
+    v2.push_back(std::make_shared<Terminal>("b"));
+    v2.push_back(std::make_shared<NaoTerminal>("B1"));
+    v2.push_back(std::make_shared<Terminal>("b"));
+    v2.push_back(std::make_shared<NaoTerminal>("B1"));
+    v2.push_back(std::make_shared<NaoTerminal>("B1"));
+    std::shared_ptr<Cadeia> c4 = std::make_shared<Cadeia>(v2);
+
+    CHECK(*c4 == *c3);
+    *t1 = Terminal("c");
+    CHECK(*c4 == *c3);
+    CHECK((*c4)[1] == Terminal("b"));
+}
