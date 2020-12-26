@@ -47,6 +47,9 @@ Gramatica::Gramatica(std::vector<std::shared_ptr<Producao>>& _prods){
         prods.push_back(*it);
     }
     prods[0]->setInicial();
+    for (auto it = (prods.begin()+1); it != prods.end(); it++){
+        (*it)->removeInicial();
+    }
     verificaIntegridade();
 }
 

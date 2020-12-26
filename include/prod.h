@@ -23,8 +23,8 @@ class Producao{
         int qtdCadeias();
 
         void setInicial();
+        void removeInicial();
         bool isInicial();
-
 };
 
 template <typename T>

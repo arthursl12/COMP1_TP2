@@ -75,3 +75,7 @@ bool Producao::isInicial(){
 void Producao::setInicial(){
     inicial = true;
 }
+
+void Producao::removeInicial(){
+    inicial = false;
+}
