@@ -3,7 +3,7 @@
 Producao::Producao()
 :lhs("S")
 {
-
+    inicial = false;
     rhs.push_back(std::make_shared<Cadeia>());
 }
 
@@ -15,6 +15,7 @@ Producao::Producao(
     for (auto it = _rhs.begin(); it != _rhs.end(); it++){
         rhs.push_back(*it);
     }
+    inicial = false;
 }
 
 Cadeia& Producao::operator[](int idx){
@@ -65,4 +66,12 @@ void Producao::conjuntoNaoTerminais(std::set<NaoTerminal>& out){
 
 int Producao::qtdCadeias(){
     return rhs.size();
+}
+
+bool Producao::isInicial(){
+    return inicial;
+}
+
+void Producao::setInicial(){
+    inicial = true;
 }

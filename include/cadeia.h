@@ -21,6 +21,14 @@ class Cadeia{
         void conjuntoTerminais(std::set<Terminal>& out);
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
         int qtdSimbolos();
+
+        std::vector<std::shared_ptr<Symbol>>::iterator \
+            find(std::shared_ptr<NaoTerminal>& nt);
+        std::vector<std::shared_ptr<Symbol>>::iterator \
+            find(std::shared_ptr<NaoTerminal>& nt, \
+                 std::vector<std::shared_ptr<Symbol>>::iterator& pos);
+        std::vector<std::shared_ptr<Symbol>>::iterator \
+            end();
 };
 
 #endif /* CADEIA_H */

@@ -101,3 +101,33 @@ int Cadeia::qtdSimbolos(){
         return seq.size();
     }   
 }
+
+std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::find(
+    std::shared_ptr<NaoTerminal>& nt
+)
+{
+    auto it = seq.begin();
+    for (; it != seq.end(); it++){
+        if (**it == *nt){
+            return it;
+        }
+    }
+    return end();
+}
+std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::find(
+    std::shared_ptr<NaoTerminal>& nt, 
+    std::vector<std::shared_ptr<Symbol>>::iterator& pos
+)
+{
+    auto it = pos+1;
+    for (; it != seq.end(); it++){
+        if (**it == *nt){
+            return it;
+        }
+    }
+    return end();
+}
+
+std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::end(){
+    return seq.end();
+}

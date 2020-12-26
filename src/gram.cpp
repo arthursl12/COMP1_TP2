@@ -10,6 +10,7 @@
 Gramatica::Gramatica(){
     prods.clear();
     prods.push_back(std::make_shared<Producao>());
+    prods[0]->setInicial();
 }
 
 void Gramatica::encontraNaoTerminais(
@@ -45,7 +46,7 @@ Gramatica::Gramatica(std::vector<std::shared_ptr<Producao>>& _prods){
     for (auto it = _prods.begin(); it != _prods.end(); it++){
         prods.push_back(*it);
     }
-
+    prods[0]->setInicial();
     verificaIntegridade();
 }
 
@@ -160,4 +161,26 @@ void Gramatica::first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out){
 
         firstString(p, out);
     }
+}
+
+void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out){
+    // Verifica se é o inicial, se sim, adiciona $ ao FOLLOW
+    int i = 0;
+    for(i = 0; i < prods.size(); i++){
+        if ((*sym) == prods[i]->label()){
+            break;
+        }
+    }
+    if (prods[i]->isInicial()){
+        out.insert(Terminal("$"));
+    }
+
+    // //Fluxo normal: procura em quais produções o símbolo é utilizado
+    // for(i = 0; i < prods.size(); i++){
+    //     if ((*sym) == prods[i]->label()){
+    //         break;
+    //     }
+    // }
+
+
 }

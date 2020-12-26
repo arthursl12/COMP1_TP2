@@ -10,6 +10,7 @@ class Producao{
     protected:
         NaoTerminal lhs;
         std::vector<std::shared_ptr<Cadeia>> rhs;
+        bool inicial;
     public:
         Producao();
         Producao(NaoTerminal _lhs, std::vector<std::shared_ptr<Cadeia>> _rhs);
@@ -18,7 +19,12 @@ class Producao{
         friend std::ostream& operator<< (std::ostream &out, const Producao& p); 
         void conjuntoTerminais(std::set<Terminal>& out);
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
+
         int qtdCadeias();
+        std::vector<std::shared_ptr<Symbol>>::iterator possuiNaoTerminal(std::shared_ptr<NaoTerminal>& nt);
+
+        void setInicial();
+        bool isInicial();
 
 };
 

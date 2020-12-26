@@ -24,6 +24,40 @@ TEST_CASE("Produção: construção"){
     CHECK_NOTHROW(Producao());
 }
 
+TEST_CASE("Produção: setInicial/isInicial"){
+    SUBCASE("Construtor Default"){
+        Producao p = Producao();
+        CHECK(p.isInicial() == false);
+        p.setInicial();
+        CHECK(p.isInicial() == true);
+    }
+    SUBCASE("Geral"){
+        std::vector<std::shared_ptr<Cadeia>> prods;
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+        p1 = std::make_shared<Terminal>("a");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        prods.push_back(std::make_shared<Cadeia>(v1));
+
+        Producao p = Producao(NaoTerminal("B1"),prods);
+        CHECK(p.isInicial() == false);
+        p.setInicial();
+        CHECK(p.isInicial() == true);
+    }
+
+        
+
+
+}
+
 TEST_CASE("Produção: qtdCadeias"){
     std::vector<std::shared_ptr<Cadeia>> prods;
     std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
