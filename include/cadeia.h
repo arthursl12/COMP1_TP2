@@ -29,6 +29,8 @@ class Cadeia{
                  std::vector<std::shared_ptr<Symbol>>::iterator& pos);
         std::vector<std::shared_ptr<Symbol>>::iterator \
             end();
+        
+        void itemLR0(std::vector<std::shared_ptr<Cadeia>>& out);
 };
 
 #endif /* CADEIA_H */

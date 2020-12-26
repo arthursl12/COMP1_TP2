@@ -25,6 +25,8 @@ class Producao{
         void setInicial();
         void removeInicial();
         bool isInicial();
+
+        friend void itemL0(Producao& p);
 };
 
 template <typename T>

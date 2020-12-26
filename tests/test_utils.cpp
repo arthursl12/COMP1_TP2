@@ -32,5 +32,17 @@ TEST_CASE("Utils: gramaticaEstendida"){
     CHECK(nt1 != nt2);
     nt2.erase(NaoTerminal("S\'"));
     CHECK(nt1 == nt2);
+}
 
+
+TEST_CASE("Utils: itemLR0"){
+    SUBCASE("Produção vazia"){
+
+    }
+    SUBCASE("Produção com um elemento"){
+
+    }
+    SUBCASE("Produção com várias cadeias"){
+
+    }
 }

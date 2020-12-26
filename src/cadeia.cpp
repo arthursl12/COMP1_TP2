@@ -131,3 +131,29 @@ std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::find(
 std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::end(){
     return seq.end();
 }
+
+void Cadeia::itemLR0(std::vector<std::shared_ptr<Cadeia>>& out){
+    if (seq.size() == 1 && (*seq[0] == Terminal(""))){
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        std::shared_ptr<Cadeia> newCad = std::make_shared<Cadeia>(sym);
+        out.push_back(newCad);
+    }else{
+        for (int i = 0; i < (int) seq.size(); i++){
+            std::vector<std::shared_ptr<Symbol>> seq_copia = seq;
+            auto it = seq_copia.begin();
+            for (int j = 0; j < i; j++){
+                it++;
+            }
+            std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+            seq_copia.insert(it,sym);
+            std::shared_ptr<Cadeia> newCad = std::make_shared<Cadeia>(seq_copia);
+            out.push_back(newCad);
+        }
+        // Ponto após último elemento:
+        std::vector<std::shared_ptr<Symbol>> seq_copia = seq;
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        seq_copia.push_back(sym);
+        std::shared_ptr<Cadeia> newCad = std::make_shared<Cadeia>(seq_copia);
+        out.push_back(newCad);
+    }
+}
