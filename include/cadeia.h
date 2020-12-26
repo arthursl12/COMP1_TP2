@@ -31,7 +31,7 @@ class Cadeia{
         std::vector<std::shared_ptr<Symbol>>::iterator \
             end();
         
-        void itemLR0(std::vector<std::shared_ptr<Cadeia>>& out);
+        void itemLR0();
 };
 
 #endif /* CADEIA_H */
