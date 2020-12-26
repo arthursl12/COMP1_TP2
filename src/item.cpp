@@ -5,12 +5,14 @@ Item::Item()
 :lhs("S")
 {
     rhs = std::make_shared<Cadeia>();
+    rhs->itemLR0();
 }
 Item::Item(Producao& p)
 :lhs(p.label())
 {
     Cadeia c = p[0];
     rhs = std::make_shared<Cadeia>(c);
+    rhs->itemLR0();
 }
 Item::Item(Producao& p, int pos)
 :lhs(p.label())
@@ -19,6 +21,7 @@ Item::Item(Producao& p, int pos)
         throw "Índice inválido para cadeias";
     }
     rhs = std::make_shared<Cadeia>(p[pos]);
+    rhs->itemLR0();
 }
 
 Cadeia& Item::getCadeia(){

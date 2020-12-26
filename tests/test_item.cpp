@@ -30,25 +30,25 @@ TEST_CASE("Item: construção"){
         Producao p = Producao(NaoTerminal("B1"),prods);
         CHECK_NOTHROW(Item it(p));
     }
-    SUBCASE("Construir a partir de produção (ponto especificado)"){
-        std::vector<std::shared_ptr<Cadeia>> prods;
-        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
-        prods.push_back(std::make_shared<Cadeia>(p1));
-        p1 = std::make_shared<Terminal>("a");
-        prods.push_back(std::make_shared<Cadeia>(p1));
+    // SUBCASE("Construir a partir de produção (ponto especificado)"){
+    //     std::vector<std::shared_ptr<Cadeia>> prods;
+    //     std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    //     prods.push_back(std::make_shared<Cadeia>(p1));
+    //     p1 = std::make_shared<Terminal>("a");
+    //     prods.push_back(std::make_shared<Cadeia>(p1));
 
-        std::vector<std::shared_ptr<Symbol>> v1;
-        v1.push_back(std::make_shared<Terminal>("a"));
-        v1.push_back(std::make_shared<Terminal>("b"));
-        v1.push_back(std::make_shared<NaoTerminal>("B1"));
-        v1.push_back(std::make_shared<Terminal>("b"));
-        v1.push_back(std::make_shared<NaoTerminal>("B1"));
-        v1.push_back(std::make_shared<NaoTerminal>("B1"));
-        prods.push_back(std::make_shared<Cadeia>(v1));
+    //     std::vector<std::shared_ptr<Symbol>> v1;
+    //     v1.push_back(std::make_shared<Terminal>("a"));
+    //     v1.push_back(std::make_shared<Terminal>("b"));
+    //     v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    //     v1.push_back(std::make_shared<Terminal>("b"));
+    //     v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    //     v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    //     prods.push_back(std::make_shared<Cadeia>(v1));
 
-        Producao p = Producao(NaoTerminal("B1"),prods);
-        CHECK_NOTHROW(Item it(p,2));
-    }
+    //     Producao p = Producao(NaoTerminal("B1"),prods);
+    //     CHECK_NOTHROW(Item it(p,2));
+    // }
 }
 
 TEST_CASE("Item: impressão"){
@@ -136,7 +136,36 @@ TEST_CASE("Item: integridade"){
         Producao p = Producao(NaoTerminal("B1"),prods);
         Item it = Item(p,2);
         *t1 = Terminal("c");
-        CHECK(*cad == it.getCadeia());
+        CHECK_FALSE(*cad == it.getCadeia());
         CHECK((*cad)[1] == Terminal("b"));
     }
+}
+
+TEST_CASE("Item: cadeia possui ponto"){
+    Item it = Item();
+    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+    CHECK(it.getCadeia() == Cadeia(sym));
+    sym  = std::make_shared<Terminal>("");
+    CHECK_FALSE(it.getCadeia() == Cadeia(sym));
+
+    std::vector<std::shared_ptr<Cadeia>> prods;
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    std::shared_ptr<Cadeia> cad = std::make_shared<Cadeia>(v1); 
+    prods.push_back(cad);
+
+    Producao p = Producao(NaoTerminal("B1"),prods);
+    Item it1 = Item(p);
+    CHECK_FALSE(it.getCadeia() == *cad);
+
 }
