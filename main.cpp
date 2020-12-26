@@ -8,21 +8,17 @@
 
 int main(int argc, char* argv[]){
     Gramatica g;
-    cria_gram_7(g);
+    cria_gram_4(g);
 
-    // FIRST(S) = FIRST(A) U {a} U FIRST(B) U {b} = {a,b}
-    std::set<Terminal> conj_first;
-    conj_first.insert(Terminal("a"));
-    conj_first.insert(Terminal("b"));
+    // FOLLOW(B) = FIRST(D) U {h} = {g,f,h}
+    std::set<Terminal> conj_follow;
+    conj_follow.insert(Terminal("g"));
+    conj_follow.insert(Terminal("f"));
+    conj_follow.insert(Terminal("h"));
 
     std::set<Terminal> out;
-    std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("S");
-    g.first(sym, out);
-
-    for(auto it:out){
-        std::cout << "\t" << it << std::endl;
-    }
-
+    std::shared_ptr<NaoTerminal> nt = std::make_shared<NaoTerminal>("B");
+    g.follow(nt, out);
 
 
     // std::string entrada = "12+12";

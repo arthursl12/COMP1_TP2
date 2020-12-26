@@ -166,7 +166,7 @@ void Gramatica::first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out){
 void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out){
     // Verifica se é o inicial, se sim, adiciona $ ao FOLLOW
     int i = 0;
-    for(i = 0; i < prods.size(); i++){
+    for(i = 0; i < (int)prods.size(); i++){
         if ((*sym) == prods[i]->label()){
             break;
         }
@@ -175,12 +175,75 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
         out.insert(Terminal("$"));
     }
 
-    // //Fluxo normal: procura em quais produções o símbolo é utilizado
-    // for(i = 0; i < prods.size(); i++){
-    //     if ((*sym) == prods[i]->label()){
-    //         break;
-    //     }
-    // }
+    //Fluxo normal: procura em quais produções o símbolo é utilizado
+    for(i = 0; i < (int)prods.size(); i++){
+        if (prods[i]->label() == *sym){
+            continue;
+        }
+        for (int j = 0; j < prods[i]->qtdCadeias(); j++){
+            Cadeia cad = (*prods[i])[j];
+            auto it = cad.find(sym);
+            while(it != cad.end()){
+                // Caso produção A -> pBq: adiciona FIRST(q) a FOLLOW(B) 
+                // (exceto o vazio)
+                if ((it+1) != cad.end()){
+                    auto it2 = it+1;
+                    // Existe um símbolo à direita
+                    std::set<Terminal> out1;
+                    first(*it2, out1);
+                    
+                    // Adiciona tudo exceto o vazio
+                    std::set<Terminal> out2 = out1;
+                    if (out2.find(Terminal("")) != out2.end()){
+                        out2.erase(out2.find(Terminal("")));
+                    }
+                    out = getUnion(out, out2);
+
+                    if (out1.find(Terminal("")) == out1.end()){
+                        it = cad.find(sym, it);
+                        continue;
+                    }
+                    it2++;
+                    // Enquanto FIRST(Yi) possuir (vazio),
+                    // adicione FIRST(Y+1) (sem o vazio) a FOLLOW(B)
+                    while(  !(out1.find(Terminal("")) == out1.end()) 
+                          && it2 != cad.end()){
+                        
+                        out1.clear();
+                        first(*it2, out1);
+                        std::set<Terminal> out2 = out1;
+                        if (out2.find(Terminal("")) != out2.end()){
+                            out2.erase(out2.find(Terminal("")));
+                        }
+                        out = getUnion(out, out2);
+                        it2++;
+                    }
+                    if (it2 == cad.end() && !(out1.find(Terminal("")) == out1.end())){
+                        // Todos possuem vazio: adicione o FOLLOW(A) também
+                        // Ou temos o caso A -> pBq (com q tendo vazio)
+                        out1.clear();
+                        std::shared_ptr<NaoTerminal> prod_label = \
+                            std::make_shared<NaoTerminal>(prods[i]->label());
+                        follow(prod_label, out1);
+                        out = getUnion(out, out1);
+                    }
+                }
+
+                // Caso produção A -> pBq (com q vazio) (incluída acima)
+                
+                // Caso produção A -> pB: adiciona FOLLOW(A) a FOLLOW(B)
+                if ((it+1) == cad.end()){
+                    std::set<Terminal> out1;
+                    std::shared_ptr<NaoTerminal> prod_label = \
+                            std::make_shared<NaoTerminal>(prods[i]->label());
+                    follow(prod_label, out1);
+                    out = getUnion(out, out1);
+                }
+                // Controle Loop
+                it = cad.find(sym, it);
+            }
+        }
+    }
 
 
 }

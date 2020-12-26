@@ -325,4 +325,7 @@ TEST_CASE("isValidSign"){
     CHECK_FALSE(isValidSign(prog,1,1));
     prog = "5+(-1E+5)";
     CHECK(isValidSign(prog,3,3));
+
+    prog = "12++12";
+    CHECK_FALSE(isValidSign(prog,3,4));
 }

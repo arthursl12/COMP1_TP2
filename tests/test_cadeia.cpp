@@ -140,6 +140,32 @@ TEST_CASE("Cadeia: operador comparação igualdade"){
             CHECK_FALSE(c1 == c2);
             CHECK(c1 == c3);
         }
+        SUBCASE("Teste simples Não-terminal"){
+            std::vector<std::shared_ptr<Symbol>> v1;
+            v1.push_back(std::make_shared<Terminal>("A"));
+            v1.push_back(std::make_shared<Terminal>("C"));
+            Cadeia c1 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("C"));
+            v1.push_back(std::make_shared<Terminal>("C"));
+            Cadeia c2 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("A"));
+            v1.push_back(std::make_shared<Terminal>("B"));
+            Cadeia c3 = Cadeia(v1);
+
+            v1.clear();
+            v1.push_back(std::make_shared<Terminal>("A"));
+            v1.push_back(std::make_shared<Terminal>("C"));
+            Cadeia c4 = Cadeia(v1);
+
+            CHECK_FALSE(c1 == c2);
+            CHECK_FALSE(c1 == c3);
+            CHECK_FALSE(c1 == c2);
+            CHECK(c1 == c4);
+        }
 }
 
 TEST_CASE("Cadeia: print"){

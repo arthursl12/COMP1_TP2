@@ -21,7 +21,6 @@ class Producao{
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
 
         int qtdCadeias();
-        std::vector<std::shared_ptr<Symbol>>::iterator possuiNaoTerminal(std::shared_ptr<NaoTerminal>& nt);
 
         void setInicial();
         bool isInicial();
