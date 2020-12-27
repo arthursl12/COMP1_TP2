@@ -7,18 +7,21 @@
 
 
 int main(int argc, char* argv[]){
-    Gramatica g;
-    cria_gram_4(g);
+    Producao it0;
+    Producao it1 = Producao();
+    it0 == it1;
+    // Gramatica g;
+    // cria_gram_4(g);
 
-    // FOLLOW(B) = FIRST(D) U {h} = {g,f,h}
-    std::set<Terminal> conj_follow;
-    conj_follow.insert(Terminal("g"));
-    conj_follow.insert(Terminal("f"));
-    conj_follow.insert(Terminal("h"));
+    // // FOLLOW(B) = FIRST(D) U {h} = {g,f,h}
+    // std::set<Terminal> conj_follow;
+    // conj_follow.insert(Terminal("g"));
+    // conj_follow.insert(Terminal("f"));
+    // conj_follow.insert(Terminal("h"));
 
-    std::set<Terminal> out;
-    std::shared_ptr<NaoTerminal> nt = std::make_shared<NaoTerminal>("B");
-    g.follow(nt, out);
+    // std::set<Terminal> out;
+    // std::shared_ptr<NaoTerminal> nt = std::make_shared<NaoTerminal>("B");
+    // g.follow(nt, out);
 
 
     // std::string entrada = "12+12";

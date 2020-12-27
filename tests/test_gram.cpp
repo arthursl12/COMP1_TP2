@@ -3,6 +3,7 @@
 #include "cadeia.h"
 #include "prod.h"
 #include "gram.h"
+#include "gram_exemplos.h"
 
 #include <vector>
 #include <memory>
@@ -114,4 +115,40 @@ TEST_CASE("Gramática: integridade não-terminais"){
     prods.push_back(p);
 
     CHECK_THROWS(Gramatica(prods));
+}
+
+TEST_CASE("Gramática: getInicial"){
+    SUBCASE("Gramática Genérica"){
+        Gramatica g;
+        cria_gram_1(g);
+
+        std::vector<std::shared_ptr<Cadeia>> v;
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;
+        std::shared_ptr<Producao> p;
+
+        // E -> TE'
+        v.clear();
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        v.push_back(std::make_shared<Cadeia>(cad));
+        p = std::make_shared<Producao>(NaoTerminal("E"), v);
+
+        CHECK(g.getInicial() == *p);
+    }
+    SUBCASE("Gramática Default"){
+        Gramatica g;
+
+        std::vector<std::shared_ptr<Cadeia>> v;
+        std::shared_ptr<Producao> p;
+
+        // E -> TE'
+        v.clear();
+        v.push_back(std::make_shared<Cadeia>());
+        p = std::make_shared<Producao>(NaoTerminal("S"), v);
+
+        CHECK(g.getInicial() == *p);
+    }
+    
 }

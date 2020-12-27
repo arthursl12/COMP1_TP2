@@ -32,6 +32,23 @@ Cadeia::Cadeia(std::vector<std::shared_ptr<Symbol>>& _seq){
     }
 }
 
+Cadeia::Cadeia(Cadeia const& c){
+    seq.clear();
+    for (auto it = c.seq.begin(); it != c.seq.end(); it++){
+        if ((*it)->isTerminal()){
+            std::shared_ptr<Terminal> t = \
+                        std::dynamic_pointer_cast<Terminal>(*it);
+            std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(*t);
+            seq.push_back(sym);
+        }else{
+            std::shared_ptr<NaoTerminal> t = \
+                        std::dynamic_pointer_cast<NaoTerminal>(*it);
+            std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>(*t);
+            seq.push_back(sym);
+        }
+    }
+}
+
 Symbol& Cadeia::operator[](int idx){
     if (idx > (int) seq.size() - 1) throw "Índice fora do intervalo";
     return *seq[idx];
@@ -114,7 +131,7 @@ int Cadeia::qtdSimbolos(){
 }
 
 std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::find(
-    std::shared_ptr<NaoTerminal>& nt
+    std::shared_ptr<Symbol>& nt
 )
 {
     auto it = seq.begin();
@@ -126,7 +143,7 @@ std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::find(
     return end();
 }
 std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::find(
-    std::shared_ptr<NaoTerminal>& nt, 
+    std::shared_ptr<Symbol>& nt, 
     std::vector<std::shared_ptr<Symbol>>::iterator& pos
 )
 {
@@ -152,4 +169,23 @@ void Cadeia::itemLR0(){
         std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
         seq.insert(seq.begin(),sym);
     }
+}
+
+void Cadeia::itemLR0(int pos){
+    if(pos > ((int)seq.size())){
+        throw "Índice inválido de posição";
+    }else if((seq.size() == 1 && (*seq[0] == Terminal("")) && pos == 1)){
+        throw "Índice inválido de posição";
+    }else if (pos == 0){
+        itemLR0();
+    }else{
+        auto it = seq.begin();
+        for (int i = 0; i < (int) seq.size(); i++){
+            if (i == pos) break;
+            it++;
+        }
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        seq.insert(it,sym);
+    }
+    
 }

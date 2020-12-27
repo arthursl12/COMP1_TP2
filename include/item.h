@@ -17,6 +17,8 @@ class Item{
         Item(Producao& p);
         Item(Producao& p, int pos);
 
+        bool operator==(Item const& oth) const;
+
         Cadeia& getCadeia();
 
         friend std::ostream& operator<< (std::ostream &out, const Item& c); 

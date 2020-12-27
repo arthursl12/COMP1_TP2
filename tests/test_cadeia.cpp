@@ -26,6 +26,38 @@ TEST_CASE("Cadeia: construção"){
     }
 }
 
+TEST_CASE("Cadeia: copy-construtor"){
+    std::shared_ptr<Symbol> s1 = std::make_shared<Terminal>("");
+    std::shared_ptr<Cadeia> c1 = std::make_shared<Cadeia>(s1);
+
+    std::shared_ptr<Symbol> s2 = std::make_shared<Terminal>("a");
+    std::shared_ptr<Cadeia> c2 = std::make_shared<Cadeia>(s2);
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    std::shared_ptr<Terminal> t1 = std::make_shared<Terminal>("b");
+    v1.push_back(t1);
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    std::shared_ptr<Cadeia> c3 = std::make_shared<Cadeia>(v1);
+
+    std::vector<std::shared_ptr<Symbol>> v2;
+    v2.push_back(std::make_shared<Terminal>("a"));
+    v2.push_back(std::make_shared<Terminal>("b"));
+    v2.push_back(std::make_shared<NaoTerminal>("B1"));
+    v2.push_back(std::make_shared<Terminal>("b"));
+    v2.push_back(std::make_shared<NaoTerminal>("B1"));
+    v2.push_back(std::make_shared<NaoTerminal>("B1"));
+    std::shared_ptr<Cadeia> c4 = std::make_shared<Cadeia>(v2);
+
+    CHECK(*c4 == *c3);
+    *t1 = Terminal("c");
+    CHECK(*c4 == *c3);
+    CHECK((*c4)[1] == Terminal("b"));
+}
+
 TEST_CASE("Cadeia: operador []"){
         std::vector<std::shared_ptr<Symbol>> v1;
         v1.push_back(std::make_shared<Terminal>("a"));
@@ -272,7 +304,7 @@ TEST_CASE("Cadeia: conjunto não-terminais"){
 TEST_CASE("Cadeia: find e end"){
     SUBCASE("Cadeias Vazias"){
         std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
-        std::shared_ptr<NaoTerminal> sym = std::make_shared<NaoTerminal>("C");
+        std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("C");
 
         Cadeia p = Cadeia(p1);
         CHECK(p.find(sym) == p.end());
@@ -287,7 +319,7 @@ TEST_CASE("Cadeia: find e end"){
         v1.push_back(std::make_shared<Terminal>("b"));
         Cadeia c = Cadeia(v1);
 
-        std::shared_ptr<NaoTerminal> sym = std::make_shared<NaoTerminal>("B1");
+        std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("B1");
         CHECK(c.find(sym) == c.end());
     }
     SUBCASE("Construir via vetor"){
@@ -300,7 +332,7 @@ TEST_CASE("Cadeia: find e end"){
         v1.push_back(std::make_shared<NaoTerminal>("B1"));
         Cadeia c = Cadeia(v1);
 
-        std::shared_ptr<NaoTerminal> sym = std::make_shared<NaoTerminal>("B1");
+        std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("B1");
 
         CHECK(**c.find(sym) == *std::make_shared<NaoTerminal>("B1"));
 
@@ -322,7 +354,7 @@ TEST_CASE("Cadeia: find com pos"){
     v1.push_back(std::make_shared<NaoTerminal>("B1"));
     Cadeia c = Cadeia(v1);
 
-    std::shared_ptr<NaoTerminal> sym = std::make_shared<NaoTerminal>("B1");
+    std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>("B1");
     auto it1 = c.find(sym);
     auto it2 = c.find(sym,it1);
     CHECK(**it2 == *std::make_shared<NaoTerminal>("B1"));
@@ -399,34 +431,128 @@ TEST_CASE("Cadeia: itemLR0"){
     }
 }
 
-TEST_CASE("Cadeia: copy-construtor"){
-    std::shared_ptr<Symbol> s1 = std::make_shared<Terminal>("");
-    std::shared_ptr<Cadeia> c1 = std::make_shared<Cadeia>(s1);
+TEST_CASE("Cadeia: itemLR0 com posição"){
+    SUBCASE("Cadeia vazia"){
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        Cadeia c = Cadeia(p1);
+        c.itemLR0(0);
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        CHECK(c == Cadeia(sym));
 
-    std::shared_ptr<Symbol> s2 = std::make_shared<Terminal>("a");
-    std::shared_ptr<Cadeia> c2 = std::make_shared<Cadeia>(s2);
+        c = Cadeia();
+        c.itemLR0(0);
+        CHECK(c == Cadeia(sym));
+    }
+    SUBCASE("Cadeia com um caractere"){
+        std::vector<std::shared_ptr<Symbol>> v;
+        std::shared_ptr<Cadeia> cad;
+        std::vector<std::shared_ptr<Cadeia>> out;
 
-    std::vector<std::shared_ptr<Symbol>> v1;
-    v1.push_back(std::make_shared<Terminal>("a"));
-    std::shared_ptr<Terminal> t1 = std::make_shared<Terminal>("b");
-    v1.push_back(t1);
-    v1.push_back(std::make_shared<NaoTerminal>("B1"));
-    v1.push_back(std::make_shared<Terminal>("b"));
-    v1.push_back(std::make_shared<NaoTerminal>("B1"));
-    v1.push_back(std::make_shared<NaoTerminal>("B1"));
-    std::shared_ptr<Cadeia> c3 = std::make_shared<Cadeia>(v1);
+        std::shared_ptr<Symbol> p1 = std::make_shared<NaoTerminal>("A");
+        Cadeia c = Cadeia(p1);
 
-    std::vector<std::shared_ptr<Symbol>> v2;
-    v2.push_back(std::make_shared<Terminal>("a"));
-    v2.push_back(std::make_shared<Terminal>("b"));
-    v2.push_back(std::make_shared<NaoTerminal>("B1"));
-    v2.push_back(std::make_shared<Terminal>("b"));
-    v2.push_back(std::make_shared<NaoTerminal>("B1"));
-    v2.push_back(std::make_shared<NaoTerminal>("B1"));
-    std::shared_ptr<Cadeia> c4 = std::make_shared<Cadeia>(v2);
+        c.itemLR0(0);
 
-    CHECK(*c4 == *c3);
-    *t1 = Terminal("c");
-    CHECK(*c4 == *c3);
-    CHECK((*c4)[1] == Terminal("b"));
+        v.clear();
+        v.push_back(std::make_shared<Terminal>("."));
+        v.push_back(std::make_shared<NaoTerminal>("A"));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
+
+        c = Cadeia(p1);
+        c.itemLR0(1);
+        v.clear();        
+        v.push_back(std::make_shared<NaoTerminal>("A"));
+        v.push_back(std::make_shared<Terminal>("."));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
+    }
+    SUBCASE("Cadeia geral"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        Cadeia c = Cadeia(v1);
+
+        std::vector<std::shared_ptr<Symbol>> v;
+        std::shared_ptr<Cadeia> cad;
+
+        c.itemLR0(0);
+
+        v.clear();
+        v.push_back(std::make_shared<Terminal>("."));
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
+        
+        c = Cadeia(v1);
+        c.itemLR0(1);
+        v.clear();
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<Terminal>("."));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
+
+        c = Cadeia(v1);
+        c.itemLR0(2);
+        v.clear(); 
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<Terminal>("."));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
+
+        c = Cadeia(v1);
+        c.itemLR0(3);
+        v.clear();
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        v.push_back(std::make_shared<Terminal>("."));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
+    }
+}
+
+TEST_CASE("Cadeia: itemLR0 com posição inválida"){
+    SUBCASE("Cadeia vazia"){
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        Cadeia c = Cadeia(p1);
+        CHECK_THROWS(c.itemLR0(1));
+        CHECK(c == Cadeia(p1));
+        
+        c = Cadeia();
+        CHECK_THROWS(c.itemLR0(1));
+        CHECK(c == Cadeia(p1));
+    }
+    SUBCASE("Cadeia com um caractere"){
+        std::vector<std::shared_ptr<Symbol>> v;
+        std::shared_ptr<Cadeia> cad;
+        std::vector<std::shared_ptr<Cadeia>> out;
+
+        std::shared_ptr<Symbol> p1 = std::make_shared<NaoTerminal>("A");
+        Cadeia c = Cadeia(p1);
+
+        CHECK_THROWS(c.itemLR0(2));
+        CHECK(c == Cadeia(p1));
+    }
+    SUBCASE("Cadeia geral"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        Cadeia c = Cadeia(v1);
+
+        std::vector<std::shared_ptr<Symbol>> v;
+        std::shared_ptr<Cadeia> cad;
+        std::vector<std::shared_ptr<Cadeia>> out;
+
+        CHECK_THROWS(c.itemLR0(4));
+        CHECK(c == Cadeia(v1));
+    }
 }

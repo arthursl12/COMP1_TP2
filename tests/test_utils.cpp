@@ -2,6 +2,7 @@
 #include "doctest.h"
 #include "utils.h"
 #include "gram.h"
+#include "item.h"
 
 #include <vector>
 #include <memory>
@@ -33,14 +34,12 @@ TEST_CASE("Utils: gramaticaEstendida"){
 }
 
 
-TEST_CASE("Utils: itemLR0"){
-    SUBCASE("Produção vazia"){
+TEST_CASE("Utils: closure"){
+    Gramatica g;
+    cria_gram_1(g);
+    gramaticaEstendida(g);
 
-    }
-    SUBCASE("Produção com um elemento"){
+    std::set<std::shared_ptr<Item>> conjI0;
+    g.
 
-    }
-    SUBCASE("Produção com várias cadeias"){
-
-    }
 }

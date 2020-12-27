@@ -28,6 +28,7 @@ class Gramatica{
         void follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out);
         friend void gramaticaEstendida(Gramatica& g);
 
+        Producao& getInicial();
 
 };
 

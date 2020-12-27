@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "item.h"
 
 void gramaticaEstendida(Gramatica& g){
     std::vector<std::shared_ptr<Producao>> prods = g.prods;
@@ -14,4 +15,23 @@ void gramaticaEstendida(Gramatica& g){
         std::make_shared<Producao>(NaoTerminal("S\'"),v);
     prods.insert(prods.begin(), newS);
     g = Gramatica(prods);
+}
+
+void closure(std::set<std::shared_ptr<Item>>& conj, Gramatica& g){
+    for (auto iter = conj.begin(); iter != conj.end(); iter++){
+        Cadeia cad = (**iter).getCadeia();
+        std::shared_ptr<Symbol> ponto = std::make_shared<Terminal>(".");
+        auto iter1 = cad.find(ponto);
+        if (!(**(iter1++)).isTerminal()){
+            // Se o que vier depois do ponto não for um terminal
+            
+            // Explicita o não-terminal
+            std::shared_ptr<Symbol> temp_symbol = *(iter1++);
+            std::shared_ptr<NaoTerminal> nt = \
+                        std::dynamic_pointer_cast<NaoTerminal>(temp_symbol);
+
+            // Acha as produções desse não terminal na gramática
+            throw "Finalizar função";
+        }
+    }
 }

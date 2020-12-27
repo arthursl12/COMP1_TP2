@@ -15,6 +15,7 @@ class Producao{
         Producao();
         Producao(NaoTerminal _lhs, std::vector<std::shared_ptr<Cadeia>> _rhs);
         Cadeia& operator[](int idx);
+        bool operator==(Producao const& oth) const;
         NaoTerminal label(); 
         friend std::ostream& operator<< (std::ostream &out, const Producao& p); 
         void conjuntoTerminais(std::set<Terminal>& out);

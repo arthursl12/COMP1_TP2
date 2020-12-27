@@ -30,25 +30,25 @@ TEST_CASE("Item: construção"){
         Producao p = Producao(NaoTerminal("B1"),prods);
         CHECK_NOTHROW(Item it(p));
     }
-    // SUBCASE("Construir a partir de produção (ponto especificado)"){
-    //     std::vector<std::shared_ptr<Cadeia>> prods;
-    //     std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
-    //     prods.push_back(std::make_shared<Cadeia>(p1));
-    //     p1 = std::make_shared<Terminal>("a");
-    //     prods.push_back(std::make_shared<Cadeia>(p1));
+    SUBCASE("Construir a partir de produção (ponto especificado)"){
+        std::vector<std::shared_ptr<Cadeia>> prods;
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+        p1 = std::make_shared<Terminal>("a");
+        prods.push_back(std::make_shared<Cadeia>(p1));
 
-    //     std::vector<std::shared_ptr<Symbol>> v1;
-    //     v1.push_back(std::make_shared<Terminal>("a"));
-    //     v1.push_back(std::make_shared<Terminal>("b"));
-    //     v1.push_back(std::make_shared<NaoTerminal>("B1"));
-    //     v1.push_back(std::make_shared<Terminal>("b"));
-    //     v1.push_back(std::make_shared<NaoTerminal>("B1"));
-    //     v1.push_back(std::make_shared<NaoTerminal>("B1"));
-    //     prods.push_back(std::make_shared<Cadeia>(v1));
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        prods.push_back(std::make_shared<Cadeia>(v1));
 
-    //     Producao p = Producao(NaoTerminal("B1"),prods);
-    //     CHECK_NOTHROW(Item it(p,2));
-    // }
+        Producao p = Producao(NaoTerminal("B1"),prods);
+        CHECK_NOTHROW(Item it(p,2));
+    }
 }
 
 TEST_CASE("Item: impressão"){
@@ -95,7 +95,7 @@ TEST_CASE("Item: impressão"){
     }
 }
 
-TEST_CASE("Item: integridade"){
+TEST_CASE("Item: integridade do construtor"){
     SUBCASE("Construtor com índice de produção inválido"){
         std::vector<std::shared_ptr<Cadeia>> prods;
         std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
@@ -167,5 +167,81 @@ TEST_CASE("Item: cadeia possui ponto"){
     Producao p = Producao(NaoTerminal("B1"),prods);
     Item it1 = Item(p);
     CHECK_FALSE(it.getCadeia() == *cad);
+}
 
+TEST_CASE("Item: comparador de igualdade"){
+    Item it0;
+    Item it1 = Item();
+    CHECK(it0 == it1);
+
+    std::vector<std::shared_ptr<Cadeia>> prods;
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    Producao p = Producao(NaoTerminal("B1"),prods);
+    Item it2 = Item(p);
+    Item it3 = Item(p,0);
+    Item it4 = Item(p,1);
+    Item it5 = Item(p,2);
+
+    CHECK(it3 == it2);
+    CHECK_FALSE(it3 == it0);
+    CHECK_FALSE(it3 == it4);
+    CHECK_FALSE(it3 == it5);
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    p = Producao(NaoTerminal("B1"),prods);
+    Item it6 = Item(p);
+
+    CHECK(it5 == it6);
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    p = Producao(NaoTerminal("C"),prods);
+    Item it7 = Item(p);
+
+    CHECK_FALSE(it5 == it7);
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("c"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    p = Producao(NaoTerminal("B1"),prods);
+    Item it8 = Item(p);
+
+    CHECK_FALSE(it5 == it8);
 }

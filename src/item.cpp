@@ -33,3 +33,17 @@ std::ostream& operator<< (std::ostream &out, const Item& it){
     out << *it.rhs;
     return out;
 }
+
+bool Item::operator==(Item const& oth) const{
+    if (rhs->qtdSimbolos() != oth.rhs->qtdSimbolos()) return false;
+
+    if (!(lhs == oth.lhs)){
+        return false;
+    }
+
+    if (*rhs == (*oth.rhs)){
+        return true;
+    }else{
+        return false;
+    }
+}

@@ -263,5 +263,97 @@ TEST_CASE("Produção: conjunto não-terminais"){
     }
 }
 
+TEST_CASE("Produção: comparador de igualdade"){
+    Producao it0;
+    Producao it1 = Producao();
+    CHECK(it0 == it1);
+
+    std::vector<std::shared_ptr<Cadeia>> prods;
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    Producao p = Producao(NaoTerminal("B1"),prods);
+    CHECK_FALSE(p == it0);
+
+    v1.clear();
+    prods.clear();
+    p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    Producao p5 = Producao(NaoTerminal("B1"),prods);
+    CHECK(p == p5);
+
+    v1.clear();
+    prods.clear();
+    p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    Producao p2 = Producao(NaoTerminal("C"),prods);
+    CHECK_FALSE(p2 == p);
+
+    v1.clear();
+    prods.clear();
+    p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("c"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+
+    Producao p3 = Producao(NaoTerminal("B1"),prods);
+    CHECK_FALSE(p3 == p);
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+    p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+
+    Producao p4 = Producao(NaoTerminal("B1"),prods);
+    CHECK(p4 == p);
+}
+
 
 

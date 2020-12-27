@@ -185,7 +185,9 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
         }
         for (int j = 0; j < prods[i]->qtdCadeias(); j++){
             Cadeia cad = (*prods[i])[j];
-            auto it = cad.find(sym);
+            std::shared_ptr<Symbol> sym_ptr = \
+                             std::dynamic_pointer_cast<Symbol>(sym);
+            auto it = cad.find(sym_ptr);
             while(it != cad.end()){
                 // Caso produção A -> pBq: adiciona FIRST(q) a FOLLOW(B) 
                 // (exceto o vazio)
@@ -203,7 +205,7 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
                     out = getUnion(out, out2);
 
                     if (out1.find(Terminal("")) == out1.end()){
-                        it = cad.find(sym, it);
+                        it = cad.find(sym_ptr, it);
                         continue;
                     }
                     it2++;
@@ -243,7 +245,7 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
                     out = getUnion(out, out1);
                 }
                 // Controle Loop
-                it = cad.find(sym, it);
+                it = cad.find(sym_ptr, it);
             }
         }
     }

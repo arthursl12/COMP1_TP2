@@ -13,7 +13,8 @@ Producao::Producao(
 {
     rhs.clear();
     for (auto it = _rhs.begin(); it != _rhs.end(); it++){
-        rhs.push_back(*it);
+        std::shared_ptr<Cadeia> cad = std::make_shared<Cadeia>(**it);
+        rhs.push_back(cad);
     }
     inicial = false;
 }
@@ -22,6 +23,26 @@ Cadeia& Producao::operator[](int idx){
     if (idx > (int) rhs.size() - 1) throw "Índice fora do intervalo";
     return *rhs[idx];
 }
+
+bool Producao::operator==(Producao const& oth) const{
+    if (rhs.size() != oth.rhs.size()) return false;
+    if (!(lhs == oth.lhs)) return false;
+
+    for(int i = 0; i < (int)rhs.size(); i++){
+        bool possui = false;
+        for(int j = 0; j < (int) oth.rhs.size(); j++){
+            if (*rhs[i] == *oth.rhs[j]){
+                possui = true;
+                break;
+            }
+        }
+        if (possui == false){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 NaoTerminal Producao::label(){
     return lhs;

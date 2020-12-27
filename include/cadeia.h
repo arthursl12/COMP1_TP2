@@ -15,7 +15,7 @@ class Cadeia{
         Cadeia();
         Cadeia(std::shared_ptr<Symbol>& s);
         Cadeia(std::vector<std::shared_ptr<Symbol>>& _seq);
-        // Cadeia(Cadeia& c);
+        Cadeia(Cadeia const& c);
         Symbol& operator[](int idx);
         bool operator==(Cadeia const& rhs) const;
         friend std::ostream& operator<< (std::ostream &out, const Cadeia &c); 
@@ -24,14 +24,15 @@ class Cadeia{
         int qtdSimbolos();
 
         std::vector<std::shared_ptr<Symbol>>::iterator \
-            find(std::shared_ptr<NaoTerminal>& nt);
+            find(std::shared_ptr<Symbol>& nt);
         std::vector<std::shared_ptr<Symbol>>::iterator \
-            find(std::shared_ptr<NaoTerminal>& nt, \
+            find(std::shared_ptr<Symbol>& nt, \
                  std::vector<std::shared_ptr<Symbol>>::iterator& pos);
         std::vector<std::shared_ptr<Symbol>>::iterator \
             end();
         
         void itemLR0();
+        void itemLR0(int pos);
 };
 
 #endif /* CADEIA_H */
