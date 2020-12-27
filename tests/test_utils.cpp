@@ -40,6 +40,5 @@ TEST_CASE("Utils: closure"){
     gramaticaEstendida(g);
 
     std::set<std::shared_ptr<Item>> conjI0;
-    g.
 
 }

@@ -80,6 +80,10 @@ void Gramatica::conjuntoNaoTerminais(std::set<NaoTerminal>& out){
     out = getUnion(usados, inicios);
 }
 
+Producao& Gramatica::getInicial(){
+    return *prods[0];
+}
+
 void Gramatica::firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out){
     // Para todas as produções do tipo X = Y1 Y2 ... Yn
     for (int i = 0; i < p->qtdCadeias(); i++){
@@ -249,6 +253,4 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
             }
         }
     }
-
-
 }
