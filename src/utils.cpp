@@ -31,7 +31,16 @@ void closure(std::set<std::shared_ptr<Item>>& conj, Gramatica& g){
                         std::dynamic_pointer_cast<NaoTerminal>(temp_symbol);
 
             // Acha as produções desse não terminal na gramática
-            throw "Finalizar função";
+            for(auto prod : g.prods){
+                if (prod->label() == *nt){
+                    for (int i = 0; i < prod->qtdCadeias(); i++){
+                        // Cria um item para cada cadeia dessa produção
+                        std::shared_ptr<Item> item = \
+                                        std::make_shared<Item>((*prod),i);
+                        conj.insert(item);
+                    }
+                }
+            }
         }
     }
 }

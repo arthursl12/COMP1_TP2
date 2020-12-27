@@ -391,6 +391,9 @@ void cria_gram_7(Gramatica& gram){
     gram = Gramatica(prods);
 }
 
+void cria_gram_1_nf(Gramatica& gram){
+    
+}
 
 
 #endif // GRAM_EXEMPLOS_H

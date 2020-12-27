@@ -3,6 +3,7 @@
 
 #include "prod.h"
 #include "symbol.h"
+#include "item.h"
 
 #include <vector>
 #include <memory>
@@ -27,6 +28,8 @@ class Gramatica{
         void first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out);
         void follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out);
         friend void gramaticaEstendida(Gramatica& g);
+        friend void closure(std::set<std::shared_ptr<Item>>& conj, 
+                                                            Gramatica& g);
 
         Producao& getInicial();
 
