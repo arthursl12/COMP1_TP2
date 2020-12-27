@@ -186,6 +186,36 @@ void Cadeia::itemLR0(int pos){
         }
         std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
         seq.insert(it,sym);
+    }   
+}
+
+void Cadeia::avanca(){
+    // Procura o ponto
+    auto it = seq.begin();
+    for (; it != seq.end(); it++){
+        if (**it == Terminal(".")) break;
     }
-    
+
+    // Cadeia não possui ponto
+    if (it == seq.end()){ return;}
+    // Ponto já na última posição
+    if ( (it+1) == seq.end()){ return;}
+
+    // Ponto será adicionado na última posição
+    if ( (it+2) == seq.end()){
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        seq.erase(it);
+        seq.push_back(sym);
+        return;
+    }
+
+    // Coloca o ponto após o símbolo seguinte
+    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+    seq.insert(it+2, sym);
+    // Deleta o ponto onde estava
+    it = seq.begin();
+    for (; it != seq.end(); it++){
+        if (**it == Terminal(".")) break;
+    }
+    seq.erase(it);
 }

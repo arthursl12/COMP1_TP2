@@ -245,3 +245,99 @@ TEST_CASE("Item: comparador de igualdade"){
 
     CHECK_FALSE(it5 == it8);
 }
+
+TEST_CASE("Item: avanca"){
+    SUBCASE("Item default"){
+        Item it = Item();
+
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        CHECK(it.getCadeia() == Cadeia(sym));
+
+        it.avanca();
+        CHECK(it.getCadeia() == Cadeia(sym));
+    }
+    SUBCASE("Geral"){
+        std::vector<std::shared_ptr<Cadeia>> prods;
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+        p1 = std::make_shared<Terminal>("a");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        std::shared_ptr<Cadeia> cad = std::make_shared<Cadeia>(v1); 
+        prods.push_back(cad);
+
+        Producao p = Producao(NaoTerminal("B1"),prods);
+        Item it = Item(p,2);
+        v1.clear();
+        v1.push_back(std::make_shared<Terminal>("."));
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        cad = std::make_shared<Cadeia>(v1);
+        CHECK(it.getCadeia() == *cad);
+
+        it.avanca();
+        CHECK_FALSE(it.getCadeia() == *cad);
+        v1.clear();
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("."));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        cad = std::make_shared<Cadeia>(v1);
+        CHECK(it.getCadeia() == *cad);
+
+        it.avanca();
+        CHECK_FALSE(it.getCadeia() == *cad);
+        v1.clear();
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<Terminal>("."));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        cad = std::make_shared<Cadeia>(v1);
+        CHECK(it.getCadeia() == *cad);
+
+        it.avanca();
+        CHECK_FALSE(it.getCadeia() == *cad);
+        v1.clear();
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<Terminal>("."));
+        cad = std::make_shared<Cadeia>(v1);
+        CHECK(it.getCadeia() == *cad);
+
+        it.avanca();
+        CHECK(it.getCadeia() == *cad);
+    }
+}
+
+TEST_CASE("Item: copy-constructor"){
+    std::vector<std::shared_ptr<Cadeia>> prods;
+    std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+    p1 = std::make_shared<Terminal>("a");
+    prods.push_back(std::make_shared<Cadeia>(p1));
+
+    std::vector<std::shared_ptr<Symbol>> v1;
+    v1.push_back(std::make_shared<Terminal>("a"));
+    std::shared_ptr<Terminal> t1 = std::make_shared<Terminal>("b");
+    v1.push_back(t1);
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    std::shared_ptr<Cadeia> cad = std::make_shared<Cadeia>(v1);
+    prods.push_back(cad);
+
+    Producao p = Producao(NaoTerminal("B1"),prods);
+    Item it = Item(p,2);
+    std::shared_ptr<Item> it1 = std::make_shared<Item>(it);
+    CHECK(it == *it1);
+    it1->avanca();
+    CHECK_FALSE(it == *it1);
+}
+

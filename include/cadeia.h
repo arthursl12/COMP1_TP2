@@ -33,6 +33,7 @@ class Cadeia{
         
         void itemLR0();
         void itemLR0(int pos);
+        void avanca();
 };
 
 #endif /* CADEIA_H */

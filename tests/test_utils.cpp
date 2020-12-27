@@ -33,96 +33,168 @@ TEST_CASE("Utils: gramaticaEstendida"){
     CHECK(nt1 == nt2);
 }
 
-void cria_closure_manual(std::set<std::shared_ptr<Item>>& out){
-    std::vector<std::shared_ptr<Producao>> prods;
-    prods.clear();
-
-    std::vector<std::shared_ptr<Cadeia>> v;
-    std::vector<std::shared_ptr<Symbol>> cad;
-    std::shared_ptr<Symbol> sym;
-    std::shared_ptr<Producao> p;
-    // S -> .E
-    // E -> TE'
-    v.clear();
-    cad.clear();
-    cad.push_back(std::make_shared<NaoTerminal>("T"));
-    cad.push_back(std::make_shared<NaoTerminal>("E\'"));
-    v.push_back(std::make_shared<Cadeia>(cad));
-    p = std::make_shared<Producao>(NaoTerminal("E"), v);
-    prods.push_back(p);
-
-    // E' -> +TE' | (vazio)
-    v.clear();
-    cad.clear();
-    cad.push_back(std::make_shared<Terminal>("+"));
-    cad.push_back(std::make_shared<NaoTerminal>("T"));
-    cad.push_back(std::make_shared<NaoTerminal>("E\'"));
-    v.push_back(std::make_shared<Cadeia>(cad));
-    sym = std::make_shared<Terminal>("");
-    v.push_back(std::make_shared<Cadeia>(sym));
-    p = std::make_shared<Producao>(NaoTerminal("E\'"), v);
-    prods.push_back(p);
-
-    // T -> FT'
-    v.clear();
-    cad.clear();
-    cad.push_back(std::make_shared<NaoTerminal>("F"));
-    cad.push_back(std::make_shared<NaoTerminal>("T\'"));
-    v.push_back(std::make_shared<Cadeia>(cad));
-    p = std::make_shared<Producao>(NaoTerminal("T"), v);
-    prods.push_back(p);
-
-    // T' -> *FT' | (vazio)
-    v.clear();
-    cad.clear();
-    cad.push_back(std::make_shared<Terminal>("*"));
-    cad.push_back(std::make_shared<NaoTerminal>("F"));
-    cad.push_back(std::make_shared<NaoTerminal>("T\'"));
-    v.push_back(std::make_shared<Cadeia>(cad));
-    sym = std::make_shared<Terminal>("");
-    v.push_back(std::make_shared<Cadeia>(sym));
-    p = std::make_shared<Producao>(NaoTerminal("T\'"), v);
-    prods.push_back(p);
-
-    // F -> (E) | id
-    v.clear();
-    cad.clear();
-    cad.push_back(std::make_shared<Terminal>("("));
-    cad.push_back(std::make_shared<NaoTerminal>("E"));
-    cad.push_back(std::make_shared<Terminal>(")"));
-    v.push_back(std::make_shared<Cadeia>(cad));
-    sym = std::make_shared<Terminal>("id");
-    v.push_back(std::make_shared<Cadeia>(sym));
-    p = std::make_shared<Producao>(NaoTerminal("F"), v);
-    prods.push_back(p);
-
-    std::shared_ptr<Item> it0 = std::make_shared<Item>(*prods[0]); // E->.TE'
-    std::shared_ptr<Item> it1 = std::make_shared<Item>(*prods[2]); // T->.FT'
-    std::shared_ptr<Item> it2 = std::make_shared<Item>(*prods[4]); // F->.(E)
-    std::shared_ptr<Item> it3 = std::make_shared<Item>(*prods[4],1); // F->.id
-
-    out.insert(it0);
-    out.insert(it1);
-    out.insert(it2);
-    out.insert(it3);
-}
 
 TEST_CASE("Utils: closure"){
-    Gramatica g;
-    cria_gram_1(g);
-    gramaticaEstendida(g);
+    SUBCASE("Exemplo simples"){
+        Gramatica g;
+        cria_gram_1(g);
+        gramaticaEstendida(g);
 
-    std::set<std::shared_ptr<Item>> conjI0;
-    std::set<std::shared_ptr<Item>> out;
-    cria_closure_manual(out);
+        std::set<std::shared_ptr<Item>> conjI0;
+        std::vector<std::shared_ptr<Cadeia>> v;
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;
+        std::shared_ptr<Producao> p;
 
-    for (auto elm0 : conjI0){
-        bool possui = false;
-        for (auto elm1 : out){
-            if (*elm1 == *elm0){
-                possui = true;
+        // S' -> .E
+        v.clear();
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("E"));
+        v.push_back(std::make_shared<Cadeia>(cad));
+        p = std::make_shared<Producao>(NaoTerminal("S\'"), v);
+        std::shared_ptr<Item> it0 = std::make_shared<Item>(*p); 
+        conjI0.insert(it0);
+
+        closure(conjI0, g);
+        std::set<std::shared_ptr<Item>> out;
+        cria_closure_manual(out);
+        out.insert(it0);
+
+
+        for (auto elm0 : out){
+            bool possui = false;
+            for (auto elm1 : conjI0){
+                if (*elm1 == *elm0){
+                    possui = true;
+                }
             }
+            if (!possui){
+                std::cout << *elm0 << std::endl;
+            }
+            CHECK(possui == true);
         }
-        CHECK(possui == true);
+        for (auto elm0 : conjI0){
+            bool possui = false;
+            for (auto elm1 : out){
+                if (*elm1 == *elm0){
+                    possui = true;
+                }
+            }
+            if (!possui){
+                std::cout << *elm0 << std::endl;
+            }
+            CHECK(possui == true);
+        }
+    }
+    SUBCASE("Exemplo GeeksForGeeks: caso S"){
+        Gramatica g;
+        cria_gram_closure_1(g);
+        gramaticaEstendida(g);
+
+        std::set<std::shared_ptr<Item>> conjI0;
+        std::vector<std::shared_ptr<Cadeia>> v;
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;
+        std::shared_ptr<Producao> p;
+
+        // S' -> .S (item)
+        v.clear();
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("S"));
+        v.push_back(std::make_shared<Cadeia>(cad));
+        p = std::make_shared<Producao>(NaoTerminal("S\'"), v);
+        std::shared_ptr<Item> it0 = std::make_shared<Item>(*p); 
+        conjI0.insert(it0);
+
+        closure(conjI0, g);
+        std::set<std::shared_ptr<Item>> out;
+        cria_closure_manual_1(out);
+
+        
+        for (auto elm0 : out){
+            bool possui = false;
+            for (auto elm1 : conjI0){
+                if (*elm1 == *elm0){
+                    possui = true;
+                }
+            }
+            if (!possui){
+                std::cout << *elm0 << std::endl;
+            }
+            CHECK(possui == true);
+        }
+        for (auto elm0 : conjI0){
+            bool possui = false;
+            for (auto elm1 : out){
+                if (*elm1 == *elm0){
+                    possui = true;
+                }
+            }
+            if (!possui){
+                std::cout << *elm0 << std::endl;
+            }
+            CHECK(possui == true);
+        }
+    }
+    SUBCASE("Exemplo GeeksForGeeks: caso A.A"){
+        Gramatica g;
+        cria_gram_closure_1(g);
+        gramaticaEstendida(g);
+
+        std::set<std::shared_ptr<Item>> conjI0;
+        std::vector<std::shared_ptr<Cadeia>> v;
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;
+        std::shared_ptr<Producao> p;
+
+        // S -> .AA (item)
+        v.clear();
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("A"));
+        cad.push_back(std::make_shared<NaoTerminal>("A"));
+        v.push_back(std::make_shared<Cadeia>(cad));
+        p = std::make_shared<Producao>(NaoTerminal("S"), v);
+        std::shared_ptr<Item> it0 = std::make_shared<Item>(*p); 
+        
+        // S -> A.A 
+        it0->avanca();
+        conjI0.insert(it0);
+
+        closure(conjI0, g);
+        std::set<std::shared_ptr<Item>> out;
+        cria_closure_manual_2(out);
+        
+        // std::cout << "CONJI0:" << std::endl;
+        // for (auto elm0 : conjI0){
+        //     std::cout << "\t" << *elm0 << std::endl;
+        // }
+        // std::cout << "OUT:" << std::endl;
+        // for (auto elm0 : out){
+        //     std::cout << "\t" << *elm0 << std::endl;
+        // }
+        for (auto elm0 : out){
+            bool possui = false;
+            for (auto elm1 : conjI0){
+                if (*elm1 == *elm0){
+                    possui = true;
+                }
+            }
+            if (!possui){
+                std::cout << *elm0 << std::endl;
+            }
+            CHECK(possui == true);
+        }
+        for (auto elm0 : conjI0){
+            bool possui = false;
+            for (auto elm1 : out){
+                if (*elm1 == *elm0){
+                    possui = true;
+                }
+            }
+            if (!possui){
+                std::cout << *elm0 << std::endl;
+            }
+            CHECK(possui == true);
+        }
     }
 }

@@ -24,6 +24,12 @@ Item::Item(Producao& p, int pos)
     rhs->itemLR0();
 }
 
+Item::Item(Item const& oth)
+:lhs(oth.lhs)
+{
+    rhs = std::make_shared<Cadeia>(*oth.rhs);
+}
+
 Cadeia& Item::getCadeia(){
     return *rhs;
 }
@@ -46,4 +52,12 @@ bool Item::operator==(Item const& oth) const{
     }else{
         return false;
     }
+}
+
+void Item::avanca(){
+    rhs->avanca();
+}
+
+NaoTerminal Item::label(){
+    return lhs;
 }

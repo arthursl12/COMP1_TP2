@@ -16,10 +16,13 @@ class Item{
         Item();
         Item(Producao& p);
         Item(Producao& p, int pos);
+        Item(Item const& oth);
+
+        NaoTerminal label(); 
 
         bool operator==(Item const& oth) const;
-
         Cadeia& getCadeia();
+        void avanca();
 
         friend std::ostream& operator<< (std::ostream &out, const Item& c); 
 
