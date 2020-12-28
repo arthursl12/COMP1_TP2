@@ -30,6 +30,7 @@ class Gramatica{
         friend void gramaticaEstendida(Gramatica& g);
         friend void closure(std::set<std::shared_ptr<Item>>& conj, 
                                                             Gramatica& g);
+        int qtdCadeias(std::shared_ptr<NaoTerminal> nt);
 
         Producao& getInicial();
 

@@ -22,6 +22,7 @@ class Item{
 
         bool operator==(Item const& oth) const;
         Cadeia& getCadeia();
+        bool deveAvancar(std::shared_ptr<Symbol>& sym);
         void avanca();
 
         friend std::ostream& operator<< (std::ostream &out, const Item& c); 

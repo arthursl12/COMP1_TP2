@@ -219,3 +219,23 @@ void Cadeia::avanca(){
     }
     seq.erase(it);
 }
+
+bool Cadeia::deveAvancar(std::shared_ptr<Symbol>& sym){
+    // Procura o ponto
+    auto it = seq.begin();
+    for (; it != seq.end(); it++){
+        if (**it == Terminal(".")) break;
+    }
+
+    // Cadeia não possui ponto
+    if (it == seq.end()){ return false;}
+    // Ponto já na última posição
+    if ( (it+1) == seq.end()){ return false;}
+
+    // Colocaria o ponto após o símbolo seguinte: verifica o caractere seguinte
+    if (**(it+1) == *sym){
+        return true;
+    }else{
+        return false;
+    }
+}

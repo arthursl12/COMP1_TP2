@@ -18,14 +18,33 @@ void gramaticaEstendida(Gramatica& g){
 }
 
 bool possuiItemNaoTerminal(std::set<std::shared_ptr<Item>>& conj, 
-                           std::shared_ptr<NaoTerminal> nt)
+                           std::shared_ptr<NaoTerminal> nt,
+                           Gramatica& g)
 {
+    // Verifica se possui alguma produção daquele não terminal
+    bool possuiTerminal = false;
     for (auto elem : conj){
         if (elem->label() == *nt){
-            return true;
+            possuiTerminal = true;
         }
     }
-    return false;
+    if (possuiTerminal){
+        // Verifica se todas as produções daquele terminal já foram adicionadas
+        int qtdCadeias = g.qtdCadeias(nt);
+        int itensComNt = 0;
+        for (auto elem : conj){
+            if (elem->label() == *nt){
+                itensComNt++;
+            }
+        }
+        if (qtdCadeias == itensComNt){
+            return true;
+        }else{
+            return false;
+        }    
+    }else{
+        return false;
+    }
 }   
 
 void closure(std::set<std::shared_ptr<Item>>& conj, Gramatica& g){
@@ -43,9 +62,11 @@ void closure(std::set<std::shared_ptr<Item>>& conj, Gramatica& g){
                             std::dynamic_pointer_cast<NaoTerminal>(prox);
             
             adicionou = false;
-            if (  !(   (*prox).isTerminal()  )  &&   !possuiItemNaoTerminal(conj,nt) ){
+
+            if (  !(   (*prox).isTerminal()  )  &&   !possuiItemNaoTerminal(conj,nt,g) ){
                 // Se o que vier depois do ponto não for um terminal
-                // E a produção daquele não-terminal ainda não foi adicionada
+                // E todas as produções daquele não-terminal ainda 
+                // não foram adicionadas
             
                 // Acha as produções desse não terminal na gramática
                 for(auto prod : g.prods){
@@ -62,5 +83,20 @@ void closure(std::set<std::shared_ptr<Item>>& conj, Gramatica& g){
             }
         }
     }
-    
+}
+
+void funcaoGoto(std::set<std::shared_ptr<Item>>& in, 
+                std::shared_ptr<Symbol>& sym, 
+                Gramatica& g,
+                std::set<std::shared_ptr<Item>>& out)
+{
+    for (auto elem : in){
+        if (elem->deveAvancar(sym)){
+            std::shared_ptr<Item> avancado = std::make_shared<Item>(*elem);
+            avancado->avanca();
+            
+            out.insert(avancado);
+            closure(out, g);
+        }
+    }
 }

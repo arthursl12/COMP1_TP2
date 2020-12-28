@@ -152,3 +152,56 @@ TEST_CASE("Gramática: getInicial"){
     }
     
 }
+
+
+TEST_CASE("Gramática: qtdCadeias"){
+    SUBCASE("Gramática \"vazia\""){
+        Gramatica g;
+        std::shared_ptr<NaoTerminal> sym = std::make_shared<NaoTerminal>("S");
+        CHECK(g.qtdCadeias(sym) == 1);
+    }
+    SUBCASE("Gramática Genérica"){
+        Gramatica g;
+        cria_gram_1(g);
+        std::shared_ptr<NaoTerminal> sym;
+        
+        sym = std::make_shared<NaoTerminal>("E");
+        CHECK(g.qtdCadeias(sym) == 1);
+
+        sym = std::make_shared<NaoTerminal>("E\'");
+        CHECK(g.qtdCadeias(sym) == 2);
+
+        sym = std::make_shared<NaoTerminal>("T");
+        CHECK(g.qtdCadeias(sym) == 1);
+
+        sym = std::make_shared<NaoTerminal>("T\'");
+        CHECK(g.qtdCadeias(sym) == 2);
+
+        sym = std::make_shared<NaoTerminal>("F");
+        CHECK(g.qtdCadeias(sym) == 2);
+
+        sym = std::make_shared<NaoTerminal>("Z1");
+        CHECK(g.qtdCadeias(sym) == 0);
+    }
+    SUBCASE("Gramática Genérica 2"){
+        Gramatica g;
+        cria_gram_2(g);
+        std::shared_ptr<NaoTerminal> sym;
+        
+        sym = std::make_shared<NaoTerminal>("S");
+        CHECK(g.qtdCadeias(sym) == 3);
+
+        sym = std::make_shared<NaoTerminal>("A");
+        CHECK(g.qtdCadeias(sym) == 2);
+
+        sym = std::make_shared<NaoTerminal>("B");
+        CHECK(g.qtdCadeias(sym) == 2);
+
+        sym = std::make_shared<NaoTerminal>("C");
+        CHECK(g.qtdCadeias(sym) == 2);
+
+        sym = std::make_shared<NaoTerminal>("Z");
+        CHECK(g.qtdCadeias(sym) == 0);
+    }
+    
+}

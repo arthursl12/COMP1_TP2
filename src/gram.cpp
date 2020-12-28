@@ -13,6 +13,10 @@ Gramatica::Gramatica(){
     prods[0]->setInicial();
 }
 
+/*
+Divide os não-terminais presentes na gramática em dois conjuntos: inicios (que
+estão do lado esquerdo das produções) e usados (que estão do lado direito)
+*/
 void Gramatica::encontraNaoTerminais(
     std::set<NaoTerminal>& usados, std::set<NaoTerminal>& inicios)
 {
@@ -25,6 +29,19 @@ void Gramatica::encontraNaoTerminais(
         inicios.insert((**it).label());
     }
 }
+
+/*
+Retorna quantas regras (cadeias) possui a produção com lado esquerdo nt
+*/
+int Gramatica::qtdCadeias(std::shared_ptr<NaoTerminal> nt){
+    for (auto prod_ptr : prods){
+        if (prod_ptr->label() == *nt){
+            return prod_ptr->qtdCadeias();
+        }
+    }
+    return 0;
+}
+
 
 /*
 Verifica a integridade: não-terminais usados nas produções devem possuir uma

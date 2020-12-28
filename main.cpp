@@ -3,32 +3,32 @@
 
 #include "lex.h"
 #include "gram.h"
+#include "utils.h"
 #include "tests/gram_exemplos.h"
 
 int main(int argc, char* argv[]){
     Gramatica g;
-    cria_gram_1(g);
+    cria_gram_closure_1(g);
     gramaticaEstendida(g);
 
+    // std::cout << g << std::endl;
+
     std::set<std::shared_ptr<Item>> conjI0;
-    std::vector<std::shared_ptr<Cadeia>> v;
-    std::vector<std::shared_ptr<Symbol>> cad;
-    std::shared_ptr<Symbol> sym;
-    std::shared_ptr<Producao> p;
-
-    // S -> .E
-    v.clear();
-    cad.clear();
-    cad.push_back(std::make_shared<NaoTerminal>("E"));
-    v.push_back(std::make_shared<Cadeia>(cad));
-    p = std::make_shared<Producao>(NaoTerminal("S\'"), v);
-    std::shared_ptr<Item> it0 = std::make_shared<Item>(*p); 
-    conjI0.insert(it0);
-
-    closure(conjI0, g);
     std::set<std::shared_ptr<Item>> out;
-    cria_closure_manual(out);
-    out.insert(it0);
+    cria_goto_manual_2(conjI0, out);
+
+    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
+    std::set<std::shared_ptr<Item>> conj_goto;
+    funcaoGoto(conjI0, sym, g, conj_goto);
+    
+    std::cout << "CONJI0:" << std::endl;
+    for (auto elm0 : conjI0){
+        std::cout << "\t" << *elm0 << std::endl;
+    }
+    std::cout << "OUT:" << std::endl;
+    for (auto elm0 : out){
+        std::cout << "\t" << *elm0 << std::endl;
+        }
     // Gramatica g;
     // cria_gram_4(g);
 

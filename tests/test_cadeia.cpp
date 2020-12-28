@@ -569,7 +569,7 @@ TEST_CASE("Cadeia: avanca"){
         c.avanca();
         CHECK(c == *cad);
     }
-    SUBCASE("Cadeia vazia"){
+    SUBCASE("Cadeia vazia (só o ponto)"){
         Cadeia c = Cadeia();
         c.itemLR0(0);
         std::shared_ptr<Symbol> ponto = std::make_shared<Terminal>(".");
@@ -599,45 +599,138 @@ TEST_CASE("Cadeia: avanca"){
         c.avanca();
         CHECK(c == *cad);
     }
-    // SUBCASE("Cadeia geral"){
-    //     std::vector<std::shared_ptr<Symbol>> v1;
-    //     v1.push_back(std::make_shared<Terminal>("a"));
-    //     v1.push_back(std::make_shared<NaoTerminal>("B"));
-    //     v1.push_back(std::make_shared<NaoTerminal>("C"));
-    //     Cadeia c = Cadeia(v1);
-    //     c.itemLR0(0);
-    //     c.avanca();
+    SUBCASE("Cadeia geral"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        Cadeia c = Cadeia(v1);
+        c.itemLR0(0);
+        c.avanca();
 
-    //     std::vector<std::shared_ptr<Symbol>> v;
-    //     std::shared_ptr<Cadeia> cad;
+        std::vector<std::shared_ptr<Symbol>> v;
+        std::shared_ptr<Cadeia> cad;
 
-    //     v.clear();
-    //     v.push_back(std::make_shared<Terminal>("a"));
-    //     v.push_back(std::make_shared<Terminal>("."));
-    //     v.push_back(std::make_shared<NaoTerminal>("B"));
-    //     v.push_back(std::make_shared<NaoTerminal>("C"));
-    //     cad = std::make_shared<Cadeia>(v);
-    //     CHECK(c == *cad);
+        v.clear();
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<Terminal>("."));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
 
-    //     c.avanca();
-    //     v.clear(); 
-    //     v.push_back(std::make_shared<Terminal>("a"));
-    //     v.push_back(std::make_shared<NaoTerminal>("B"));
-    //     v.push_back(std::make_shared<Terminal>("."));
-    //     v.push_back(std::make_shared<NaoTerminal>("C"));
-    //     cad = std::make_shared<Cadeia>(v);
-    //     CHECK(c == *cad);
+        c.avanca();
+        v.clear(); 
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<Terminal>("."));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
 
-    //     c.avanca();
-    //     v.clear();
-    //     v.push_back(std::make_shared<Terminal>("a"));
-    //     v.push_back(std::make_shared<NaoTerminal>("B"));
-    //     v.push_back(std::make_shared<NaoTerminal>("C"));
-    //     v.push_back(std::make_shared<Terminal>("."));
-    //     cad = std::make_shared<Cadeia>(v);
-    //     CHECK(c == *cad);
+        c.avanca();
+        v.clear();
+        v.push_back(std::make_shared<Terminal>("a"));
+        v.push_back(std::make_shared<NaoTerminal>("B"));
+        v.push_back(std::make_shared<NaoTerminal>("C"));
+        v.push_back(std::make_shared<Terminal>("."));
+        cad = std::make_shared<Cadeia>(v);
+        CHECK(c == *cad);
 
-    //     c.avanca();
-    //     CHECK(c == *cad);
-    // }
+        c.avanca();
+        CHECK(c == *cad);
+    }
 }
+
+
+TEST_CASE("Cadeia: deveAvancar"){
+    SUBCASE("Cadeia sem ponto"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        std::shared_ptr<Cadeia> cad = std::make_shared<Cadeia>(v1);
+        Cadeia c = Cadeia(v1);
+
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
+        CHECK_FALSE(c.deveAvancar(sym));
+        sym = std::make_shared<NaoTerminal>("A");
+        CHECK_FALSE(c.deveAvancar(sym));
+
+        c.avanca();
+        sym = std::make_shared<Terminal>("a");
+        CHECK_FALSE(c.deveAvancar(sym));
+        sym = std::make_shared<NaoTerminal>("A");
+        CHECK_FALSE(c.deveAvancar(sym));
+    }
+    SUBCASE("Cadeia vazia (só o ponto)"){
+        Cadeia c = Cadeia();
+        c.itemLR0(0);
+
+        std::shared_ptr<Symbol> ch1 = std::make_shared<Terminal>("a");
+        std::shared_ptr<Symbol> ch2 = std::make_shared<NaoTerminal>("A");
+
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+    }
+    SUBCASE("Cadeia com um caractere"){
+        std::shared_ptr<Symbol> p1 = std::make_shared<NaoTerminal>("A");
+        Cadeia c = Cadeia(p1);
+        c.itemLR0(0);
+
+        std::shared_ptr<Symbol> ch1 = std::make_shared<Terminal>("a");
+        std::shared_ptr<Symbol> ch2 = std::make_shared<NaoTerminal>("A");
+
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK(c.deveAvancar(ch2));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+    }
+    SUBCASE("Geral"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        Cadeia c = Cadeia(v1);
+        c.itemLR0(0);
+
+        std::shared_ptr<Symbol> ch1 = std::make_shared<Terminal>("id");
+        std::shared_ptr<Symbol> ch2 = std::make_shared<Terminal>("b");
+        std::shared_ptr<Symbol> ch3 = std::make_shared<NaoTerminal>("B1");
+
+        CHECK(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+        CHECK_FALSE(c.deveAvancar(ch3));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK(c.deveAvancar(ch2));
+        CHECK_FALSE(c.deveAvancar(ch3));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+        CHECK(c.deveAvancar(ch3));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+        CHECK_FALSE(c.deveAvancar(ch3));
+
+        c.avanca();
+        CHECK_FALSE(c.deveAvancar(ch1));
+        CHECK_FALSE(c.deveAvancar(ch2));
+        CHECK_FALSE(c.deveAvancar(ch3));
+    }
+}
+

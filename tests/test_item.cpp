@@ -341,3 +341,62 @@ TEST_CASE("Item: copy-constructor"){
     CHECK_FALSE(it == *it1);
 }
 
+
+TEST_CASE("Item: deveAvancar"){
+    SUBCASE("Item default"){
+        Item it = Item();
+
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+        std::shared_ptr<Symbol> ch1 = std::make_shared<Terminal>("a");
+        std::shared_ptr<Symbol> ch2 = std::make_shared<NaoTerminal>("A");
+
+        CHECK_FALSE(it.deveAvancar(ch1));
+        CHECK_FALSE(it.deveAvancar(ch2));
+    }
+    SUBCASE("Geral"){
+        std::vector<std::shared_ptr<Cadeia>> prods;
+        std::shared_ptr<Symbol> p1 = std::make_shared<Terminal>("");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+        p1 = std::make_shared<Terminal>("a");
+        prods.push_back(std::make_shared<Cadeia>(p1));
+
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("id"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        std::shared_ptr<Cadeia> cad = std::make_shared<Cadeia>(v1); 
+        prods.push_back(cad);
+
+        Producao p = Producao(NaoTerminal("B1"),prods);
+        Item it = Item(p,2);
+
+        std::shared_ptr<Symbol> ch1 = std::make_shared<Terminal>("id");
+        std::shared_ptr<Symbol> ch2 = std::make_shared<Terminal>("b");
+        std::shared_ptr<Symbol> ch3 = std::make_shared<NaoTerminal>("B1");
+
+        CHECK(it.deveAvancar(ch1));
+        CHECK_FALSE(it.deveAvancar(ch2));
+        CHECK_FALSE(it.deveAvancar(ch3));
+
+        it.avanca();
+        CHECK_FALSE(it.deveAvancar(ch1));
+        CHECK(it.deveAvancar(ch2));
+        CHECK_FALSE(it.deveAvancar(ch3));
+
+        it.avanca();
+        CHECK_FALSE(it.deveAvancar(ch1));
+        CHECK_FALSE(it.deveAvancar(ch2));
+        CHECK(it.deveAvancar(ch3));
+
+        it.avanca();
+        CHECK_FALSE(it.deveAvancar(ch1));
+        CHECK_FALSE(it.deveAvancar(ch2));
+        CHECK_FALSE(it.deveAvancar(ch3));
+
+        it.avanca();
+        CHECK_FALSE(it.deveAvancar(ch1));
+        CHECK_FALSE(it.deveAvancar(ch2));
+        CHECK_FALSE(it.deveAvancar(ch3));
+    }
+}
+

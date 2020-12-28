@@ -61,3 +61,7 @@ void Item::avanca(){
 NaoTerminal Item::label(){
     return lhs;
 }
+
+bool Item::deveAvancar(std::shared_ptr<Symbol>& sym){
+    return (rhs->deveAvancar(sym));
+}

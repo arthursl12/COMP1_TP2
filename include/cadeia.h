@@ -34,6 +34,8 @@ class Cadeia{
         void itemLR0();
         void itemLR0(int pos);
         void avanca();
+        bool deveAvancar(std::shared_ptr<Symbol>& sym);
+
 };
 
 #endif /* CADEIA_H */
