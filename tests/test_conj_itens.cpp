@@ -51,33 +51,33 @@ TEST_CASE("ConjuntoItens: getters/insert"){
     }
 }
 
-// TEST_CASE("ConjuntosItens: busca"){
-//     SUBCASE("Sem conjuntos"){
-//         ConjuntoItens c = ConjuntoItens();
-//         auto it = c.begin();
-//         it++;
-//         CHECK(it == c.end());
+TEST_CASE("ConjuntosItens: busca"){
+    SUBCASE("Sem conjuntos"){
+        ConjuntoItens c = ConjuntoItens();
+        auto it = c.begin();
+        it++;
+        CHECK(it == c.end());
 
-//         std::set<std::set<std::shared_ptr<Item>>> out;
-//         out.clear();
-//         cria_sets_manual(out);
-//         for (auto conj: out){
-//             CHECK(c.find(conj) == c.end());
-//         }
-//     }
-//     SUBCASE("Geral"){
-//         std::set<std::set<std::shared_ptr<Item>>> out;
-//         out.clear();
-//         cria_sets_manual(out);
+        std::set<std::set<std::shared_ptr<Item>>> out;
+        out.clear();
+        cria_sets_manual(out);
+        for (auto conj: out){
+            CHECK(c.find(conj) == c.end());
+        }
+    }
+    SUBCASE("Geral"){
+        std::set<std::set<std::shared_ptr<Item>>> out;
+        out.clear();
+        cria_sets_manual(out);
 
-//         ConjuntoItens c;
-//         for (auto conj: out){
-//             c.insert(conj);
-//         }
+        ConjuntoItens c;
+        for (auto conj: out){
+            c.insert(conj);
+        }
 
-//         for (auto conj: out){
-//             CHECK(c.find(conj) != c.end());
-//             CHECK(*c.find(conj) == conj);
-//         }
-//     }   
-// }
+        for (auto conj: out){
+            CHECK(c.find(conj) != c.end());
+            // CHECK(*c.find(conj) == conj);
+        }
+    }   
+}
