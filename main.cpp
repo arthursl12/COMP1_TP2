@@ -2,33 +2,18 @@
 #include <string>
 
 #include "lex.h"
+#include "conj.h"
 #include "gram.h"
 #include "utils.h"
 #include "tests/gram_exemplos.h"
+#include "tests/closure_goto.h"
 
 int main(int argc, char* argv[]){
-    Gramatica g;
-    cria_gram_closure_1(g);
-    gramaticaEstendida(g);
-
-    // std::cout << g << std::endl;
-
-    std::set<std::shared_ptr<Item>> conjI0;
-    std::set<std::shared_ptr<Item>> out;
-    cria_goto_manual_2(conjI0, out);
-
-    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
-    std::set<std::shared_ptr<Item>> conj_goto;
-    funcaoGoto(conjI0, sym, g, conj_goto);
-    
-    std::cout << "CONJI0:" << std::endl;
-    for (auto elm0 : conjI0){
-        std::cout << "\t" << *elm0 << std::endl;
-    }
-    std::cout << "OUT:" << std::endl;
-    for (auto elm0 : out){
-        std::cout << "\t" << *elm0 << std::endl;
-        }
+    ConjuntoItens c = ConjuntoItens();
+    std::set<std::string> conj;
+    c.getLabels(conj);
+    (*(conj.find("I0")) == "I0");
+    (c.qtdConjuntos() == 1);
     // Gramatica g;
     // cria_gram_4(g);
 

@@ -7,6 +7,8 @@
 #include <vector>
 #include <memory>
 #include "gram_exemplos.h"
+#include "closure_goto.h"
+#include "conj_itens.h"
 
 
 bool conjuntosIguais(std::set<std::shared_ptr<Item>> c1, 
@@ -217,5 +219,34 @@ TEST_CASE("Utils: goto"){
         //     std::cout << "\t" << *elm0 << std::endl;
         // }
         CHECK(conjuntosIguais(out,conj_goto));
+    }
+}
+
+TEST_CASE("Utils: conjuntosItens"){
+    std::set<std::set<std::shared_ptr<Item>>> out;
+    out.clear();
+    cria_sets_manual(out);
+
+    Gramatica g;
+    cria_gram_goto(g);
+    gramaticaEstendida(g);
+
+    ConjuntoItens c;
+    conjuntosItens(c, g);
+
+    CHECK(c.qtdConjuntos() == out.size());
+
+    bool possuiConj = false;
+    for (auto conj: out){
+        auto it = c.find(conj);
+        if (it != c.end()){
+            possuiConj = true;
+        }else{
+            std::cout << "Conjunto Ausente:" << std::endl;
+            for (auto elm0 : conj){
+                std::cout << "\t" << *elm0 << std::endl;
+            }
+        }
+        CHECK(possuiConj = true);
     }
 }
