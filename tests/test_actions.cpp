@@ -24,3 +24,10 @@ TEST_CASE("Actions: print"){
                   << std::endl);
     CHECK_NOTHROW(std::cout << Shift(4) << std::endl);
 }
+
+TEST_CASE("Actions: getTipo"){
+    CHECK(Accept().getTipo() == "Accept");
+    CHECK(Error().getTipo() == "Error");
+    CHECK(Shift(3).getTipo() == "Shift");
+    CHECK(Reduce(1).getTipo() == "Reduce");
+}
