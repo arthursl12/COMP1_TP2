@@ -12,5 +12,11 @@ void funcaoGoto(std::set<std::shared_ptr<Item>>& in,
                 Gramatica& g,
                 std::set<std::shared_ptr<Item>>& out);
 void conjuntosItens(ConjuntoItens& conjs, Gramatica& g);
+void tabActionGoto(std::vector<std::vector<Terminal>>& tabAction,
+                   std::vector<std::vector<NaoTerminal>>& tabGoto,
+                   Gramatica& g);
+
+
+
 
 #endif /* UTILS_H */

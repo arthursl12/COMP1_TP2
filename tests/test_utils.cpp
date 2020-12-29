@@ -251,3 +251,7 @@ TEST_CASE("Utils: conjuntosItens"){
         CHECK(possuiConj == true);
     }
 }
+
+TEST_CASE("Utils: tabActionGoto"){
+    
+}
