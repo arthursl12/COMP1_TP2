@@ -212,9 +212,14 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
     }
 
     //Fluxo normal: procura em quais produções o símbolo é utilizado
+    bool jaReciproco = false;     // flag se ele já se auto adicionou
     for(i = 0; i < (int)prods.size(); i++){
         if (prods[i]->label() == *sym){
-            continue;
+            if (jaReciproco){
+                continue;
+            }else{
+                jaReciproco = true;
+            }
         }
         for (int j = 0; j < prods[i]->qtdCadeias(); j++){
             Cadeia cad = (*prods[i])[j];
@@ -270,7 +275,7 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
                 // Caso produção A -> pBq (com q vazio) (incluída acima)
                 
                 // Caso produção A -> pB: adiciona FOLLOW(A) a FOLLOW(B)
-                if ((it+1) == cad.end()){
+                if ((it+1) == cad.end() && !(prods[i]->label() == *sym)){
                     std::set<Terminal> out1;
                     std::shared_ptr<NaoTerminal> prod_label = \
                             std::make_shared<NaoTerminal>(prods[i]->label());

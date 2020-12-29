@@ -67,6 +67,50 @@ TEST_CASE("FOLLOW: gramática 1"){
     }
 }
 
+TEST_CASE("FOLLOW: gramática 0"){
+    // E -> E+T | T
+    // T -> T*F | F
+    // F -> (E) | id
+
+    SUBCASE("Caso E"){
+        Gramatica g;
+        cria_gram_0(g);
+
+        // FOLLOW(E) = {$,+,)}
+        std::set<Terminal> conj_follow;
+        conj_follow.insert(Terminal("$"));
+        conj_follow.insert(Terminal("+"));
+        conj_follow.insert(Terminal(")"));
+
+        std::set<Terminal> out;
+        std::shared_ptr<NaoTerminal> nt = std::make_shared<NaoTerminal>("E");
+        g.follow(nt, out);
+        CHECK(out == conj_follow);
+    }
+    SUBCASE("Caso T e F"){
+        Gramatica g;
+        cria_gram_0(g);
+
+        // FOLLOW(T) = {$,*} U FOLLOW(E) = {$,*,+,)}
+        std::set<Terminal> conj_follow;
+        conj_follow.insert(Terminal("$"));
+        conj_follow.insert(Terminal("+"));
+        conj_follow.insert(Terminal("*"));
+        conj_follow.insert(Terminal(")"));
+
+        std::set<Terminal> out;
+        std::shared_ptr<NaoTerminal> nt = std::make_shared<NaoTerminal>("T");
+        g.follow(nt, out);
+        CHECK(out == conj_follow);
+
+        // FOLLOW(F) = FOLLOW(T) = {$,*,+,)}
+        out.clear();
+        nt = std::make_shared<NaoTerminal>("F");
+        g.follow(nt, out);
+        CHECK(out == conj_follow);
+    }
+}
+
 TEST_CASE("FOLLOW: gramática 3"){
     SUBCASE("Caso S: só o fim de palavra"){
         Gramatica g;

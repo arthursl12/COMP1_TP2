@@ -209,6 +209,8 @@ void tabActionGoto(
     int qtdEstados = its.qtdConjuntos();
 
     // Inicializa as tabelas
+    tabAction.clear();
+    tabGoto.clear();
     for(int i = 0; i < qtdEstados; i++){
         std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>> linhaGoto;
         linhaGoto = std::make_shared<std::vector<std::pair<NaoTerminal,int>>>();
@@ -260,9 +262,39 @@ void tabActionGoto(
 
             // ACTION
             // Caso: ponto antes de terminal
-            // Caso: ponto no fim
+            // Caso: ponto no fim -> reduce
+            if (cad[cad.qtdSimbolos()-1] == Terminal(".")){
+                NaoTerminal A = item.label();
+                if ( !  (A == NaoTerminal("S\'")  )){
+                    std::shared_ptr<NaoTerminal> ptr_A = \
+                        std::make_shared<NaoTerminal>(A);
+                    std::set<Terminal> followA;
+                    g.follow(ptr_A, followA);
 
-            // Caso: ponto após inicial (produção inicial da gramática)
+                    for(Terminal a: followA){
+                        // TODO: idx da produção
+
+                        // ACTION[i,a] = reduce
+                        auto ptr_vec = tabAction[idx];
+                        auto vec = *ptr_vec;
+                        int k = 0;
+                        for(; k < (int)ptr_vec->size(); k++){
+                            if (ptr_vec->at(k).first == a){
+                                break;
+                            }
+                        }
+                        std::pair<Terminal,std::shared_ptr<Acao>> newPair = 
+                            std::make_pair<Terminal,std::shared_ptr<Acao>>(
+                                Terminal(a),
+                                std::make_shared<Reduce>(-1)
+                            );
+                        ptr_vec->at(k) = newPair;
+                        vec = *ptr_vec;
+                    }
+                }
+            }
+
+            // Caso: ponto após inicial -> accept
             Item reconhecido = Item(g.getInicial());
             reconhecido.avanca();
             if (item == reconhecido){
