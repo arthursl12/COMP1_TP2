@@ -201,6 +201,7 @@ void tabActionGoto(
     g.conjuntoNaoTerminais(nts);
     nts.erase(NaoTerminal("S\'"));
     g.conjuntoTerminais(tts);
+    tts.insert(Terminal("$"));
 
     // Cria conjunto de itens para a gramática
     ConjuntoItens its;
@@ -260,22 +261,39 @@ void tabActionGoto(
             // ACTION
             // Caso: ponto antes de terminal
             // Caso: ponto no fim
-            // Caso: ponto após inicial (item aumentado)
+
+            // Caso: ponto após inicial (produção inicial da gramática)
+            Item reconhecido = Item(g.getInicial());
+            reconhecido.avanca();
+            if (item == reconhecido){
+                auto ptr_vec = tabAction[idx];
+                auto vec = *ptr_vec;
+                int k = 0;
+                for(; k < (int)ptr_vec->size(); k++){
+                    if (ptr_vec->at(k).first == Terminal("$")){
+                        break;
+                    }
+                }
+                std::pair<Terminal,std::shared_ptr<Acao>> newPair = 
+                    std::make_pair<Terminal,std::shared_ptr<Acao>>(
+                        Terminal("$"),
+                        std::make_shared<Accept>()
+                    );
+                ptr_vec->at(k) = newPair;
+                vec = *ptr_vec;
+            }
 
             // GOTO
             for(NaoTerminal nt: nts){
                 // Para todo não-terminal
-                std::set<std::shared_ptr<Item>> entrada;
                 std::set<std::shared_ptr<Item>> gotoIi;
                 std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>(nt);
 
-                entrada.insert(ptr_item);
                 funcaoGoto(elm.conj_item, sym, g, gotoIi);
 
                 // Se GOTO(Ii,A) = Ij entao GOTO(i,A) = j
                 if (gotoIi.size() > 0){
                     auto it = its.find(gotoIi);
-                    // TODO: findKernel (acha esse item num conjunto que ele é kernel)
                     if (it == its.end())
                         throw "Goto não encontrado";
                     int gotoIdx = (**it).idx;
