@@ -8,6 +8,7 @@
 
 typedef struct Elemento{
     std::string label;
+    int idx;
     std::set<std::shared_ptr<Item>> conj_item;
 } Elemento;
 

@@ -5,6 +5,7 @@ ConjuntoItens::ConjuntoItens(){
     conjs.clear();
     std::shared_ptr<Elemento> el0 = std::make_shared<Elemento>();
     el0->label = "I" + std::to_string(conjs.size());
+    el0->idx = conjs.size();
     std::shared_ptr<Item> it0 = std::make_shared<Item>();
     el0->conj_item.insert(it0);
     conjs.insert(el0);
@@ -58,6 +59,7 @@ void ConjuntoItens::insert(std::set<std::shared_ptr<Item>>& conj_item){
 
     std::shared_ptr<Elemento> el0 = std::make_shared<Elemento>();
     el0->label = "I" + std::to_string(conjs.size());
+    el0->idx = conjs.size();
     el0->conj_item = conj_item;
     conjs.insert(el0);
 }

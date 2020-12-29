@@ -8,35 +8,18 @@
 #include "tests/gram_exemplos.h"
 #include "tests/closure_goto.h"
 #include "tests/conj_itens.h"
+#include "tests/action_goto.h"
 
 int main(int argc, char* argv[]){
-    std::set<std::set<std::shared_ptr<Item>>> out;
-    out.clear();
-    cria_sets_manual(out);
-
     Gramatica g;
     cria_gram_goto(g);
     gramaticaEstendida(g);
 
-    ConjuntoItens c;
-    conjuntosItens(c, g);
+    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
+    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
 
-    (c.qtdConjuntos() == out.size());
-
-    bool possuiConj = false;
-    for (auto conj: out){
-        auto it = c.find(conj);
-        if (it != c.end()){
-            possuiConj = true;
-        }else{
-            std::cout << "Conjunto Ausente:" << std::endl;
-            for (auto elm0 : conj){
-                std::cout << "\t" << *elm0 << std::endl;
-            }
-        }
-        (possuiConj == true);
-    }
-
+    tabActionGoto(tabAction, tabGoto, g);
+    // print_action_goto_manual(tabAction, tabGoto);
 
 
     // Gramatica g;

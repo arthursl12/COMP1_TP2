@@ -439,4 +439,43 @@ void cria_goto_manual_2(std::set<std::shared_ptr<Item>>& in,
     out.insert(it4);
 }
 
+
+bool conjuntosIguais(std::set<std::shared_ptr<Item>> c1, 
+                     std::set<std::shared_ptr<Item>> c2,
+                     bool imprime = true)
+{
+    // Tudo de c1 está em c2
+    for (auto elm0 : c1){
+        bool possui = false;
+        for (auto elm1 : c2){
+            if (*elm1 == *elm0){
+                possui = true;
+            }
+        }
+        if (!possui && imprime){
+            std::cout << *elm0 << std::endl;
+        }
+        if (possui == false){ return false;}
+    }
+
+    // Tudo de c2 está em c1
+    for (auto elm0 : c2){
+        bool possui = false;
+        for (auto elm1 : c1){
+            if (*elm1 == *elm0){
+                possui = true;
+            }
+        }
+        if (!possui && imprime){
+            std::cout << *elm0 << std::endl;
+        }
+        if (possui == false){ return false;}
+    }
+
+    // Eles tem o mesmo tamanho
+    if (c2.size() != c1.size()) { return false;}
+    return true;
+}
+
+
 #endif /* CLOSURE_GOTO_H */

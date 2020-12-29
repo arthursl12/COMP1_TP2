@@ -3,49 +3,15 @@
 #include "utils.h"
 #include "gram.h"
 #include "item.h"
+#include "action.h"
 
 #include <vector>
 #include <memory>
 #include "gram_exemplos.h"
 #include "closure_goto.h"
 #include "conj_itens.h"
+#include "action_goto.h"
 
-
-bool conjuntosIguais(std::set<std::shared_ptr<Item>> c1, 
-                     std::set<std::shared_ptr<Item>> c2)
-{
-    // Tudo de c1 está em c2
-    for (auto elm0 : c1){
-        bool possui = false;
-        for (auto elm1 : c2){
-            if (*elm1 == *elm0){
-                possui = true;
-            }
-        }
-        if (!possui){
-            std::cout << *elm0 << std::endl;
-        }
-        if (possui == false){ return false;}
-    }
-
-    // Tudo de c2 está em c1
-    for (auto elm0 : c2){
-        bool possui = false;
-        for (auto elm1 : c1){
-            if (*elm1 == *elm0){
-                possui = true;
-            }
-        }
-        if (!possui){
-            std::cout << *elm0 << std::endl;
-        }
-        if (possui == false){ return false;}
-    }
-
-    // Eles tem o mesmo tamanho
-    if (c2.size() != c1.size()) { return false;}
-    return true;
-}
 
 TEST_CASE("Utils: gramaticaEstendida"){
     Gramatica g1;
@@ -252,6 +218,36 @@ TEST_CASE("Utils: conjuntosItens"){
     }
 }
 
+// TEST_CASE("Utils: conjuntosItens - Kernels"){
+//     // TODO:
+//     // - Cadeia::getPontoPos (incl. exception)
+//     // - Item::getPontoPos (incl. exception)
+//     // - Item::set/getKernel (default falso)
+//     // - ConjuntoiItens::defineKernel
+//     //      itera pelo conjunto (elemento)
+//     //      busca posição mais à frente do ponto
+//     //      itens com mais à frente setKernel
+//     // - ConjuntoItens::findKernel
+//     //      adaptar a busca para possui
+
+// }
+
+
 TEST_CASE("Utils: tabActionGoto"){
-    
+    Gramatica g;
+    cria_gram_goto(g);
+    gramaticaEstendida(g);
+
+    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
+    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
+
+    tabActionGoto(tabAction, tabGoto, g);
+    print_action_goto_manual(tabAction, tabGoto);
+
+    std::cout << "tabActionGoto: !!!!CONFERÊNCIA MANUAL!!!! (ok: 29/12/2020)" << std::endl;
+
+    // std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> outAction;
+    // std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> outGoto;
+    // cria_action_goto_manual(outAction, outGoto);
+    // print_action_goto_manual(outAction, outGoto);
 }

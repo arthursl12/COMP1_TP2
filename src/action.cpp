@@ -35,31 +35,33 @@ std::ostream& operator<< (std::ostream &out, const Error& er){
 
 
 /* SHIFT */
-Shift::Shift(int _j){
+/* Shift e Estado j (começa de 0) será empilhado */
+Shift::Shift(int _estado_j){
     tipo = "Shift";
-    j = _j;
+    estado_j = _estado_j;
 }
 std::string Shift::getTipo(){
     return tipo;
 }
 std::ostream& operator<< (std::ostream &out, const Shift& sh){
-    out << sh.tipo << ": " << sh.j;
+    out << sh.tipo << ": " << sh.estado_j;
     return out;
 }
 
 
 /* REDUCE */
-Reduce::Reduce(NaoTerminal _A, Terminal _alpha)
-: A(_A), alpha(_alpha)
+/* Redução segundo a produção i (começa de 1) */
+Reduce::Reduce(int _prod_i)
 {
+    prod_i = _prod_i;
     tipo = "Reduce";
-    if (A == NaoTerminal("S\'"))
+    if (prod_i == 0)
         throw "Não-terminal inválido para redução: inicial da gramática aumentada";
 }
 std::string Reduce::getTipo(){
     return tipo;
 }
 std::ostream& operator<< (std::ostream &out, const Reduce& re){
-    out << re.tipo << ": " << re.A << " -> " << re.alpha;
+    out << re.tipo << ": " << re.prod_i;
     return out;
 } 

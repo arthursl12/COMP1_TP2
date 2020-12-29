@@ -9,18 +9,18 @@ TEST_CASE("Actions: construtor"){
     SUBCASE("Default"){
         CHECK_NOTHROW(Accept());
         CHECK_NOTHROW(Error());
-        CHECK_NOTHROW(Reduce(NaoTerminal("A"),Terminal("a")));
+        CHECK_NOTHROW(Reduce(1));
         CHECK_NOTHROW(Shift(4));
     }
     SUBCASE("Reduce não pode ser do inicial"){
-        CHECK_THROWS(Reduce(NaoTerminal("S\'"),Terminal("a")));
+        CHECK_THROWS(Reduce(0));
     }
 }
 
 TEST_CASE("Actions: print"){
     CHECK_NOTHROW(std::cout << Accept() << std::endl);
     CHECK_NOTHROW(std::cout << Error() << std::endl);
-    CHECK_NOTHROW(std::cout << Reduce(NaoTerminal("A"),Terminal("a")) \
+    CHECK_NOTHROW(std::cout << Reduce(1) \
                   << std::endl);
     CHECK_NOTHROW(std::cout << Shift(4) << std::endl);
 }

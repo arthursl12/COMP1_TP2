@@ -29,9 +29,9 @@ class Error : public Acao{
 
 class Shift : public Acao{
     protected:
-        int j;
+        int estado_j;
     public:
-        Shift(int _j);
+        Shift(int _estado_j);
         virtual std::string getTipo() override;
         friend std::ostream& operator<< (std::ostream &out, const Shift& sh); 
 
@@ -39,10 +39,9 @@ class Shift : public Acao{
 
 class Reduce : public Acao{
     protected:
-        NaoTerminal A;
-        Terminal alpha;
+        int prod_i;
     public:
-        Reduce(NaoTerminal _A, Terminal _alpha);
+        Reduce(int _prod_i);
         virtual std::string getTipo() override;
         friend std::ostream& operator<< (std::ostream &out, const Reduce& re); 
 };

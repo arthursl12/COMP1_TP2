@@ -188,6 +188,114 @@ void conjuntosItens(ConjuntoItens& conjs, Gramatica& g){
             
         }
     }
+}
+
+void tabActionGoto(
+    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>>& tabAction,
+    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>>& tabGoto,
+    Gramatica& g)
+{
+    // Informações da gramática
+    std::set<NaoTerminal> nts;
+    std::set<Terminal> tts;
+    g.conjuntoNaoTerminais(nts);
+    nts.erase(NaoTerminal("S\'"));
+    g.conjuntoTerminais(tts);
+
+    // Cria conjunto de itens para a gramática
+    ConjuntoItens its;
+    conjuntosItens(its, g);
+    int qtdEstados = its.qtdConjuntos();
+
+    // Inicializa as tabelas
+    for(int i = 0; i < qtdEstados; i++){
+        std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>> linhaGoto;
+        linhaGoto = std::make_shared<std::vector<std::pair<NaoTerminal,int>>>();
+        for(NaoTerminal nt: nts){
+            if (nt == NaoTerminal("S\'")) { continue;}
+            std::pair<NaoTerminal,int> parGoto = \
+                            std::make_pair<NaoTerminal,int>(NaoTerminal(nt),-1);
+            linhaGoto->push_back(parGoto);
+        }
+        tabGoto.push_back(linhaGoto);
+
+        std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>> linhaAction;
+        linhaAction = std::make_shared<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>();
+        for(Terminal t: tts){
+            std::shared_ptr<Acao> err = std::make_shared<Error>();
+            std::pair<Terminal,std::shared_ptr<Acao>> parAction = \
+                std::make_pair<Terminal,std::shared_ptr<Acao>>(
+                    Terminal(t),std::make_shared<Error>()
+                );
+            linhaAction->push_back(parAction);
+        }
+        tabAction.push_back(linhaAction);
+    }
+
+    // DEBUG (print estados):
+    for(auto it_estado = its.begin(); it_estado != its.end(); it_estado++){
+        Elemento elm = **it_estado;
+        std::set<std::shared_ptr<Item>> conj = elm.conj_item;
+        std::cout << "Estado: " << elm.label << std::endl;
+        
+        for (std::shared_ptr<Item> ptr_item: conj){
+            std::cout << "\t" << *ptr_item << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 
 
+    // Cria Action e Goto para cada estado
+    int i = 0;
+    for(auto it_estado = its.begin(); it_estado != its.end(); it_estado++){
+        Elemento elm = **it_estado;
+        int idx = elm.idx;
+        std::set<std::shared_ptr<Item>> conj = elm.conj_item;
+
+        for(std::shared_ptr<Item> ptr_item: conj){
+            Item item = *ptr_item;
+            Cadeia cad = item.getCadeia();
+
+            // ACTION
+            // Caso: ponto antes de terminal
+            // Caso: ponto no fim
+            // Caso: ponto após inicial (item aumentado)
+
+            // GOTO
+            for(NaoTerminal nt: nts){
+                // Para todo não-terminal
+                std::set<std::shared_ptr<Item>> entrada;
+                std::set<std::shared_ptr<Item>> gotoIi;
+                std::shared_ptr<Symbol> sym = std::make_shared<NaoTerminal>(nt);
+
+                entrada.insert(ptr_item);
+                funcaoGoto(elm.conj_item, sym, g, gotoIi);
+
+                // Se GOTO(Ii,A) = Ij entao GOTO(i,A) = j
+                if (gotoIi.size() > 0){
+                    auto it = its.find(gotoIi);
+                    // TODO: findKernel (acha esse item num conjunto que ele é kernel)
+                    if (it == its.end())
+                        throw "Goto não encontrado";
+                    int gotoIdx = (**it).idx;
+
+                    // Coloca GOTO(i,A) = j na tabela
+                    auto ptr_vec = tabGoto[idx];
+                    auto vec = *ptr_vec;
+                    int k = 0;
+                    for(; k < (int)ptr_vec->size(); k++){
+                        if (ptr_vec->at(k).first == nt){
+                            break;
+                        }
+                    }
+                    std::pair<NaoTerminal,int> newPair = \
+                        std::make_pair<NaoTerminal,int&>(NaoTerminal(nt),gotoIdx);
+                    ptr_vec->at(k) = newPair;
+                    vec = *ptr_vec;
+                }
+            }
+        }
+
+    }
 }
