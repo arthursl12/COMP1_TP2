@@ -65,3 +65,36 @@ NaoTerminal Item::label(){
 bool Item::deveAvancar(std::shared_ptr<Symbol>& sym){
     return (rhs->deveAvancar(sym));
 }
+
+// bool Item::operator<(Item const& oth) const{
+//     if (this->rhs->qtdSimbolos() == oth.rhs->qtdSimbolos()){
+//         if (!(this->lhs == oth.lhs)){
+//             return this->lhs < oth.lhs;
+//         }else{
+//             int i = 0;
+//             bool iguais = true;
+//             while(iguais){
+//                 if(!(   (*rhs)[i] == (*oth.rhs)[i]   ) ){
+//                     iguais = false;
+//                 }
+//             }
+//             if(iguais){
+//                 return false;
+//             }else{
+//                 return (*rhs)[i] < (*oth.rhs)[i];
+//             }
+
+//         }
+//     }else{
+//         return this->rhs->qtdSimbolos() < oth.rhs->qtdSimbolos();
+//     }
+// }
+
+bool Item::igualSemPonto(Item const& oth) const{
+    if (rhs->qtdSimbolos() != oth.rhs->qtdSimbolos()) return false;
+    if (!(lhs == oth.lhs)){
+        return false;
+    }
+
+    return rhs->igualSemPonto(*oth.rhs);
+}

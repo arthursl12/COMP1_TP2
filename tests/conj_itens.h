@@ -115,6 +115,7 @@ void cria_sets_manual(std::set<std::set<std::shared_ptr<Item>>>& out){
     en4 = std::make_shared<Item>(*prods[2]);   // T->.T*F
     en5 = std::make_shared<Item>(*prods[2],1); // T->.F
     en7 = std::make_shared<Item>(*prods[3],1); // F->.id
+    std::shared_ptr<Item> en8 = std::make_shared<Item>(*prods[3]);  // F->.(E)
     std::set<std::shared_ptr<Item>> IT4;
     IT4.insert(en6);
     IT4.insert(en2);
@@ -122,7 +123,10 @@ void cria_sets_manual(std::set<std::set<std::shared_ptr<Item>>>& out){
     IT4.insert(en4);
     IT4.insert(en5);
     IT4.insert(en7);
-    
+    IT4.insert(en7);
+    IT4.insert(en8);
+
+
     // Conjunto I5
     en7 = std::make_shared<Item>(*prods[3],1); // F->.id
     en7->avanca(); // F->id.

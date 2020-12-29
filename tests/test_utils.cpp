@@ -238,6 +238,7 @@ TEST_CASE("Utils: conjuntosItens"){
 
     bool possuiConj = false;
     for (auto conj: out){
+        possuiConj = false;
         auto it = c.find(conj);
         if (it != c.end()){
             possuiConj = true;
@@ -247,6 +248,6 @@ TEST_CASE("Utils: conjuntosItens"){
                 std::cout << "\t" << *elm0 << std::endl;
             }
         }
-        CHECK(possuiConj = true);
+        CHECK(possuiConj == true);
     }
 }

@@ -7,13 +7,38 @@
 #include "utils.h"
 #include "tests/gram_exemplos.h"
 #include "tests/closure_goto.h"
+#include "tests/conj_itens.h"
 
 int main(int argc, char* argv[]){
-    ConjuntoItens c = ConjuntoItens();
-    std::set<std::string> conj;
-    c.getLabels(conj);
-    (*(conj.find("I0")) == "I0");
-    (c.qtdConjuntos() == 1);
+    std::set<std::set<std::shared_ptr<Item>>> out;
+    out.clear();
+    cria_sets_manual(out);
+
+    Gramatica g;
+    cria_gram_goto(g);
+    gramaticaEstendida(g);
+
+    ConjuntoItens c;
+    conjuntosItens(c, g);
+
+    (c.qtdConjuntos() == out.size());
+
+    bool possuiConj = false;
+    for (auto conj: out){
+        auto it = c.find(conj);
+        if (it != c.end()){
+            possuiConj = true;
+        }else{
+            std::cout << "Conjunto Ausente:" << std::endl;
+            for (auto elm0 : conj){
+                std::cout << "\t" << *elm0 << std::endl;
+            }
+        }
+        (possuiConj == true);
+    }
+
+
+
     // Gramatica g;
     // cria_gram_4(g);
 

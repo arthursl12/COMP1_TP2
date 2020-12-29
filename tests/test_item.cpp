@@ -400,3 +400,60 @@ TEST_CASE("Item: deveAvancar"){
     }
 }
 
+TEST_CASE("Item: comparador de igualdade sem ponto"){
+    Item it0;
+    Item it1 = Item();
+    CHECK(it0.igualSemPonto(it1));
+
+    std::vector<std::shared_ptr<Cadeia>> prods;
+    std::shared_ptr<Symbol> p1;
+    std::vector<std::shared_ptr<Symbol>> v1;
+    Producao p;
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<Terminal>("."));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+    p = Producao(NaoTerminal("B1"),prods);
+    Item it6 = Item(p);
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<Terminal>("."));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+    p = Producao(NaoTerminal("B1"),prods);
+    Item it7 = Item(p);
+
+    CHECK(it6.igualSemPonto(it7));
+
+    v1.clear();
+    prods.clear();
+    v1.push_back(std::make_shared<Terminal>("a"));
+    v1.push_back(std::make_shared<Terminal>("c"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("b"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<NaoTerminal>("B1"));
+    v1.push_back(std::make_shared<Terminal>("."));
+    prods.push_back(std::make_shared<Cadeia>(v1));
+    p = Producao(NaoTerminal("B1"),prods);
+    Item it8 = Item(p);
+
+    CHECK_FALSE(it8.igualSemPonto(it6));
+    CHECK_FALSE(it6.igualSemPonto(it8));
+    CHECK_FALSE(it7.igualSemPonto(it8));
+
+}
+

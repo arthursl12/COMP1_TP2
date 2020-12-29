@@ -35,6 +35,7 @@ class Cadeia{
         void itemLR0(int pos);
         void avanca();
         bool deveAvancar(std::shared_ptr<Symbol>& sym);
+        bool igualSemPonto(Cadeia const& oth) const;
 
 };
 

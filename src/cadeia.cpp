@@ -239,3 +239,59 @@ bool Cadeia::deveAvancar(std::shared_ptr<Symbol>& sym){
         return false;
     }
 }
+
+bool Cadeia::igualSemPonto(Cadeia const& rhs) const{
+    if (seq.size() != rhs.seq.size()) return false;
+
+    if (*this == rhs){
+        return true;
+    }
+
+    int j = 0;
+    for (int i = 0; i < (int) seq.size(); i++){
+        if((*seq[i]).isTerminal()){
+            std::shared_ptr<Terminal> t1 = \
+                        std::dynamic_pointer_cast<Terminal>(seq[i]);
+            if ((*t1) == Terminal(".")){
+                i++;
+                t1 = std::dynamic_pointer_cast<Terminal>(seq[i]);
+            }
+        }
+        if((*rhs.seq[j]).isTerminal()){
+            std::shared_ptr<Terminal> t2 = \
+                        std::dynamic_pointer_cast<Terminal>(rhs.seq[j]);
+            if ((*t2) == Terminal(".")){
+                j++;
+                t2 = std::dynamic_pointer_cast<Terminal>(rhs.seq[j]);
+            }
+        }
+
+
+        if ((*seq[i]).isTerminal() != (*rhs.seq[j]).isTerminal()){
+            return false;
+
+        }else if((*seq[i]).isTerminal()){
+            std::shared_ptr<Terminal> t1 = \
+                std::dynamic_pointer_cast<Terminal>(seq[i]);
+
+            std::shared_ptr<Terminal> t2 = \
+                std::dynamic_pointer_cast<Terminal>(rhs.seq[j]);
+
+            if ( !(  (*t1) == (*t2)  )){
+                return false;
+            }
+            
+        }else{
+            std::shared_ptr<NaoTerminal> t1 = \
+                std::dynamic_pointer_cast<NaoTerminal>(seq[i]);
+            std::shared_ptr<NaoTerminal> t2 = \
+                std::dynamic_pointer_cast<NaoTerminal>(rhs.seq[j]);
+            if ( !(  (*t1) == (*t2)  )){
+                return false;
+            }
+        }
+        j++;
+    }
+    return true;
+}
+

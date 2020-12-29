@@ -1,5 +1,5 @@
 #include "conj.h"
-
+#include <algorithm>
 
 ConjuntoItens::ConjuntoItens(){
     conjs.clear();
@@ -14,13 +14,30 @@ std::set<std::shared_ptr<Elemento>>::iterator ConjuntoItens::begin(){
     return conjs.begin();
 }
 std::set<std::shared_ptr<Elemento>>::iterator ConjuntoItens::find(
-    std::set<std::shared_ptr<Item>>& conj_item)
-{
+    std::set<std::shared_ptr<Item>>& conj_ptr_item)
+{   
+    std::vector<Item> in_itens;
+    for (auto item: conj_ptr_item){
+        in_itens.push_back(*item);
+    }
+
     auto it = conjs.begin();
+    // Para cada conjunto 
     for (; it != conjs.end(); it++){
-        if (  (**it).conj_item == conj_item  ){
+        if ((**it).conj_item.size() != in_itens.size()){ continue; }
+
+        bool possuiTodos = true;
+        for (auto item_ptr: (**it).conj_item){
+            auto find = std::find(in_itens.begin(), in_itens.end(), (*item_ptr));
+            // auto find = in_itens.find(*item_ptr);
+            if (find == in_itens.end()){
+                possuiTodos = false;
+                break;
+            }
+        }
+        if (possuiTodos){
             return it;
-        }       
+        }
     }
     return conjs.end();
 }
