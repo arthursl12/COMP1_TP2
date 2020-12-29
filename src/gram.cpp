@@ -13,6 +13,18 @@ Gramatica::Gramatica(){
     prods[0]->setInicial();
 }
 
+Gramatica::Gramatica(std::vector<std::shared_ptr<Producao>>& _prods){
+    prods.clear();
+    for (auto it = _prods.begin(); it != _prods.end(); it++){
+        prods.push_back(*it);
+    }
+    prods[0]->setInicial();
+    for (auto it = (prods.begin()+1); it != prods.end(); it++){
+        (*it)->removeInicial();
+    }
+    verificaIntegridade();
+}
+
 /*
 Divide os não-terminais presentes na gramática em dois conjuntos: inicios (que
 estão do lado esquerdo das produções) e usados (que estão do lado direito)
@@ -58,17 +70,6 @@ void Gramatica::verificaIntegridade(){
     }
 }
 
-Gramatica::Gramatica(std::vector<std::shared_ptr<Producao>>& _prods){
-    prods.clear();
-    for (auto it = _prods.begin(); it != _prods.end(); it++){
-        prods.push_back(*it);
-    }
-    prods[0]->setInicial();
-    for (auto it = (prods.begin()+1); it != prods.end(); it++){
-        (*it)->removeInicial();
-    }
-    verificaIntegridade();
-}
 
 std::ostream& operator<< (std::ostream &out, const Gramatica& g){
     out << "========================" << std::endl;
@@ -101,6 +102,9 @@ Producao& Gramatica::getInicial(){
     return *prods[0];
 }
 
+/*
+Função auxiliar do cálculo do conjunto FIRST. Calcula o first de uma string.
+*/
 void Gramatica::firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out){
     // Para todas as produções do tipo X = Y1 Y2 ... Yn
     for (int i = 0; i < p->qtdCadeias(); i++){
@@ -155,6 +159,10 @@ void Gramatica::firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out
     }
 }
 
+/*
+Calcula o conjunto FIRST para o símbolo sym. O resultado é colocado no conjunto
+fornecido em out
+*/
 void Gramatica::first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out){
     if (sym->isTerminal()){
         // FIRST de terminal só possui ele
@@ -187,6 +195,10 @@ void Gramatica::first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out){
     }
 }
 
+/*
+Calcula o conjunto FOLLOS para o não-terminal sym. O resultado é colocado no 
+conjunto fornecido em out
+*/
 void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out){
     // Verifica se é o inicial, se sim, adiciona $ ao FOLLOW
     int i = 0;

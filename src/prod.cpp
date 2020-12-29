@@ -48,7 +48,6 @@ NaoTerminal Producao::label(){
     return lhs;
 }
 
-
 std::ostream& operator<< (std::ostream &out, const Producao& p){
     out << p.lhs << " ===> ";
     out << *p.rhs[0];
@@ -89,14 +88,24 @@ int Producao::qtdCadeias(){
     return rhs.size();
 }
 
+/*
+Retorna se a produção é considerada inicial na gramática em que está. Por 
+default é falso.
+*/
 bool Producao::isInicial(){
     return inicial;
 }
 
+/*
+Define a produção como inicial numa gramática.
+*/
 void Producao::setInicial(){
     inicial = true;
 }
 
+/*
+Remove o status de inicial de uma produção.
+*/
 void Producao::removeInicial(){
     inicial = false;
 }

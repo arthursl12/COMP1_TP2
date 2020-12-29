@@ -160,17 +160,36 @@ std::vector<std::shared_ptr<Symbol>>::iterator Cadeia::end(){
     return seq.end();
 }
 
+/*
+Coloca um ponto na cadeia, na primeira posição. Se a cadeia já possui ponto, 
+nada é feito.
+*/
 void Cadeia::itemLR0(){
+    // Caso: cadeia vazia
     if (seq.size() == 1 && (*seq[0] == Terminal(""))){
         std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
         seq.clear();
         seq.push_back(sym);
-    }else{
-        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
-        seq.insert(seq.begin(),sym);
     }
+
+    // Verifica se já não possui ponto
+    auto it = seq.begin();
+    for (int i = 0; i < (int) seq.size(); i++){
+        if (**it == Terminal(".")){
+            return;
+        }
+        it++;
+    }
+
+    // Adiciona ponto na primeira posição
+    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+    seq.insert(seq.begin(),sym);
 }
 
+/*
+Coloca um ponto na cadeia, na posição especificada empurrado para frente os 
+símbolos após. Se a cadeia já possui ponto, nada é feito.
+*/
 void Cadeia::itemLR0(int pos){
     if(pos > ((int)seq.size())){
         throw "Índice inválido de posição";
@@ -178,17 +197,31 @@ void Cadeia::itemLR0(int pos){
         throw "Índice inválido de posição";
     }else if (pos == 0){
         itemLR0();
-    }else{
-        auto it = seq.begin();
-        for (int i = 0; i < (int) seq.size(); i++){
-            if (i == pos) break;
-            it++;
+    }
+
+    // Verifica se já não possui ponto
+    auto it = seq.begin();
+    for (int i = 0; i < (int) seq.size(); i++){
+        if (**it == Terminal(".")){
+            return;
         }
-        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
-        seq.insert(it,sym);
-    }   
+        it++;
+    }
+    
+    // Adiciona ponto na posição especificada
+    it = seq.begin();
+    for (int i = 0; i < (int) seq.size(); i++){
+        if (i == pos) break;
+        it++;
+    }
+    std::shared_ptr<Symbol> sym = std::make_shared<Terminal>(".");
+    seq.insert(it,sym);
 }
 
+/*
+Avança o ponto em uma posição. Se ele já estiver na última posição, nada é 
+feito. A operação é in-place, ou seja, o objeto é alterado.
+*/
 void Cadeia::avanca(){
     // Procura o ponto
     auto it = seq.begin();
@@ -220,6 +253,10 @@ void Cadeia::avanca(){
     seq.erase(it);
 }
 
+/*
+Verifica se dado o símbolo, o ponto da cadeia deve avançar. Em outras palavras
+verifica se o símbolo fornecido é o seguinte ao ponto.
+*/
 bool Cadeia::deveAvancar(std::shared_ptr<Symbol>& sym){
     // Procura o ponto
     auto it = seq.begin();
@@ -240,6 +277,10 @@ bool Cadeia::deveAvancar(std::shared_ptr<Symbol>& sym){
     }
 }
 
+/*
+Verifica as duas cadeias são iguais ignorando o ponto. Também funciona com 
+cadeias sem ponto.
+*/
 bool Cadeia::igualSemPonto(Cadeia const& rhs) const{
     if (seq.size() != rhs.seq.size()) return false;
 

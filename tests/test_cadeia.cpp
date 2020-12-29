@@ -454,6 +454,25 @@ TEST_CASE("Cadeia: itemLR0"){
         cad = std::make_shared<Cadeia>(v);
         CHECK(c == *cad);
     }
+    SUBCASE("Cadeia já com ponto"){
+        std::vector<std::shared_ptr<Symbol>> v1;
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("."));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        Cadeia c0 = Cadeia(v1);
+
+        v1.clear();
+        v1.push_back(std::make_shared<Terminal>("a"));
+        v1.push_back(std::make_shared<Terminal>("."));
+        v1.push_back(std::make_shared<NaoTerminal>("B"));
+        v1.push_back(std::make_shared<NaoTerminal>("C"));
+        Cadeia c1 = Cadeia(v1);
+
+        CHECK(c1 == c0);
+        c0.itemLR0();
+        CHECK(c1 == c0);
+    }
 }
 
 TEST_CASE("Cadeia: itemLR0 com posição"){
@@ -808,8 +827,8 @@ TEST_CASE("Cadeia: operador comparação igualdade sem ponto"){
 
         v1.clear();
         v1.push_back(std::make_shared<NaoTerminal>("a"));
-        v1.push_back(std::make_shared<NaoTerminal>("b"));
-        v1.push_back(std::make_shared<NaoTerminal>("B1"));
+        v1.push_back(std::make_shared<Terminal>("b"));
+        v1.push_back(std::make_shared<Terminal>("b"));
         v1.push_back(std::make_shared<Terminal>("."));
         v1.push_back(std::make_shared<NaoTerminal>("B1"));
         v1.push_back(std::make_shared<NaoTerminal>("B1"));

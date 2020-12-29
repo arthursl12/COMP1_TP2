@@ -18,6 +18,10 @@ void gramaticaEstendida(Gramatica& g){
     g = Gramatica(prods);
 }
 
+/*
+Verifica se um conjunto de ponteiros de Item 'conj' possui pelo menos todas as 
+produções do não-terminal 'nt' da gramática 'g'.
+*/
 bool possuiItemNaoTerminal(std::set<std::shared_ptr<Item>>& conj, 
                            std::shared_ptr<NaoTerminal> nt,
                            Gramatica& g)
@@ -48,60 +52,56 @@ bool possuiItemNaoTerminal(std::set<std::shared_ptr<Item>>& conj,
     }
 }   
 
+/*
+Função auxiliar de closure. Adiciona todas as produções do não-terminal 'nt'
+em forma de item no conjunto de itens 'conj'
+*/
+void adicionaProducoes(std::set<std::shared_ptr<Item>>& conj,
+                       std::shared_ptr<NaoTerminal>& nt, 
+                       Gramatica& g, 
+                       bool& adicionou)
+{
+    // Acha as produções desse não-terminal na gramática
+    for(auto prod : g.prods){
+        if (prod->label() == *nt){
+            for (int i = 0; i < prod->qtdCadeias(); i++){
+                // Cria um item para cada cadeia dessa produção
+                std::shared_ptr<Item> item = \
+                                std::make_shared<Item>((*prod),i);
+                conj.insert(item);
+                adicionou = true;
+            }
+        }
+    }
+}
+
 void closure(std::set<std::shared_ptr<Item>>& conj, Gramatica& g){
     bool adicionou = true;
+    // Enquanto for possível adicionar conjuntos
     while(adicionou){
         adicionou = false;
+        // Para cada conjunto
         for (auto iter = conj.begin(); iter != conj.end(); iter++){
             Cadeia cad = (**iter).getCadeia();
             std::shared_ptr<Symbol> ponto = std::make_shared<Terminal>(".");
             auto iter1 = cad.find(ponto);
             iter1++;
-            if (iter1 == cad.end()){
-                continue;
-            }
+            if (iter1 == cad.end()){ continue;}
             std::shared_ptr<Symbol> prox = *(iter1++);
-            if (prox->isTerminal()){
-                continue;
-            }
+
+            // Continue se for terminal
+            if (prox->isTerminal()){ continue;}
 
             // Explicita o não-terminal
             std::shared_ptr<NaoTerminal> nt = \
                             std::dynamic_pointer_cast<NaoTerminal>(prox);
             
-            
-            bool cond1 = (*prox).isTerminal();
-            bool cond2 = possuiItemNaoTerminal(conj,nt,g);
-            if (  !(   cond1  )  &&   !cond2 ){
-                // Se o que vier depois do ponto não for um terminal
-                // E todas as produções daquele não-terminal que ainda 
-                // não foram adicionadas
-            
-                // Acha as produções desse não-terminal na gramática
-                for(auto prod : g.prods){
-                    if (prod->label() == *nt){
-                        for (int i = 0; i < prod->qtdCadeias(); i++){
-                            // Cria um item para cada cadeia dessa produção
-                            std::shared_ptr<Item> item = \
-                                            std::make_shared<Item>((*prod),i);
-
-                            // Ignora produções (cadeias) que já estão 
-                            // representadas, mas com ponto em outro local
-                            // bool jaPossuiItem = false;
-                            // for (auto it: conj){
-                            //     if (item->igualSemPonto(*it)){
-                            //         jaPossuiItem = true;
-                            //     }
-                            // }
-                            // if (!jaPossuiItem){
-                            //     conj.insert(item);
-                            //     adicionou = true;
-                            // }
-                            conj.insert(item);
-                            adicionou = true;
-                        }
-                    }
-                }
+            // Se o que vier depois do ponto não for um terminal (checado acima)
+            // E todas as produções daquele não-terminal que ainda 
+            // não foram adicionadas
+            bool cond1 = possuiItemNaoTerminal(conj,nt,g);
+            if ( !cond1 ){
+                adicionaProducoes(conj, nt, g, adicionou);
             }
         }
     }

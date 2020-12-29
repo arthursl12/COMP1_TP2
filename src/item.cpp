@@ -54,42 +54,30 @@ bool Item::operator==(Item const& oth) const{
     }
 }
 
-void Item::avanca(){
-    rhs->avanca();
-}
 
 NaoTerminal Item::label(){
     return lhs;
 }
 
+/*
+Avança o ponto em uma posição. Se ele já estiver na última posição, nada é 
+feito. A operação é in-place, ou seja, a cadeia do objeto é alterada.
+*/
+void Item::avanca(){
+    rhs->avanca();
+}
+
+/*
+Verifica se dado o símbolo, o ponto da cadeia deve avançar. Em outras palavras
+verifica se o símbolo fornecido é o seguinte ao ponto.
+*/
 bool Item::deveAvancar(std::shared_ptr<Symbol>& sym){
     return (rhs->deveAvancar(sym));
 }
 
-// bool Item::operator<(Item const& oth) const{
-//     if (this->rhs->qtdSimbolos() == oth.rhs->qtdSimbolos()){
-//         if (!(this->lhs == oth.lhs)){
-//             return this->lhs < oth.lhs;
-//         }else{
-//             int i = 0;
-//             bool iguais = true;
-//             while(iguais){
-//                 if(!(   (*rhs)[i] == (*oth.rhs)[i]   ) ){
-//                     iguais = false;
-//                 }
-//             }
-//             if(iguais){
-//                 return false;
-//             }else{
-//                 return (*rhs)[i] < (*oth.rhs)[i];
-//             }
-
-//         }
-//     }else{
-//         return this->rhs->qtdSimbolos() < oth.rhs->qtdSimbolos();
-//     }
-// }
-
+/*
+Verifica os dois itens são iguais ignorando o ponto das cadeias
+*/
 bool Item::igualSemPonto(Item const& oth) const{
     if (rhs->qtdSimbolos() != oth.rhs->qtdSimbolos()) return false;
     if (!(lhs == oth.lhs)){

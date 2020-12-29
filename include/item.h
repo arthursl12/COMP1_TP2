@@ -19,12 +19,13 @@ class Item{
         Item(Item const& oth);
 
         NaoTerminal label(); 
-        // bool operator<(Item const& oth) const;
+        Cadeia& getCadeia();
+
         bool operator==(Item const& oth) const;
         bool igualSemPonto(Item const& oth) const;
-        Cadeia& getCadeia();
-        bool deveAvancar(std::shared_ptr<Symbol>& sym);
+        
         void avanca();
+        bool deveAvancar(std::shared_ptr<Symbol>& sym);
 
         friend std::ostream& operator<< (std::ostream &out, const Item& c); 
 

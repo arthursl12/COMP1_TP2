@@ -10,6 +10,8 @@ ConjuntoItens::ConjuntoItens(){
     conjs.insert(el0);
 }
 
+/* Operações de Busca e Iterador */
+
 std::set<std::shared_ptr<Elemento>>::iterator ConjuntoItens::begin(){
     return conjs.begin();
 }
@@ -41,6 +43,7 @@ std::set<std::shared_ptr<Elemento>>::iterator ConjuntoItens::find(
     }
     return conjs.end();
 }
+
 std::set<std::shared_ptr<Elemento>>::iterator ConjuntoItens::end(){
     return conjs.end();
 }

@@ -16,23 +16,28 @@ class Gramatica{
     public:
         Gramatica();
         Gramatica(std::vector<std::shared_ptr<Producao>>& _prods);
-        friend std::ostream& operator<< (std::ostream &out, const Gramatica& g);
-
+        
         void conjuntoTerminais(std::set<Terminal>& out);
         void conjuntoNaoTerminais(std::set<NaoTerminal>& out);
         void encontraNaoTerminais(std::set<NaoTerminal>& usados, \
                                   std::set<NaoTerminal>& inicios);
         void verificaIntegridade();
 
+        int qtdCadeias(std::shared_ptr<NaoTerminal> nt);
+        Producao& getInicial();
+
+        friend std::ostream& operator<< (std::ostream &out, const Gramatica& g);
         void firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out);
         void first(std::shared_ptr<Symbol>& sym, std::set<Terminal>& out);
         void follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& out);
         friend void gramaticaEstendida(Gramatica& g);
         friend void closure(std::set<std::shared_ptr<Item>>& conj, 
-                                                            Gramatica& g);
-        int qtdCadeias(std::shared_ptr<NaoTerminal> nt);
+                            Gramatica& g);
+        friend void adicionaProducoes(std::set<std::shared_ptr<Item>>& conj,
+                                      std::shared_ptr<NaoTerminal>& nt, 
+                                      Gramatica& g, bool& adicionou);
 
-        Producao& getInicial();
+
 
 };
 
