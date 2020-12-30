@@ -250,18 +250,62 @@ void tabActionGoto(
 
 
     // Cria Action e Goto para cada estado
-    int i = 0;
+    // int i = 0;
+    // Itera por cada estado
     for(auto it_estado = its.begin(); it_estado != its.end(); it_estado++){
         Elemento elm = **it_estado;
         int idx = elm.idx;
         std::set<std::shared_ptr<Item>> conj = elm.conj_item;
 
+        // Por cada item do estado
         for(std::shared_ptr<Item> ptr_item: conj){
             Item item = *ptr_item;
             Cadeia cad = item.getCadeia();
 
             // ACTION
-            // Caso: ponto antes de terminal
+            // Caso: terminal depois do ponto
+            std::shared_ptr<Symbol> ponto = std::make_shared<Terminal>(".");
+            auto it_ponto = cad.find(ponto);
+            if (it_ponto != cad.end()){
+                auto it_dps_ponto = it_ponto + 1; 
+                if (it_dps_ponto != cad.end() && (**it_dps_ponto).isTerminal()){
+                    std::shared_ptr<Terminal> ptr_a = \
+                        std::dynamic_pointer_cast<Terminal>(*it_dps_ponto);
+
+                    // Computa GOTO(Ii,a)
+                    std::set<std::shared_ptr<Item>> gotoIi;
+                    std::shared_ptr<Symbol> sym = \
+                                    std::make_shared<Terminal>(*ptr_a);
+
+                    funcaoGoto(elm.conj_item, sym, g, gotoIi);
+
+                    // Se GOTO(Ii,a) = Ij entao ACTION[i,a] = shift j
+                    if (gotoIi.size() > 0){
+                        auto it = its.find(gotoIi);
+                        if (it == its.end())
+                            throw "Goto não encontrado (shift)";
+                        int shiftIdx = (**it).idx;
+
+
+                        // ACTION[i,a] = shift j
+                        auto ptr_vec = tabAction[idx];
+                        auto vec = *ptr_vec;
+                        int k = 0;
+                        for(; k < (int)ptr_vec->size(); k++){
+                            if (ptr_vec->at(k).first == *ptr_a){
+                                break;
+                            }
+                        }
+                        std::pair<Terminal,std::shared_ptr<Acao>> newPair = 
+                            std::make_pair<Terminal,std::shared_ptr<Acao>>(
+                                Terminal(*ptr_a),
+                                std::make_shared<Shift>(shiftIdx)
+                            );
+                        ptr_vec->at(k) = newPair;
+                        vec = *ptr_vec;
+                    }
+                }
+            }
 
             // Caso: ponto no fim -> reduce
             if (cad[cad.qtdSimbolos()-1] == Terminal(".")){
@@ -330,7 +374,7 @@ void tabActionGoto(
                 if (gotoIi.size() > 0){
                     auto it = its.find(gotoIi);
                     if (it == its.end())
-                        throw "Goto não encontrado";
+                        throw "Goto não encontrado (goto)";
                     int gotoIdx = (**it).idx;
 
                     // Coloca GOTO(i,A) = j na tabela
