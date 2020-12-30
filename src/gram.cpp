@@ -288,3 +288,24 @@ void Gramatica::follow(std::shared_ptr<NaoTerminal>& sym, std::set<Terminal>& ou
         }
     }
 }
+
+/*
+Retorna qual índice dessa produção (dessa cadeia, mais especificamente) na
+gramática. A produção deve ter o lado esquerdo com o não-terminal fornecido.
+Útil para redução. A produção inicial é a 0. Se não houver tal cadeia ou 
+não-terminal, retorna-se -1
+*/
+int Gramatica::getProdIndex(NaoTerminal lhs, Cadeia& cad){
+    int i = 0;
+    for(auto it = prods.begin(); it != prods.end(); it++){
+        Producao p = **it;
+
+        for (int j = 0; j < p.qtdCadeias(); j++){
+            if (p.label() == lhs && cad.igualSemPonto(p[j])){
+                return i;
+            }
+            i++;
+        }
+    }
+    return -1;
+}

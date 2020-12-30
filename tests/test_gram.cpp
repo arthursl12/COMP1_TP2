@@ -205,3 +205,209 @@ TEST_CASE("Gramática: qtdCadeias"){
     }
     
 }
+
+TEST_CASE("Gramática: getProdIndex"){
+    SUBCASE("Gramática Default"){
+        Gramatica g;
+        Cadeia cad = Cadeia();
+        CHECK(g.getProdIndex(NaoTerminal("S"),cad) == 0);
+        
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
+        cad = Cadeia(sym);
+
+        CHECK(g.getProdIndex(NaoTerminal("S"),cad) == -1);
+        CHECK(g.getProdIndex(NaoTerminal("T"),cad) == -1);
+    }
+    SUBCASE("Gramática Genérica"){
+        Gramatica g;
+        cria_gram_1(g);
+    
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;        
+        Cadeia c;
+
+        // E -> TE'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("E"),c) == 0);
+
+        // E' -> +TE' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("+"));
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("E\'"),c) == 1);
+
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("E\'"),c) == 2);
+
+        // T -> FT'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("F"));
+        cad.push_back(std::make_shared<NaoTerminal>("T\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("T"),c) == 3);
+
+        // T' -> *FT' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("*"));
+        cad.push_back(std::make_shared<NaoTerminal>("F"));
+        cad.push_back(std::make_shared<NaoTerminal>("T\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("T\'"),c) == 4);
+        
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("T\'"),c) == 5);
+
+        // F -> (E) | id
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("("));
+        cad.push_back(std::make_shared<NaoTerminal>("E"));
+        cad.push_back(std::make_shared<Terminal>(")"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("F"),c) == 6);
+
+        sym = std::make_shared<Terminal>("id");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("F"),c) == 7);
+    }
+    SUBCASE("Gramática Genérica 2"){
+        Gramatica g;
+        cria_gram_2(g);
+
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;        
+        Cadeia c;
+
+        // S -> ACB | Cbb | Ba
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("A"));
+        cad.push_back(std::make_shared<NaoTerminal>("C"));
+        cad.push_back(std::make_shared<NaoTerminal>("B"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("S"),c) == 0);
+
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("C"));
+        cad.push_back(std::make_shared<Terminal>("b"));
+        cad.push_back(std::make_shared<Terminal>("b"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("S"),c) == 1);
+
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("B"));
+        cad.push_back(std::make_shared<Terminal>("a"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("S"),c) == 2);
+
+        // A -> da | BC
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("d"));
+        cad.push_back(std::make_shared<Terminal>("a"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("A"),c) == 3);
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("B"));
+        cad.push_back(std::make_shared<NaoTerminal>("C"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("A"),c) == 4);
+
+        // B -> g | (vazio)
+        cad.clear();
+        sym = std::make_shared<Terminal>("g");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("B"),c) == 5);
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("B"),c) == 6);
+
+        // C -> h | (vazio)
+        cad.clear();
+        sym = std::make_shared<Terminal>("h");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("C"),c) == 7);
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("C"),c) == 8);
+    }
+    SUBCASE("Gramática Aumentada: default"){
+        Gramatica g;
+        gramaticaEstendida(g);
+        Cadeia cad = Cadeia();
+        CHECK(g.getProdIndex(NaoTerminal("S"),cad) == 1);
+        
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
+        cad = Cadeia(sym);
+
+        CHECK(g.getProdIndex(NaoTerminal("S"),cad) == -1);
+        CHECK(g.getProdIndex(NaoTerminal("T"),cad) == -1);
+
+        sym = std::make_shared<NaoTerminal>("S");
+        cad = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("S\'"),cad) == 0);
+    }
+    SUBCASE("Gramática Aumentada: genérica"){
+        Gramatica g;
+        cria_gram_1(g);
+        gramaticaEstendida(g);
+    
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;        
+        Cadeia c;
+
+        // E -> TE'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("E"),c) == 1);
+
+        // E' -> +TE' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("+"));
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("E\'"),c) == 2);
+
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("E\'"),c) == 3);
+
+        // T -> FT'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("F"));
+        cad.push_back(std::make_shared<NaoTerminal>("T\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("T"),c) == 4);
+
+        // T' -> *FT' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("*"));
+        cad.push_back(std::make_shared<NaoTerminal>("F"));
+        cad.push_back(std::make_shared<NaoTerminal>("T\'"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("T\'"),c) == 5);
+        
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("T\'"),c) == 6);
+
+        // F -> (E) | id
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("("));
+        cad.push_back(std::make_shared<NaoTerminal>("E"));
+        cad.push_back(std::make_shared<Terminal>(")"));
+        c = Cadeia(cad);
+        CHECK(g.getProdIndex(NaoTerminal("F"),c) == 7);
+
+        sym = std::make_shared<Terminal>("id");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("F"),c) == 8);
+    }
+}

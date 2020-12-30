@@ -25,6 +25,7 @@ class Gramatica{
 
         int qtdCadeias(std::shared_ptr<NaoTerminal> nt);
         Producao& getInicial();
+        int getProdIndex(NaoTerminal lhs, Cadeia& cad);
 
         friend std::ostream& operator<< (std::ostream &out, const Gramatica& g);
         void firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out);

@@ -11,29 +11,38 @@
 #include "tests/action_goto.h"
 
 int main(int argc, char* argv[]){
-    Gramatica g;
-    cria_gram_goto(g);
-    gramaticaEstendida(g);
+    // Gramatica g;
+    // cria_gram_goto(g);
+    // gramaticaEstendida(g);
 
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
+    // std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
+    // std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
 
-    tabActionGoto(tabAction, tabGoto, g);
+    // tabActionGoto(tabAction, tabGoto, g);
     // print_action_goto_manual(tabAction, tabGoto);
 
 
-    // Gramatica g;
-    // cria_gram_4(g);
+    Gramatica g;
+    cria_gram_1(g);
 
-    // // FOLLOW(B) = FIRST(D) U {h} = {g,f,h}
-    // std::set<Terminal> conj_follow;
-    // conj_follow.insert(Terminal("g"));
-    // conj_follow.insert(Terminal("f"));
-    // conj_follow.insert(Terminal("h"));
+    std::vector<std::shared_ptr<Symbol>> cad;
+    std::shared_ptr<Symbol> sym;        
+    Cadeia c;
 
-    // std::set<Terminal> out;
-    // std::shared_ptr<NaoTerminal> nt = std::make_shared<NaoTerminal>("B");
-    // g.follow(nt, out);
+    // E -> TE'
+    cad.clear();
+    cad.push_back(std::make_shared<NaoTerminal>("T"));
+    cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+    c = Cadeia(cad);
+    g.getProdIndex(NaoTerminal("E"),c) == 0;
+
+    // E' -> +TE' | (vazio)
+    cad.clear();
+    cad.push_back(std::make_shared<Terminal>("+"));
+    cad.push_back(std::make_shared<NaoTerminal>("T"));
+    cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+    c = Cadeia(cad);
+    (g.getProdIndex(NaoTerminal("E\'"),c) == 1);
 
 
     // std::string entrada = "12+12";

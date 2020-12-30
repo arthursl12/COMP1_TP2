@@ -282,7 +282,7 @@ Verifica as duas cadeias são iguais ignorando o ponto. Também funciona com
 cadeias sem ponto.
 */
 bool Cadeia::igualSemPonto(Cadeia const& rhs) const{
-    if (seq.size() != rhs.seq.size()) return false;
+    if (abs(seq.size() - rhs.seq.size()) > 1) return false;
 
     if (*this == rhs){
         return true;
