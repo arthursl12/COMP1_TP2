@@ -218,20 +218,6 @@ TEST_CASE("Utils: conjuntosItens"){
     }
 }
 
-// TEST_CASE("Utils: conjuntosItens - Kernels"){
-//     // TODO:
-//     // - Cadeia::getPontoPos (incl. exception)
-//     // - Item::getPontoPos (incl. exception)
-//     // - Item::set/getKernel (default falso)
-//     // - ConjuntoiItens::defineKernel
-//     //      itera pelo conjunto (elemento)
-//     //      busca posição mais à frente do ponto
-//     //      itens com mais à frente setKernel
-//     // - ConjuntoItens::findKernel
-//     //      adaptar a busca para possui
-
-// }
-
 
 TEST_CASE("Utils: tabActionGoto"){
     Gramatica g;
@@ -244,10 +230,5 @@ TEST_CASE("Utils: tabActionGoto"){
     tabActionGoto(tabAction, tabGoto, g);
     print_action_goto_manual(tabAction, tabGoto);
 
-    std::cout << "tabActionGoto: !!!!CONFERÊNCIA MANUAL!!!! (ok: 30/12/2020 13:23)" << std::endl;
-
-    // std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> outAction;
-    // std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> outGoto;
-    // cria_action_goto_manual(outAction, outGoto);
-    // print_action_goto_manual(outAction, outGoto);
+    std::cout << "tabActionGoto: !!!!CONFERÊNCIA MANUAL!!!! (ok: 30/12/2020 13:52)" << std::endl;
 }
