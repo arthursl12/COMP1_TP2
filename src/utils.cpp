@@ -262,6 +262,7 @@ void tabActionGoto(
 
             // ACTION
             // Caso: ponto antes de terminal
+
             // Caso: ponto no fim -> reduce
             if (cad[cad.qtdSimbolos()-1] == Terminal(".")){
                 NaoTerminal A = item.label();
@@ -273,7 +274,9 @@ void tabActionGoto(
 
                     for(Terminal a: followA){
                         // TODO: idx da produção
-
+                        int actionIdx = g.getProdIndex(A, cad);
+                        if (actionIdx == -1)
+                            throw "Problema na busca pela produção";
                         // ACTION[i,a] = reduce
                         auto ptr_vec = tabAction[idx];
                         auto vec = *ptr_vec;
@@ -286,7 +289,7 @@ void tabActionGoto(
                         std::pair<Terminal,std::shared_ptr<Acao>> newPair = 
                             std::make_pair<Terminal,std::shared_ptr<Acao>>(
                                 Terminal(a),
-                                std::make_shared<Reduce>(-1)
+                                std::make_shared<Reduce>(actionIdx)
                             );
                         ptr_vec->at(k) = newPair;
                         vec = *ptr_vec;

@@ -3,6 +3,7 @@
 #include "cadeia.h"
 #include "prod.h"
 #include "gram.h"
+#include "item.h"
 #include "gram_exemplos.h"
 
 #include <vector>
@@ -409,5 +410,27 @@ TEST_CASE("Gramática: getProdIndex"){
         sym = std::make_shared<Terminal>("id");
         c = Cadeia(sym);
         CHECK(g.getProdIndex(NaoTerminal("F"),c) == 8);
+    }
+    SUBCASE("Cadeias com ponto"){
+        Gramatica g;
+        cria_gram_1(g);
+
+
+        std::vector<std::shared_ptr<Cadeia>> v;
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;
+        std::shared_ptr<Producao> p;
+
+        // E -> TE'
+        v.clear();
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        v.push_back(std::make_shared<Cadeia>(cad));
+        Cadeia c = Cadeia(cad);
+        p = std::make_shared<Producao>(NaoTerminal("E"), v);
+
+        Item it = Item(*p);
+        CHECK(g.getProdIndex(it.label(),it.getCadeia()) == 0);
     }
 }

@@ -454,6 +454,5 @@ TEST_CASE("Item: comparador de igualdade sem ponto"){
     CHECK_FALSE(it8.igualSemPonto(it6));
     CHECK_FALSE(it6.igualSemPonto(it8));
     CHECK_FALSE(it7.igualSemPonto(it8));
-
 }
 

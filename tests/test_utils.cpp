@@ -244,7 +244,7 @@ TEST_CASE("Utils: tabActionGoto"){
     tabActionGoto(tabAction, tabGoto, g);
     print_action_goto_manual(tabAction, tabGoto);
 
-    std::cout << "tabActionGoto: !!!!CONFERÊNCIA MANUAL!!!! (ok: 29/12/2020)" << std::endl;
+    std::cout << "tabActionGoto: !!!!CONFERÊNCIA MANUAL!!!! (ok: 30/12/2020 13:01)" << std::endl;
 
     // std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> outAction;
     // std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> outGoto;

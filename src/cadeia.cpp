@@ -295,6 +295,7 @@ bool Cadeia::igualSemPonto(Cadeia const& rhs) const{
                         std::dynamic_pointer_cast<Terminal>(seq[i]);
             if ((*t1) == Terminal(".")){
                 i++;
+                if (i >= (int) seq.size()) {break;}
                 t1 = std::dynamic_pointer_cast<Terminal>(seq[i]);
             }
         }
@@ -303,6 +304,7 @@ bool Cadeia::igualSemPonto(Cadeia const& rhs) const{
                         std::dynamic_pointer_cast<Terminal>(rhs.seq[j]);
             if ((*t2) == Terminal(".")){
                 j++;
+                if (j >= (int) rhs.seq.size()) {break;}
                 t2 = std::dynamic_pointer_cast<Terminal>(rhs.seq[j]);
             }
         }
