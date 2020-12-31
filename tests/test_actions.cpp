@@ -31,3 +31,10 @@ TEST_CASE("Actions: getTipo"){
     CHECK(Shift(3).getTipo() == "Shift");
     CHECK(Reduce(1).getTipo() == "Reduce");
 }
+
+TEST_CASE("Actions: getters"){
+    CHECK(Shift(1).getNextIdx() == 1);
+    CHECK(Shift(3).getNextIdx() == 3);
+    CHECK(Reduce(1).getProdIdx() == 1);
+    CHECK(Reduce(4).getProdIdx() == 4);
+}

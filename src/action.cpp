@@ -47,6 +47,10 @@ std::ostream& operator<< (std::ostream &out, const Shift& sh){
     out << sh.tipo << ": " << sh.estado_j;
     return out;
 }
+int Shift::getNextIdx(){
+    return this->estado_j;
+}
+
 
 
 /* REDUCE */
@@ -65,3 +69,6 @@ std::ostream& operator<< (std::ostream &out, const Reduce& re){
     out << re.tipo << ": " << re.prod_i;
     return out;
 } 
+int Reduce::getProdIdx(){
+    return this->prod_i;
+}

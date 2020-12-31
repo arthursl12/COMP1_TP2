@@ -33,6 +33,7 @@ class Shift : public Acao{
     public:
         Shift(int _estado_j);
         virtual std::string getTipo() override;
+        int getNextIdx();
         friend std::ostream& operator<< (std::ostream &out, const Shift& sh); 
 
 };
@@ -43,6 +44,7 @@ class Reduce : public Acao{
     public:
         Reduce(int _prod_i);
         virtual std::string getTipo() override;
+        int getProdIdx();
         friend std::ostream& operator<< (std::ostream &out, const Reduce& re); 
 };
 

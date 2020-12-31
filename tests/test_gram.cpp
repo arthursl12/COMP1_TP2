@@ -434,3 +434,211 @@ TEST_CASE("Gramática: getProdIndex"){
         CHECK(g.getProdIndex(it.label(),it.getCadeia()) == 0);
     }
 }
+
+TEST_CASE("Gramática: getCadeia e getLhs"){
+    SUBCASE("Gramática Default"){
+        Gramatica g;
+        Cadeia cad = Cadeia();
+        CHECK(g.getLhs(0) == NaoTerminal("S"));
+        CHECK(g.getCadeia(0) == cad);
+        
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
+        cad = Cadeia(sym);
+
+        CHECK_THROWS(g.getLhs(1));
+        CHECK_THROWS(g.getCadeia(1));
+    }
+    SUBCASE("Gramática Genérica"){
+        Gramatica g;
+        cria_gram_1(g);
+    
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;        
+        Cadeia c;
+
+        // E -> TE'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(0) == NaoTerminal("E"));
+        CHECK(g.getCadeia(0) == c);
+
+        // E' -> +TE' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("+"));
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(1) == NaoTerminal("E\'"));
+        CHECK(g.getCadeia(1) == c);
+
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getProdIndex(NaoTerminal("E\'"),c) == 2);
+        CHECK(g.getLhs(2) == NaoTerminal("E\'"));
+        CHECK(g.getCadeia(2) == c);
+
+        // T -> FT'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("F"));
+        cad.push_back(std::make_shared<NaoTerminal>("T\'"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(3) == NaoTerminal("T"));
+        CHECK(g.getCadeia(3) == c);
+
+        // T' -> *FT' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("*"));
+        cad.push_back(std::make_shared<NaoTerminal>("F"));
+        cad.push_back(std::make_shared<NaoTerminal>("T\'"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(4) == NaoTerminal("T\'"));
+        CHECK(g.getCadeia(4) == c);
+        
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(5) == NaoTerminal("T\'"));
+        CHECK(g.getCadeia(5) == c);
+
+        // F -> (E) | id
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("("));
+        cad.push_back(std::make_shared<NaoTerminal>("E"));
+        cad.push_back(std::make_shared<Terminal>(")"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(6) == NaoTerminal("F"));
+        CHECK(g.getCadeia(6) == c);
+
+        sym = std::make_shared<Terminal>("id");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(7) == NaoTerminal("F"));
+        CHECK(g.getCadeia(7) == c);
+
+        CHECK_THROWS(g.getLhs(8));
+        CHECK_THROWS(g.getCadeia(8));
+    }
+    SUBCASE("Gramática Genérica 2"){
+        Gramatica g;
+        cria_gram_2(g);
+
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;        
+        Cadeia c;
+
+        // S -> ACB | Cbb | Ba
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("A"));
+        cad.push_back(std::make_shared<NaoTerminal>("C"));
+        cad.push_back(std::make_shared<NaoTerminal>("B"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(0) == NaoTerminal("S"));
+        CHECK(g.getCadeia(0) == c);
+
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("C"));
+        cad.push_back(std::make_shared<Terminal>("b"));
+        cad.push_back(std::make_shared<Terminal>("b"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(1) == NaoTerminal("S"));
+        CHECK(g.getCadeia(1) == c);
+
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("B"));
+        cad.push_back(std::make_shared<Terminal>("a"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(2) == NaoTerminal("S"));
+        CHECK(g.getCadeia(2) == c);
+
+        // A -> da | BC
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("d"));
+        cad.push_back(std::make_shared<Terminal>("a"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(3) == NaoTerminal("A"));
+        CHECK(g.getCadeia(3) == c);
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("B"));
+        cad.push_back(std::make_shared<NaoTerminal>("C"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(4) == NaoTerminal("A"));
+        CHECK(g.getCadeia(4) == c);
+
+        // B -> g | (vazio)
+        cad.clear();
+        sym = std::make_shared<Terminal>("g");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(5) == NaoTerminal("B"));
+        CHECK(g.getCadeia(5) == c);
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(6) == NaoTerminal("B"));
+        CHECK(g.getCadeia(6) == c);
+
+        // C -> h | (vazio)
+        cad.clear();
+        sym = std::make_shared<Terminal>("h");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(7) == NaoTerminal("C"));
+        CHECK(g.getCadeia(7) == c);
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(8) == NaoTerminal("C"));
+        CHECK(g.getCadeia(8) == c);
+
+        CHECK_THROWS(g.getLhs(9));
+        CHECK_THROWS(g.getCadeia(9));
+
+        CHECK_THROWS(g.getLhs(10));
+        CHECK_THROWS(g.getCadeia(10));
+    }
+    SUBCASE("Gramática Aumentada: default"){
+        Gramatica g;
+        gramaticaEstendida(g);
+        Cadeia cad = Cadeia();
+        CHECK(g.getLhs(1) == NaoTerminal("S"));
+        CHECK(g.getCadeia(1) == cad);
+        
+        std::shared_ptr<Symbol> sym = std::make_shared<Terminal>("a");
+        cad = Cadeia(sym);
+
+        CHECK_THROWS(g.getLhs(2));
+        CHECK_THROWS(g.getCadeia(2));
+
+        sym = std::make_shared<NaoTerminal>("S");
+        cad = Cadeia(sym);
+        CHECK(g.getLhs(0) == NaoTerminal("S\'"));
+        CHECK(g.getCadeia(0) == cad);
+    }
+    SUBCASE("Gramática Aumentada: genérica"){
+        Gramatica g;
+        cria_gram_1(g);
+        gramaticaEstendida(g);
+    
+        std::vector<std::shared_ptr<Symbol>> cad;
+        std::shared_ptr<Symbol> sym;        
+        Cadeia c;
+
+        // E -> TE'
+        cad.clear();
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(1) == NaoTerminal("E"));
+        CHECK(g.getCadeia(1) == c);
+
+        // E' -> +TE' | (vazio)
+        cad.clear();
+        cad.push_back(std::make_shared<Terminal>("+"));
+        cad.push_back(std::make_shared<NaoTerminal>("T"));
+        cad.push_back(std::make_shared<NaoTerminal>("E\'"));
+        c = Cadeia(cad);
+        CHECK(g.getLhs(2) == NaoTerminal("E\'"));
+        CHECK(g.getCadeia(2) == c);
+
+        sym = std::make_shared<Terminal>("");
+        c = Cadeia(sym);
+        CHECK(g.getLhs(3) == NaoTerminal("E\'"));
+        CHECK(g.getCadeia(3) == c);
+    }
+}

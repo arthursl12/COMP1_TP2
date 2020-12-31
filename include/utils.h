@@ -21,6 +21,7 @@ void tabActionGoto(
     std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>>& tabGoto,
     Gramatica& g);
 
+bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g);
 
 
 

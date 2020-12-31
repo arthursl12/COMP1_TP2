@@ -309,3 +309,42 @@ int Gramatica::getProdIndex(NaoTerminal lhs, Cadeia& cad){
     }
     return -1;
 }
+
+/*
+Retorna a cadeia referente ao índice fornecido. A produção inicial é a 0.
+Levanta uma exceção se o índice for inválido.
+*/
+Cadeia& Gramatica::getCadeia(int idxProd){
+    int i = 0;
+    for(auto it = prods.begin(); it != prods.end(); it++){
+        Producao p = **it;
+
+        for (int j = 0; j < p.qtdCadeias(); j++){
+            if (i == idxProd){
+                return p[j];
+            }
+            i++;
+        }
+    }
+    throw "Índice inválido";
+}
+
+/*
+Retorna o não-terminal do lado esquerdo referente á produção do índice 
+fornecido. A produção inicial é a 0. Levanta uma exceção se o índice for 
+inválido.
+*/
+NaoTerminal Gramatica::getLhs(int idxProd){
+    int i = 0;
+    for(auto it = prods.begin(); it != prods.end(); it++){
+        Producao p = **it;
+
+        for (int j = 0; j < p.qtdCadeias(); j++){
+            if (i == idxProd){
+                return p.label();
+            }
+            i++;
+        }
+    }
+    throw "Índice inválido";
+}
