@@ -457,7 +457,10 @@ bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g){
         for(; it != tabAction[atualEstado]->end(); it++){
             if (it->first == **sym){ break; }
         }
-        if (it == tabAction[atualEstado]->end()){ throw "Erro de Sintaxe";}
+        if (it == tabAction[atualEstado]->end()){ 
+            std::cout << "Erro de Sintaxe" << std::endl;
+            return false;
+        }
         
         // Lógica Principal
         if (it->second->getTipo() == "Shift"){
@@ -475,7 +478,9 @@ bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g){
             Cadeia cad = g.getCadeia(idxProd);
             for(int i = 0; i < cad.qtdSimbolos(); i++){
                 pSym.pop();
+                pEstados.pop();
             }
+
             int t = pEstados.top();
 
             std::shared_ptr<Symbol> lhs = \
@@ -487,14 +492,17 @@ bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g){
             for(; it != tabGoto[t]->end(); it++){
                 if (it->first == *lhs){ break; }
             }
-            if (it == tabGoto[t]->end()){ throw "Erro de Sintaxe (GOTO)"; }
+            if (it == tabGoto[t]->end()){ 
+                std::cout << "Erro de Sintaxe (GOTO)" << std::endl;
+                return false; 
+            }
             int idxGoto = it->second;
             pEstados.push(idxGoto);
         }else if (it->second->getTipo() == "Accept"){
             std::cout << "Aceito" << std::endl;
             break;
         }else{
-            throw "Erro de Sintaxe Geral";
+            std::cout << "Erro de Sintaxe Geral" << std::endl;
             return false;
         }
     }

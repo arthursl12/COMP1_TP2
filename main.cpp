@@ -11,14 +11,27 @@
 #include "tests/action_goto.h"
 
 int main(int argc, char* argv[]){
-    Gramatica g;
-    cria_gram_goto(g);
-    gramaticaEstendida(g);
+        Gramatica g;
+        cria_gram_7(g);
 
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
+        std::vector<std::shared_ptr<Symbol>> entrada;
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>("b"));
+        std::cout << (parser(entrada, g)) << std::endl;
 
-    tabActionGoto(tabAction, tabGoto, g);
+        cria_gram_7(g);
+
+        entrada.clear();
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>("b"));
+        std::cout << (parser(entrada, g)) << std::endl;
+
+        cria_gram_7(g);
+
+        entrada.clear();
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>("b"));
+        std::cout << (parser(entrada, g)) << std::endl;
     // print_action_goto_manual(tabAction, tabGoto);
 
 
