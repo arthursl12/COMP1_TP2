@@ -8,21 +8,6 @@
 #include <memory>
 
 
-TEST_CASE("Parser: gramática 7"){
-    // S -> AaAb | BbBa
-    // A -> (vazio)
-    // B -> (vazio)
-    
-    Gramatica g;
-    cria_gram_7(g);
-
-    std::vector<std::shared_ptr<Symbol>> entrada;
-    entrada.push_back(std::make_shared<Terminal>("a"));
-    entrada.push_back(std::make_shared<Terminal>("b"));
-    bool res = parser(entrada, g);
-    CHECK(res == true);
-}
-
 TEST_CASE("Parser: gramática 0"){
     // E -> E+T | T
     // T -> T*F | F
@@ -182,12 +167,11 @@ TEST_CASE("Parser: gramática 1"){
     }
 }
 
-
 TEST_CASE("Parser: gramática 7"){
     // S -> AaAb | BbBa
     // A -> (vazio)
     // B -> (vazio)
-    SUBCASE("ba"){
+    SUBCASE("ab"){
         Gramatica g;
         cria_gram_7(g);
         
@@ -206,6 +190,65 @@ TEST_CASE("Parser: gramática 7"){
         CHECK(parser(entrada, g) == false);
     }
 }
+
+TEST_CASE("Parser: gramática 6"){
+    // S -> (L) | a
+    // L -> SL'
+    // L' -> ,SL' | (vazio)
+
+    Gramatica g;
+    cria_gram_6(g);
+
+    SUBCASE("Base"){
+        std::vector<std::shared_ptr<Symbol>> entrada;
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        CHECK(parser(entrada, g) == true);
+    }
+    SUBCASE("Um parâmetro"){
+        std::vector<std::shared_ptr<Symbol>> entrada;
+        entrada.push_back(std::make_shared<Terminal>("("));
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>(")"));
+
+        CHECK(parser(entrada, g) == true);
+    }
+    SUBCASE("Complexo"){
+        std::vector<std::shared_ptr<Symbol>> entrada;
+        entrada.push_back(std::make_shared<Terminal>("("));
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>(","));
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>(","));
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>(")"));
+
+        CHECK(parser(entrada, g) == true);
+    }
+    SUBCASE("Erros 1"){
+        std::vector<std::shared_ptr<Symbol>> entrada;
+        entrada.push_back(std::make_shared<Terminal>("("));
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>(","));
+        entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>(","));
+        entrada.push_back(std::make_shared<Terminal>(")"));
+
+        CHECK(parser(entrada, g) == false);
+    }
+    SUBCASE("Erros 2"){
+        std::vector<std::shared_ptr<Symbol>> entrada;
+        entrada.push_back(std::make_shared<Terminal>("("));
+        entrada.push_back(std::make_shared<Terminal>(","));
+        entrada.push_back(std::make_shared<Terminal>(")"));
+
+        CHECK(parser(entrada, g) == false);
+    }
+}
+
+
+
+
+
 
 
 
