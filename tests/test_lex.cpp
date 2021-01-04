@@ -115,6 +115,29 @@ TEST_CASE("isOperator"){
     }
 }
 
+TEST_CASE("operatorToSymbol"){
+    SUBCASE("1-char"){
+        CHECK(*operatorToSymbol("+") == Terminal("ADDOP"));
+        CHECK(*operatorToSymbol("*") == Terminal("MULOP"));
+        CHECK(*operatorToSymbol("<") == Terminal("RELOP"));
+    }
+    SUBCASE("2-char"){
+        CHECK(*operatorToSymbol("<=") == Terminal("RELOP"));
+        CHECK(*operatorToSymbol("<>") == Terminal("RELOP"));
+        CHECK(*operatorToSymbol("or") == Terminal("ADDOP"));
+    }
+    SUBCASE("3-char"){
+        CHECK(*operatorToSymbol("NOT") == Terminal("NOT"));
+        CHECK(*operatorToSymbol("and") == Terminal("MULOP"));
+        CHECK(*operatorToSymbol("div") == Terminal("MULOP"));
+        CHECK(*operatorToSymbol("cos") == Terminal("SPECOP"));
+        CHECK(*operatorToSymbol("log") == Terminal("SPECOP"));
+    }
+    SUBCASE("Default nullptr"){
+        CHECK_THROWS(operatorToSymbol("  "));
+    }
+}
+
 TEST_CASE("isDelimiter"){
     SUBCASE("Verdadeiro: espaços"){
         CHECK(isDelimiter(" "));

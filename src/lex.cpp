@@ -51,6 +51,24 @@ bool isOperator(std::string op){
     return false;
 }
 
+std::shared_ptr<Symbol> operatorToSymbol(std::string op){
+    std::shared_ptr<Symbol> sym;
+    if (isAddOp(op)){
+        sym = std::make_shared<Terminal>("ADDOP");
+    }else if (isMulOp(op)){
+        sym = std::make_shared<Terminal>("MULOP");
+    }else if (isSpecOp(op)){
+        sym = std::make_shared<Terminal>("SPECOP");
+    }else if (isRelOp(op)){
+        sym = std::make_shared<Terminal>("RELOP");
+    }else if (isNOT(op)){
+        sym = std::make_shared<Terminal>("NOT");
+    }else{
+        throw "Operador Inválido";
+    }
+    return sym;
+}
+
 bool isDelimiter(std::string ch) {
     if (
         isspace(ch[0]) != 0 || isOperator(ch) ||
@@ -223,6 +241,9 @@ void findTokens(
             // std::cout << "\tsubstr1: " << subStr << std::endl;
             if (isConstant(subStr) == true){
                  std::cout << "Valid Signed Constant : " << subStr << std::endl;
+                std::shared_ptr<Symbol> cst = \
+                                        std::make_shared<Terminal>("constant");
+                entrada.push_back(cst);
             }
             left = right;
         }else if (isDelimiter(std::string(1,program[right])) && left == right) {
@@ -230,11 +251,15 @@ void findTokens(
             if (isOperator(program.substr(right,2))){
                 std::cout << "Valid operator (2-char): " << \
                     program.substr(right,2) << std::endl;
+                std::string subStr = program.substr(right,2);
+                entrada.push_back(operatorToSymbol(subStr));
                 right += 2;
                 left = right; 
             }else if (isOperator(program.substr(right,1)) && !isValidSign(program, left, right)){
                 std::cout << "Valid operator (1-char): " << 
                     program[right] << std::endl;
+                std::string subStr = program.substr(right,1);
+                entrada.push_back(operatorToSymbol(subStr));
                 right++;
                 left = right;
             }else{
@@ -253,11 +278,17 @@ void findTokens(
             //     printf("Real Number : '%s'\n", subStr);
             if (isOperator(subStr)){
                 std::cout << "Valid operator (keyword) : " << subStr << std::endl;
+                entrada.push_back(operatorToSymbol(subStr));
             }else if (isIdentifier(subStr) &&
                 !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Valid Identifier : " << subStr << std::endl;
+                std::shared_ptr<Symbol> id = std::make_shared<Terminal>("id");
+                entrada.push_back(id);
             }else if (isConstant(subStr) == true){
-                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
+                std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
+                std::shared_ptr<Symbol> cst = \
+                                        std::make_shared<Terminal>("constant");
+                entrada.push_back(cst);
             }else if (!isIdentifier(subStr) && 
                      !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Invalid Identifier : " << subStr << std::endl;
