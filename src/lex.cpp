@@ -237,10 +237,15 @@ void findTokens(
             right++;
             while (right < length && !isDelimiter(std::string(1,program[right])))
                 right++;
+            if (program[right-1] == 'E'){
+                right++;
+                while (right < length && !isDelimiter(std::string(1,program[right])))
+                    right++;
+            }
             std::string subStr = subString(program, left, right - 1);
             // std::cout << "\tsubstr1: " << subStr << std::endl;
             if (isConstant(subStr) == true){
-                 std::cout << "Valid Signed Constant : " << subStr << std::endl;
+                std::cout << "Valid Signed Constant : " << subStr << std::endl;
                 std::shared_ptr<Symbol> cst = \
                                         std::make_shared<Terminal>("constant");
                 entrada.push_back(cst);
@@ -286,6 +291,11 @@ void findTokens(
                 entrada.push_back(id);
             }else if (isConstant(subStr) == true){
                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
+                if (program[right-1] == 'E'){
+                    right++;
+                    while (right < length && !isDelimiter(std::string(1,program[right])))
+                        right++;
+                }
                 std::shared_ptr<Symbol> cst = \
                                         std::make_shared<Terminal>("constant");
                 entrada.push_back(cst);

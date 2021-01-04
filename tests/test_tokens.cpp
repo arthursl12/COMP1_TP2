@@ -67,7 +67,7 @@ TEST_CASE("Tokens Simples"){
     CHECK(*tokens[0] == Terminal("NOT"));
 }
 
-/*
+
 TEST_CASE("Expressões Simples"){
     std::string program;
     std::vector<std::shared_ptr<Symbol>> tokens;
@@ -102,12 +102,12 @@ TEST_CASE("Expressões Simples"){
     CHECK(*tokens[1] == Terminal("MULOP"));
     CHECK(*tokens[2] == Terminal("id"));
 
-    clearSetStr("sen 90",program,tokens);
+    clearSetStr("sin 90",program,tokens);
     findTokens(program, tokens);
     CHECK(*tokens[0] == Terminal("SPECOP"));
     CHECK(*tokens[1] == Terminal("constant"));
 }
-
+/*
 TEST_CASE("Questão dos Espaços"){
     std::string program;
     std::vector<std::shared_ptr<Symbol>> tokens;
