@@ -41,8 +41,12 @@ bool isRelOp(std::string op){
     }
 }
 
+bool isNOT(std::string op){
+    return op == "NOT";
+}
+
 bool isOperator(std::string op){
-    if (isAddOp(op) || isMulOp(op) || isSpecOp(op) || isRelOp(op))
+    if (isAddOp(op) || isMulOp(op) || isSpecOp(op) || isRelOp(op) || isNOT(op))
         return true;
     return false;
 }

@@ -20,6 +20,21 @@ TEST_CASE("isAddOp"){
     }
 }
 
+TEST_CASE("isNOT"){
+    SUBCASE("Verdadeiro"){
+        CHECK(isNOT("NOT"));
+    }
+    SUBCASE("Falso"){
+        CHECK_FALSE(isNOT("not"));
+        CHECK_FALSE(isNOT("Not"));
+        CHECK_FALSE(isNOT("NOt"));
+        CHECK_FALSE(isNOT("nOT"));
+        CHECK_FALSE(isNOT("~"));
+        CHECK_FALSE(isNOT("^"));
+        CHECK_FALSE(isNOT("!"));
+    }
+}
+
 TEST_CASE("isMulOp"){
     SUBCASE("Verdadeiro"){
         CHECK(isMulOp("*"));
@@ -91,6 +106,7 @@ TEST_CASE("isOperator"){
         CHECK(isOperator("*"));
         CHECK(isOperator("sin"));
         CHECK(isOperator("<"));
+        CHECK(isOperator("NOT"));
     }
     SUBCASE("Falso"){
         CHECK_FALSE(isOperator(""));

@@ -11,6 +11,7 @@ bool isAddOp(std::string op);
 bool isMulOp(std::string op);
 bool isSpecOp(std::string op);
 bool isRelOp(std::string op);
+bool isNOT(std::string op);
 bool isOperator(std::string op);
 bool isDelimiter(std::string ch);
 bool isIdentifier(std::string str);
