@@ -1,7 +1,11 @@
 #ifndef LEX_H
 #define LEX_H
 
+#include "symbol.h"
+
 #include <string>
+#include <memory>
+#include <vector>
 
 bool isAddOp(std::string op);
 bool isMulOp(std::string op);
@@ -15,6 +19,7 @@ bool isUnsignedReal(std::string str);
 bool isConstant(std::string str);
 bool isValidSign(std::string const& programa, int const left, int const right);
 std::string subString(std::string str, int left, int right);
-void findTokens(std::string program);
+void findTokens(std::string program, 
+                std::vector<std::shared_ptr<Symbol>>& entrada);
 
 #endif /* LEX_H */

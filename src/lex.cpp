@@ -1,6 +1,9 @@
 #include "lex.h"
+#include "symbol.h"
 
 #include <iostream>
+#include <memory>
+#include <vector>
 
 /* Funções inspiradas em:
 https://www.tutorialspoint.com/c-program-to-detect-tokens-in-a-c-program
@@ -175,18 +178,40 @@ bool isValidSign(std::string const& program, int const left, int const right){
     }
 }
 
-void findTokens(std::string program){
+
+/*
+TOKENS:
+RELOP, ADDOP, MULOP, SPECOP, identifier, constant
+
+N-Ts: 
+EXPR_LS, EXPR, S_EXPR, T, FA, FR, S
+
+T-s:
+NOT
+*/
+
+void findTokens(
+    std::string program, 
+    std::vector<std::shared_ptr<Symbol>>& entrada
+    )
+{   
+    entrada.clear();
+    
     int left = 0, right = 0;
     int length = program.length();
+    std::cout.setf(std::ios::boolalpha);
+
     // std::cout << "LEN: " << length << std::endl;
     while (right <= length && left <= right) {
+        // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
         if (!isDelimiter(std::string(1,program[right]))){
             right++;
+            // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
         }
         if (right > length){
             break;
         }
-        // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
+        // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::string(1,program[right])) << std::endl;
         if (isValidSign(program, left, right)){
             right++;
             while (right < length && !isDelimiter(std::string(1,program[right])))
@@ -223,7 +248,9 @@ void findTokens(std::string program){
 
             // else if (isRealNumber(subStr) == true)
             //     printf("Real Number : '%s'\n", subStr);
-            if (isIdentifier(subStr) &&
+            if (isOperator(subStr)){
+                std::cout << "Valid operator (keyword) : " << subStr << std::endl;
+            }else if (isIdentifier(subStr) &&
                 !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Valid Identifier : " << subStr << std::endl;
             }else if (isConstant(subStr) == true){
