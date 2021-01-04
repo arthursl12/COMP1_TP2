@@ -181,15 +181,14 @@ bool isValidSign(std::string const& program, int const left, int const right){
 
 /*
 TOKENS:
-RELOP, ADDOP, MULOP, SPECOP, identifier, constant
+RELOP, ADDOP, MULOP, SPECOP, identifier, constant, NOT
 
 N-Ts: 
 EXPR_LS, EXPR, S_EXPR, T, FA, FR, S
 
 T-s:
-NOT
+(, ), ,, +, - 
 */
-
 void findTokens(
     std::string program, 
     std::vector<std::shared_ptr<Symbol>>& entrada

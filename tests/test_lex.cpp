@@ -187,6 +187,9 @@ TEST_CASE("isUnsignedReal"){
         CHECK(isUnsignedReal("1233456."));
     }
     SUBCASE("Verdadeiro: inteiro + expoente"){
+        CHECK(isUnsignedReal("0E00001"));
+        CHECK(isUnsignedReal("0E+00001"));
+        CHECK(isUnsignedReal("0E-00001"));
         CHECK(isUnsignedReal("0E1"));
         CHECK(isUnsignedReal("00000E1"));
         CHECK(isUnsignedReal("0E-1"));
