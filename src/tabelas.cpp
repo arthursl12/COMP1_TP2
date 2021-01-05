@@ -285,13 +285,6 @@ void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto,
     // Inicializa as tabelas
     inicializaTabelas(tabAction, tabGoto, qtdEstados, nts, tts);
 
-    // Imprimir tabelas e estados se requisitado
-    if (apenas_imprimir){
-        printEstados(its);
-        printActionGoto(tabAction, tabGoto);
-        // return;
-    }
-
     // Cria Action e Goto para cada estado
     // Itera por cada estado
     for(auto it_estado = its.begin(); it_estado != its.end(); it_estado++){
@@ -315,5 +308,11 @@ void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto,
             // GOTO
             preencheTabelaGoto(tabGoto, nts, g, elm, idx, its);
         }
+    }
+
+    // Imprimir tabelas e estados se requisitado
+    if (apenas_imprimir){
+        printEstados(its);
+        printActionGoto(tabAction, tabGoto);
     }
 }

@@ -228,8 +228,8 @@ TEST_CASE("Utils: tabActionGoto"){
     TabelaAction tabAction;
     TabelaGoto tabGoto;
 
-    tabActionGoto(tabAction, tabGoto, g);
-    print_action_goto_manual(tabAction, tabGoto);
+    tabActionGoto(tabAction, tabGoto, g, true);
+    // print_action_goto_manual(tabAction, tabGoto);
 
     std::cout << "tabActionGoto: !!!!CONFERÊNCIA MANUAL!!!! (ok: 30/12/2020 13:52)" << std::endl;
 }
