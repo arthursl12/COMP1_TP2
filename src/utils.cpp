@@ -2,6 +2,10 @@
 #include "item.h"
 #include <iostream>
 #include <stack>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iomanip>
 
 void gramaticaEstendida(Gramatica& g){
     std::vector<std::shared_ptr<Producao>> prods = g.prods;
@@ -371,7 +375,80 @@ void preencheTabelaGoto(
     }
 }
 
-void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto, Gramatica& g){
+void printEstados(ConjuntoItens& its){
+    for(auto it_estado = its.begin(); it_estado != its.end(); it_estado++){
+        Elemento elm = **it_estado;
+        std::set<std::shared_ptr<Item>> conj = elm.conj_item;
+        std::cout << "Estado: " << elm.label << std::endl;
+        
+        for (std::shared_ptr<Item> ptr_item: conj){
+            std::cout << "\t" << *ptr_item << std::endl;
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+
+void printActionGoto(TabelaAction& tabAction,TabelaGoto& tabGoto){   
+    int SPC = 7;
+    std::cout << "======ACTION======" << std::endl;
+    auto linha0 = tabAction.begin();
+    std::cout << "|" << std::setw(SPC) << "I" << std::setw(SPC);
+    for (auto pares0: **linha0){
+        std::cout << "|" << std::setw(SPC) << pares0.first << std::setw(SPC);
+    }
+    std::cout << "|" << std::endl;
+
+    int i = 0;
+    for(auto linha: tabAction){
+        std::cout << "|" << std::setw(SPC) << "I" + std::to_string(i) << std::setw(SPC);
+        for(auto par: *linha){
+            if (par.second->getTipo() == "Error"){
+                std::cout << "|" << std::setw(SPC) << "" << std::setw(SPC);
+            }else if (par.second->getTipo() == "Shift"){
+                std::shared_ptr<Shift> sft = \
+                            std::dynamic_pointer_cast<Shift>(par.second);
+                std::cout << "|" << std::setw(SPC) << *sft << std::setw(SPC-3);
+            }else if (par.second->getTipo() == "Reduce"){
+                std::shared_ptr<Reduce> red = \
+                            std::dynamic_pointer_cast<Reduce>(par.second);
+                std::cout << "|" << std::setw(SPC) << *red << std::setw(SPC-3);
+            }else{
+                std::cout << "|" << std::setw(SPC) << par.second->getTipo() << std::setw(SPC);
+            }
+        }
+        i++;
+        std::cout << "|" << std::endl;
+    }
+    std::cout << std::endl;
+    std::cout << "======GOTO======" << std::endl;
+    auto linha1 = tabGoto.begin();
+    std::cout << "|" << std::setw(SPC) << "I" << std::setw(SPC);
+    for (auto pares0: **linha1){
+        std::cout << "|" << std::setw(SPC-1) << pares0.first << std::setw(SPC-1);
+    }
+    std::cout << "|" << std::endl;
+
+    i = 0;
+    for(auto linha: tabGoto){
+        std::cout << "|" << std::setw(SPC) << "I" + std::to_string(i) << std::setw(SPC);
+        for(auto par: *linha){
+            if (par.second == -1){
+                std::cout << "|" << std::setw(SPC) << "" << std::setw(SPC);
+            }else{
+                std::cout << "|" << std::setw(SPC) << par.second << std::setw(SPC);
+            }
+            
+        }
+        i++;
+        std::cout << "|" << std::endl;
+    }
+}
+
+void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto, 
+                   Gramatica& g, bool apenas_imprimir)
+{
     // Informações da gramática
     std::set<NaoTerminal> nts;
     std::set<Terminal> tts;
@@ -388,19 +465,12 @@ void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto, Gramatica& g){
     // Inicializa as tabelas
     inicializaTabelas(tabAction, tabGoto, qtdEstados, nts, tts);
 
-    // DEBUG (print estados):
-    for(auto it_estado = its.begin(); it_estado != its.end(); it_estado++){
-        Elemento elm = **it_estado;
-        std::set<std::shared_ptr<Item>> conj = elm.conj_item;
-        std::cout << "Estado: " << elm.label << std::endl;
-        
-        for (std::shared_ptr<Item> ptr_item: conj){
-            std::cout << "\t" << *ptr_item << std::endl;
-        }
-        std::cout << std::endl;
+    // Imprimir tabelas e estados se requisitado
+    if (apenas_imprimir){
+        printEstados(its);
+        printActionGoto(tabAction, tabGoto);
+        // return;
     }
-    std::cout << std::endl;
-
 
     // Cria Action e Goto para cada estado
     // Itera por cada estado
@@ -504,4 +574,25 @@ bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g){
     }
     return true;
 }
+
+/*
+Lê o arquivo 'filename' e coloca cada linha (cada programa) em uma posição do
+vector de strings informado
+*/
+void inputFile(std::vector<std::string>& programas, std::string filename){
+    std::ifstream infile(filename);
+    if (!infile.is_open()) throw "Problema na abertura do arquivo";
+
+    std::string line;
+    programas.clear();
+    // Lê o arquivo linha por linha
+    while (std::getline(infile, line)){
+        if (line[0] == '#' ||  line.size() == 0){
+            // Linhas começando com '#' são comentários
+            continue;
+        }
+        programas.push_back(line);
+    }
+}
+
 

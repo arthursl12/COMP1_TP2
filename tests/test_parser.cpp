@@ -171,13 +171,22 @@ TEST_CASE("Parser: gramática 7"){
     // S -> AaAb | BbBa
     // A -> (vazio)
     // B -> (vazio)
+    // SUBCASE("ba"){
+    //     Gramatica g;
+    //     cria_gram_7(g);
+        
+    //     std::vector<std::shared_ptr<Symbol>> entrada;
+    //     entrada.push_back(std::make_shared<Terminal>("b"));
+    //     entrada.push_back(std::make_shared<Terminal>("a"));
+    //     CHECK(parser(entrada, g) == true);
+    // }
     SUBCASE("ab"){
         Gramatica g;
         cria_gram_7(g);
         
         std::vector<std::shared_ptr<Symbol>> entrada;
-        entrada.push_back(std::make_shared<Terminal>("b"));
         entrada.push_back(std::make_shared<Terminal>("a"));
+        entrada.push_back(std::make_shared<Terminal>("b"));
         CHECK(parser(entrada, g) == true);
     }
     SUBCASE("Erro"){

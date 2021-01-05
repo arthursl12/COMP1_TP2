@@ -21,9 +21,10 @@ void conjuntosItens(ConjuntoItens& conjs, Gramatica& g);
 
 
 // Cria uma lista das regras (separado por cadeia)
-void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto, Gramatica& g);
+void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto, 
+                   Gramatica& g, bool apenas_imprimir = false);
 bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g);
-
+void inputFile(std::vector<std::string>& programas, std::string filename);
 
 
 #endif /* UTILS_H */

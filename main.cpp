@@ -11,6 +11,29 @@
 #include "tests/action_goto.h"
 
 int main(int argc, char* argv[]){
+    // Carrega a gramática
+    Gramatica G;        // TODO
+
+    // Entrada vinda do arquivo
+    std::string input = "entrada.in";
+    std::vector<std::string> programas;
+    inputFile(programas, input);
+
+    // Analisa cada linha (programa) do arquivo
+    for (std::string program : programas){
+        if (program == ",,print"){
+            TabelaAction t1;
+            TabelaGoto t2;
+            tabActionGoto(t1, t2, G, true);
+            continue;
+        }
+
+        std::vector<std::shared_ptr<Symbol>> symbols;
+        symbols.clear();
+        findTokens(program, symbols);
+        parser(symbols, G);
+    }
+
     std::vector<std::shared_ptr<Symbol>> symbols;
 
     std::string entrada = "1+(-var2)";
