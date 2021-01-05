@@ -179,8 +179,8 @@ void conjuntosItens(ConjuntoItens& conjs, Gramatica& g){
 }
 
 void inicializaTabelas(
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>>& tabAction,
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>>& tabGoto,
+    TabelaAction& tabAction,
+    TabelaGoto& tabGoto,
     int qtdEstados,
     std::set<NaoTerminal>& nts,
     std::set<Terminal>& tts
@@ -213,7 +213,7 @@ void inicializaTabelas(
 }
 
 void actionTerminalPonto(
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>>& tabAction,
+    TabelaAction& tabAction,
     Elemento& elm,
     int idx,
     Cadeia& cad,
@@ -265,7 +265,7 @@ void actionTerminalPonto(
 }
 
 void actionReduce(
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>>& tabAction,
+    TabelaAction& tabAction,
     Cadeia& cad,
     Item& item,
     int idx,
@@ -306,7 +306,7 @@ void actionReduce(
 }
 
 void actionAccept(
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>>& tabAction,
+    TabelaAction& tabAction,
     Item& item,
     int idx,
     Gramatica& g
@@ -333,7 +333,7 @@ void actionAccept(
 }
 
 void preencheTabelaGoto(
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>>& tabGoto,
+    TabelaGoto& tabGoto,
     std::set<NaoTerminal>& nts,
     Gramatica& g,
     Elemento& elm,
@@ -371,11 +371,7 @@ void preencheTabelaGoto(
     }
 }
 
-void tabActionGoto(
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>>& tabAction,
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>>& tabGoto,
-    Gramatica& g)
-{
+void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto, Gramatica& g){
     // Informações da gramática
     std::set<NaoTerminal> nts;
     std::set<Terminal> tts;
@@ -435,8 +431,8 @@ void tabActionGoto(
 bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g){
     // Estende a gramática e cria as tabelas
     gramaticaEstendida(g);
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
+    TabelaAction tabAction;
+    TabelaGoto tabGoto;
     tabActionGoto(tabAction, tabGoto, g);
 
     // Cria as pilhas

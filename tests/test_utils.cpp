@@ -224,8 +224,8 @@ TEST_CASE("Utils: tabActionGoto"){
     cria_gram_goto(g);
     gramaticaEstendida(g);
 
-    std::vector<std::shared_ptr<std::vector<std::pair<Terminal,std::shared_ptr<Acao>>>>> tabAction;
-    std::vector<std::shared_ptr<std::vector<std::pair<NaoTerminal,int>>>> tabGoto;
+    TabelaAction tabAction;
+    TabelaGoto tabGoto;
 
     tabActionGoto(tabAction, tabGoto, g);
     print_action_goto_manual(tabAction, tabGoto);
