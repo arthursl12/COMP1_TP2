@@ -343,31 +343,87 @@ TEST_CASE("isConstant"){
     }
 }
 
-TEST_CASE("isValidSign"){
+TEST_CASE("isValidConstantSign"){
     std::string prog = "12+12";
-    CHECK_FALSE(isValidSign(prog,2,2));
+    CHECK_FALSE(isValidConstantSign(prog,2,2));
     prog = "12 + 12";
-    CHECK_FALSE(isValidSign(prog,4,4));
+    CHECK_FALSE(isValidConstantSign(prog,3,3));
 
     prog = "12+ +12";
-    CHECK_FALSE(isValidSign(prog,2,2));
-    CHECK(isValidSign(prog,4,4));
+    CHECK_FALSE(isValidConstantSign(prog,2,2));
+    CHECK(isValidConstantSign(prog,4,4));
 
     prog = "12+ -12";
-    CHECK_FALSE(isValidSign(prog,2,2));
-    CHECK(isValidSign(prog,4,4));
+    CHECK_FALSE(isValidConstantSign(prog,2,2));
+    CHECK(isValidConstantSign(prog,4,4));
 
     prog = "12+(-12)";
-    CHECK_FALSE(isValidSign(prog,2,2));
-    CHECK(isValidSign(prog,4,4));
+    CHECK_FALSE(isValidConstantSign(prog,2,2));
+    CHECK(isValidConstantSign(prog,4,4));
 
     prog = "1E+5";
-    CHECK_FALSE(isValidSign(prog,2,2));
+    CHECK_FALSE(isValidConstantSign(prog,2,2));
     prog = "5+1E+5";
-    CHECK_FALSE(isValidSign(prog,1,1));
+    CHECK_FALSE(isValidConstantSign(prog,1,1));
     prog = "5+(-1E+5)";
-    CHECK(isValidSign(prog,3,3));
+    CHECK(isValidConstantSign(prog,3,3));
 
     prog = "12++12";
-    CHECK_FALSE(isValidSign(prog,3,4));
+    CHECK_FALSE(isValidConstantSign(prog,3,4));
+}
+
+TEST_CASE("isValidTermSign"){
+    SUBCASE("Não é Sign de constante nem ADDOP"){
+        std::string prog = "12+12";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        prog = "12 + 12";
+        CHECK_FALSE(isValidTermSign(prog,4,4));
+
+        prog = "12+ +12";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        CHECK_FALSE(isValidTermSign(prog,4,4));
+
+        prog = "12+ -12";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        CHECK_FALSE(isValidTermSign(prog,4,4));
+
+        prog = "12+(-12)";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        CHECK_FALSE(isValidTermSign(prog,4,4));
+
+        prog = "12 + (-12)";
+        CHECK_FALSE(isValidTermSign(prog,3,3));
+        CHECK_FALSE(isValidTermSign(prog,6,6));
+
+        prog = "1E+5";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        prog = "5+1E+5";
+        CHECK_FALSE(isValidTermSign(prog,1,1));
+        prog = "5+(-1E+5)";
+        CHECK_FALSE(isValidTermSign(prog,3,3));
+
+        prog = "12++12";
+        CHECK_FALSE(isValidTermSign(prog,3,4));
+    }
+    SUBCASE("Verdadeiro"){
+        std::string prog = "12 + -NOT 12";
+        CHECK_FALSE(isValidTermSign(prog,3,3));
+        CHECK(isValidTermSign(prog,5,5));
+
+        prog = "12+ +var";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        CHECK(isValidTermSign(prog,4,4));
+
+        prog = "12+ +(var)";
+        CHECK_FALSE(isValidTermSign(prog,2,2));
+        CHECK(isValidTermSign(prog,4,4));
+
+        prog = "+var";
+        CHECK(isValidTermSign(prog,0,0));
+
+        prog = "+var1+var2";
+        CHECK(isValidTermSign(prog,0,0));
+        CHECK_FALSE(isValidTermSign(prog,5,5));
+    }
+    
 }

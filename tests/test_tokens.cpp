@@ -107,7 +107,7 @@ TEST_CASE("Expressões Simples"){
     CHECK(*tokens[0] == Terminal("SPECOP"));
     CHECK(*tokens[1] == Terminal("constant"));
 }
-/*
+
 TEST_CASE("Questão dos Espaços"){
     std::string program;
     std::vector<std::shared_ptr<Symbol>> tokens;
@@ -163,11 +163,11 @@ TEST_CASE("Expressões com Terminais Puros"){
 
     clearSetStr("(1+1)",program,tokens);
     findTokens(program, tokens);
-    CHECK(*tokens[1] == Terminal("("));
-    CHECK(*tokens[2] == Terminal("constant"));
-    CHECK(*tokens[3] == Terminal("ADDOP"));
-    CHECK(*tokens[4] == Terminal("constant"));
-    CHECK(*tokens[5] == Terminal(")"));
+    CHECK(*tokens[0] == Terminal("("));
+    CHECK(*tokens[1] == Terminal("constant"));
+    CHECK(*tokens[2] == Terminal("ADDOP"));
+    CHECK(*tokens[3] == Terminal("constant"));
+    CHECK(*tokens[4] == Terminal(")"));
 
     clearSetStr("cos(9.0E2-(2*var))",program,tokens);
     findTokens(program, tokens);
@@ -222,7 +222,7 @@ TEST_CASE("Questão do Sign"){
     findTokens(program, tokens);
     CHECK(*tokens[0] == Terminal("constant"));
     CHECK(*tokens[1] == Terminal("ADDOP"));
-    CHECK(*tokens[1] == Terminal("("));
+    CHECK(*tokens[2] == Terminal("("));
     CHECK(*tokens[3] == Terminal("-"));
     CHECK(*tokens[4] == Terminal("id"));
     CHECK(*tokens[5] == Terminal(")"));
@@ -237,7 +237,6 @@ TEST_CASE("Questão do Sign"){
     CHECK(*tokens[5] == Terminal("constant"));
     CHECK(*tokens[6] == Terminal("ADDOP"));
     CHECK(*tokens[7] == Terminal("constant"));
-    CHECK(*tokens[8] == Terminal("("));
+    CHECK(*tokens[8] == Terminal(")"));
 }
 
-*/

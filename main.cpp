@@ -13,8 +13,7 @@
 int main(int argc, char* argv[]){
     std::vector<std::shared_ptr<Symbol>> symbols;
 
-
-    std::string entrada = "12 div 12";
+    std::string entrada = "1+(-var2)";
     std::cout << "Programa: " << entrada << std::endl;
     findTokens(entrada, symbols);
 

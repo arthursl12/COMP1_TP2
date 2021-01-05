@@ -18,7 +18,10 @@ bool isIdentifier(std::string str);
 bool isUnsignedInteger(std::string str);
 bool isUnsignedReal(std::string str);
 bool isConstant(std::string str);
-bool isValidSign(std::string const& programa, int const left, int const right);
+bool isValidConstantSign(std::string const& program, 
+                         int const left, int const right);
+bool isValidTermSign(std::string const& program, 
+                         int const left, int const right);
 std::string subString(std::string str, int left, int right);
 std::shared_ptr<Symbol> operatorToSymbol(std::string op);
 void findTokens(std::string program, 

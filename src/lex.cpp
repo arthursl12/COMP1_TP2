@@ -183,7 +183,9 @@ bool isConstant(std::string str){
     }
 }
 
-bool isValidSign(std::string const& program, int const left, int const right){
+bool isValidConstantSign(std::string const& program, 
+                         int const left, int const right)
+{
     std::string oper = program.substr(right,1);
     if (oper != "+" && oper != "-"){
         return false;
@@ -195,18 +197,55 @@ bool isValidSign(std::string const& program, int const left, int const right){
         return false;
     }else if (isdigit(program[left-1])){
         return false;
+    }else if (program.substr(right+1,3) == "NOT"){
+        return false;
+    }else if (isIdentifier(program.substr(right+1,1))){
+        return false;
     }else {
         return true;
     }
 }
 
+bool isValidTermSign(std::string const& program, 
+                     int const left, int const right)
+{
+    std::string oper = program.substr(right,1);
+    if (oper != "+" && oper != "-"){
+        return false;
+    }else if (left != right){
+        return false;
+    }else if (isspace(program[right]) != 0){
+        return false;
+    }else if (isValidConstantSign(program,left, right)){
+        return false;
+    }else if (isdigit(program[left-1]) && program[right+1] == '('){
+        return false;
+    }else if (isdigit(program[left-1]) && isdigit(program[right+1])){
+        return false;
+    }else if (program[left-1] == 'E'){
+        return false;
+    }
+
+
+    if (program[right+1] == '('){
+        return true;
+    }else if(isIdentifier(std::string(1,program[right+1])) && !isdigit(program[left-1])){
+        return true;
+    }else if(program.substr(right+1,3) == "NOT"){
+        return true;
+    }else if(isdigit(program[right+1]) && !isValidConstantSign(program,left,right)){
+        return true;
+    }
+
+    return false;
+}
 
 /*
 TOKENS:
 RELOP, ADDOP, MULOP, SPECOP, identifier, constant, NOT
 
 N-Ts: 
-EXPR_LS, EXPR, S_EXPR, T, FA, FR, S
+EXPR_LS, EXPR, S_EXPR, T, FA, FR, SIGN
 
 T-s:
 (, ), ,, +, - 
@@ -233,7 +272,7 @@ void findTokens(
             break;
         }
         // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::string(1,program[right])) << std::endl;
-        if (isValidSign(program, left, right)){
+        if (isValidConstantSign(program, left, right)){
             right++;
             while (right < length && !isDelimiter(std::string(1,program[right])))
                 right++;
@@ -260,7 +299,9 @@ void findTokens(
                 entrada.push_back(operatorToSymbol(subStr));
                 right += 2;
                 left = right; 
-            }else if (isOperator(program.substr(right,1)) && !isValidSign(program, left, right)){
+            }else if (isOperator(program.substr(right,1)) 
+                      && !isValidConstantSign(program, left, right) 
+                      && !isValidTermSign(program,left,right)){
                 std::cout << "Valid operator (1-char): " << 
                     program[right] << std::endl;
                 std::string subStr = program.substr(right,1);
@@ -268,6 +309,12 @@ void findTokens(
                 right++;
                 left = right;
             }else{
+                if (isspace(program[right]) == 0){
+                    std::string str = std::string(1,program[right]);
+                    std::shared_ptr<Symbol> sym = \
+                                        std::make_shared<Terminal>(str);
+                    entrada.push_back(sym);
+                }
                 right++;
                 left = right;
             }
