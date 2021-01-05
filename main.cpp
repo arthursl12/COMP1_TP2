@@ -5,6 +5,8 @@
 #include "conj.h"
 #include "gram.h"
 #include "utils.h"
+#include "tabelas.h"
+#include "parser.h"
 #include "tests/gram_exemplos.h"
 #include "tests/closure_goto.h"
 #include "tests/conj_itens.h"
