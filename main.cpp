@@ -21,6 +21,8 @@ int main(int argc, char* argv[]){
     std::vector<std::string> programas;
     inputFile(programas, input);
 
+
+
     // Analisa cada linha (programa) do arquivo
     for (std::string program : programas){
         if (program == ",,print"){
@@ -32,20 +34,22 @@ int main(int argc, char* argv[]){
 
         std::vector<std::shared_ptr<Symbol>> symbols;
         symbols.clear();
-        findTokens(program, symbols);
+        int left = 0;
+        int right = 0;
+        findTokens(program, symbols, left, right);
         parser(symbols, G);
     }
 
-    std::vector<std::shared_ptr<Symbol>> symbols;
+    // std::vector<std::shared_ptr<Symbol>> symbols;
 
-    std::string entrada = "1+(-var2)";
-    std::cout << "Programa: " << entrada << std::endl;
-    findTokens(entrada, symbols);
+    // std::string entrada = "1+(-var2)";
+    // std::cout << "Programa: " << entrada << std::endl;
+    // findTokens(entrada, symbols);
 
-    std::cout << std::endl;
-    entrada = "12 cos 12";
-    std::cout << "Programa: " << entrada << std::endl;
-    findTokens(entrada, symbols);
+    // std::cout << std::endl;
+    // entrada = "12 cos 12";
+    // std::cout << "Programa: " << entrada << std::endl;
+    // findTokens(entrada, symbols);
 
     // std::cout << std::endl;
     // entrada = "12 <> (1.1 + -1.001E1)";

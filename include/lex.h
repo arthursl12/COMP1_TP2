@@ -25,6 +25,7 @@ bool isValidTermSign(std::string const& program,
 std::string subString(std::string str, int left, int right);
 std::shared_ptr<Symbol> operatorToSymbol(std::string op);
 void findTokens(std::string program, 
-                std::vector<std::shared_ptr<Symbol>>& entrada);
+                std::vector<std::shared_ptr<Symbol>>& entrada,
+                int& left, int& right);
 
 #endif /* LEX_H */

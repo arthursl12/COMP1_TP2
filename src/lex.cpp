@@ -252,12 +252,12 @@ T-s:
 */
 void findTokens(
     std::string program, 
-    std::vector<std::shared_ptr<Symbol>>& entrada
-    )
+    std::vector<std::shared_ptr<Symbol>>& entrada,
+    int& left, int& right)
 {   
     entrada.clear();
     
-    int left = 0, right = 0;
+    // int left = 0, right = 0;
     int length = program.length();
     std::cout.setf(std::ios::boolalpha);
 
