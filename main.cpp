@@ -16,22 +16,14 @@ int main(int argc, char* argv[]){
     // Carrega a gramática
     Gramatica G;        // TODO
 
-    int left = 0;
-    int right = 0;
-    std::vector<std::shared_ptr<Symbol>> symbols;
-    std::string entrada;
 
-    entrada = "12+21,sen 90";
-    (findTokens(entrada, symbols, left, right));
-    (left == 5);
-    (right == 5);
-
-    /*
+    
     // Inicialização e entrada do usuário
     std::cout << "==========AVALIADOR DE EXPRESSÕES==========" << std::endl;
     std::cout << "Digite a expressão: ";
-    std::string entrada;
-    std::getline(std::cin, entrada);
+    std::string entrada = "12+12,sin 90";
+    // std::string entrada;
+    // std::getline(std::cin, entrada);
 
     bool exprToProcess = true;
 
@@ -50,7 +42,7 @@ int main(int argc, char* argv[]){
         exprToProcess = findTokens(entrada, symbols, left, right);
         parser(symbols, G); 
     }
-    */
+    
 
 
     // std::vector<std::shared_ptr<Symbol>> symbols;
