@@ -16,29 +16,42 @@ int main(int argc, char* argv[]){
     // Carrega a gramática
     Gramatica G;        // TODO
 
-    // Entrada vinda do arquivo
-    std::string input = "entrada.in";
-    std::vector<std::string> programas;
-    inputFile(programas, input);
+    int left = 0;
+    int right = 0;
+    std::vector<std::shared_ptr<Symbol>> symbols;
+    std::string entrada;
 
+    entrada = "12+21,sen 90";
+    (findTokens(entrada, symbols, left, right));
+    (left == 5);
+    (right == 5);
 
+    /*
+    // Inicialização e entrada do usuário
+    std::cout << "==========AVALIADOR DE EXPRESSÕES==========" << std::endl;
+    std::cout << "Digite a expressão: ";
+    std::string entrada;
+    std::getline(std::cin, entrada);
 
-    // Analisa cada linha (programa) do arquivo
-    for (std::string program : programas){
-        if (program == ",,print"){
-            TabelaAction t1;
-            TabelaGoto t2;
-            tabActionGoto(t1, t2, G, true);
-            continue;
-        }
+    bool exprToProcess = true;
 
+    if (entrada == "print"){
+        TabelaAction t1;
+        TabelaGoto t2;
+        tabActionGoto(t1, t2, G, true);
+        exprToProcess = false;
+    }
+
+    int left = 0;
+    int right = 0;
+    while(exprToProcess){
         std::vector<std::shared_ptr<Symbol>> symbols;
         symbols.clear();
-        int left = 0;
-        int right = 0;
-        findTokens(program, symbols, left, right);
-        parser(symbols, G);
+        exprToProcess = findTokens(entrada, symbols, left, right);
+        parser(symbols, G); 
     }
+    */
+
 
     // std::vector<std::shared_ptr<Symbol>> symbols;
 

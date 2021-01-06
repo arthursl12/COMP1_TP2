@@ -250,7 +250,10 @@ EXPR_LS, EXPR, S_EXPR, T, FA, FR, SIGN
 T-s:
 (, ), ,, +, - 
 */
-void findTokens(
+/*
+Retorna 'true' se há expressões à frente. 'false' do contrário.
+*/
+bool findTokens(
     std::string program, 
     std::vector<std::shared_ptr<Symbol>>& entrada,
     int& left, int& right)
@@ -309,7 +312,18 @@ void findTokens(
                 right++;
                 left = right;
             }else{
-                if (isspace(program[right]) == 0){
+                // std::cout << "Delimitador: " << program[right] << std::endl;
+                if (program[right] == ','){
+                    // Fim da expressão
+                    right++;
+                    left = right;
+                    
+                    if (right >= length){
+                        throw "Vírgula inapropriada no fim";
+                    }else{
+                        return true;
+                    }
+                }else if (isspace(program[right]) == 0){
                     std::string str = std::string(1,program[right]);
                     std::shared_ptr<Symbol> sym = \
                                         std::make_shared<Terminal>(str);
@@ -356,4 +370,5 @@ void findTokens(
         // std::cout << "right = " << right << " left = " << left << std::endl;
         
     }
+    return false;
 }

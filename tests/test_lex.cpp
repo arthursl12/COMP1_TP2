@@ -442,5 +442,4 @@ TEST_CASE("isValidTermSign"){
         CHECK(isValidTermSign(prog,0,0));
         CHECK_FALSE(isValidTermSign(prog,5,5));
     }
-    
 }

@@ -24,7 +24,7 @@ bool isValidTermSign(std::string const& program,
                          int const left, int const right);
 std::string subString(std::string str, int left, int right);
 std::shared_ptr<Symbol> operatorToSymbol(std::string op);
-void findTokens(std::string program, 
+bool findTokens(std::string program, 
                 std::vector<std::shared_ptr<Symbol>>& entrada,
                 int& left, int& right);
 
