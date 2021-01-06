@@ -255,10 +255,11 @@ Retorna 'true' se há expressões à frente. 'false' do contrário.
 */
 bool findTokens(
     std::string program, 
-    std::vector<std::shared_ptr<Symbol>>& entrada,
-    int& left, int& right)
+    std::vector<std::shared_ptr<Symbol>>& symbols,
+    std::vector<std::string>& values,
+    int& left, int& right, bool askUser)
 {   
-    entrada.clear();
+    symbols.clear();
     
     // int left = 0, right = 0;
     int length = program.length();
@@ -290,7 +291,8 @@ bool findTokens(
                 std::cout << "Valid Signed Constant : " << subStr << std::endl;
                 std::shared_ptr<Symbol> cst = \
                                         std::make_shared<Terminal>("constant");
-                entrada.push_back(cst);
+                symbols.push_back(cst);
+                values.push_back(subStr);
             }
             left = right;
         }else if (isDelimiter(std::string(1,program[right])) && left == right) {
@@ -299,7 +301,8 @@ bool findTokens(
                 std::cout << "Valid operator (2-char): " << \
                     program.substr(right,2) << std::endl;
                 std::string subStr = program.substr(right,2);
-                entrada.push_back(operatorToSymbol(subStr));
+                symbols.push_back(operatorToSymbol(subStr));
+                values.push_back(subStr);
                 right += 2;
                 left = right; 
             }else if (isOperator(program.substr(right,1)) 
@@ -308,7 +311,8 @@ bool findTokens(
                 std::cout << "Valid operator (1-char): " << 
                     program[right] << std::endl;
                 std::string subStr = program.substr(right,1);
-                entrada.push_back(operatorToSymbol(subStr));
+                symbols.push_back(operatorToSymbol(subStr));
+                values.push_back(subStr);
                 right++;
                 left = right;
             }else{
@@ -327,7 +331,8 @@ bool findTokens(
                     std::string str = std::string(1,program[right]);
                     std::shared_ptr<Symbol> sym = \
                                         std::make_shared<Terminal>(str);
-                    entrada.push_back(sym);
+                    symbols.push_back(sym);
+                    values.push_back(std::string(1,program[right]));
                 }
                 right++;
                 left = right;
@@ -344,12 +349,17 @@ bool findTokens(
             //     printf("Real Number : '%s'\n", subStr);
             if (isOperator(subStr)){
                 std::cout << "Valid operator (keyword) : " << subStr << std::endl;
-                entrada.push_back(operatorToSymbol(subStr));
+                symbols.push_back(operatorToSymbol(subStr));
+                values.push_back(subStr);
             }else if (isIdentifier(subStr) &&
                 !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Valid Identifier : " << subStr << std::endl;
                 std::shared_ptr<Symbol> id = std::make_shared<Terminal>("id");
-                entrada.push_back(id);
+                symbols.push_back(id);
+                if (askUser){
+                    throw "TODO: Pedir do usuário";
+                }
+                values.push_back(subStr);
             }else if (isConstant(subStr) == true){
                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
                 if (program[right-1] == 'E' || program[right-1] == 'e'){
@@ -357,9 +367,11 @@ bool findTokens(
                     while (right < length && !isDelimiter(std::string(1,program[right])))
                         right++;
                 }
+                subStr = subString(program, left, right - 1);
                 std::shared_ptr<Symbol> cst = \
                                         std::make_shared<Terminal>("constant");
-                entrada.push_back(cst);
+                symbols.push_back(cst);
+                values.push_back(subStr);
             }else if (!isIdentifier(subStr) && 
                      !isDelimiter(std::to_string(program[right - 1]))){
                 std::cout << "Invalid Identifier : " << subStr << std::endl;

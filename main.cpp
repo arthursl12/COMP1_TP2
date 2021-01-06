@@ -38,8 +38,10 @@ int main(int argc, char* argv[]){
     int right = 0;
     while(exprToProcess){
         std::vector<std::shared_ptr<Symbol>> symbols;
+        std::vector<std::string> values;
+        values.clear();
         symbols.clear();
-        exprToProcess = findTokens(entrada, symbols, left, right);
+        exprToProcess = findTokens(entrada, symbols, values, left, right, true);
         parser(symbols, G); 
     }
     
