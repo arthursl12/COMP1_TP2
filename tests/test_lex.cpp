@@ -226,6 +226,17 @@ TEST_CASE("isUnsignedReal"){
         CHECK(isUnsignedReal("1233456."));
     }
     SUBCASE("Verdadeiro: inteiro + expoente"){
+        CHECK(isUnsignedReal("0e00001"));
+        CHECK(isUnsignedReal("0e+00001"));
+        CHECK(isUnsignedReal("0e-00001"));
+        CHECK(isUnsignedReal("0e1"));
+        CHECK(isUnsignedReal("00000e1"));
+        CHECK(isUnsignedReal("0e-1"));
+        CHECK(isUnsignedReal("00000e-1"));
+        CHECK(isUnsignedReal("123e-3"));
+        CHECK(isUnsignedReal("123e3"));
+        CHECK(isUnsignedReal("123e+3"));
+
         CHECK(isUnsignedReal("0E00001"));
         CHECK(isUnsignedReal("0E+00001"));
         CHECK(isUnsignedReal("0E-00001"));
@@ -244,6 +255,12 @@ TEST_CASE("isUnsignedReal"){
         CHECK(isUnsignedReal("12.00001E+12"));
         CHECK(isUnsignedReal("12.00001E12"));
         CHECK(isUnsignedReal("12.00001E-12"));
+        CHECK(isUnsignedReal("0.e1"));
+        CHECK(isUnsignedReal("0.0e-1"));
+        CHECK(isUnsignedReal("0000.0000e-11"));
+        CHECK(isUnsignedReal("12.00001e+12"));
+        CHECK(isUnsignedReal("12.00001e12"));
+        CHECK(isUnsignedReal("12.00001e-12"));
     }
     SUBCASE("Falso"){
         CHECK_FALSE(isUnsignedReal("1a"));

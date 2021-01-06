@@ -123,7 +123,7 @@ bool isUnsignedReal(std::string str){
         return true;
     }
     // Caractere que não ponto ou E (da potência); parte inteira vazia
-    if ((str[i] != '.' && str[i] != 'E') || i < 1){
+    if ((str[i] != '.' && (str[i] != 'E' && str[i] != 'e')) || i < 1){
         return false;
     }
 
@@ -148,7 +148,7 @@ bool isUnsignedReal(std::string str){
         return true;
     }
     // Caractere seguinte não é o E da potência
-    if (str[j] != 'E'){
+    if (str[j] != 'E' && str[j] != 'e'){
         return false;
     }
 
@@ -193,7 +193,7 @@ bool isValidConstantSign(std::string const& program,
         return false;
     }else if (isDelimiter(program.substr(right+1,1))){
         return false;
-    }else if (program[left-1] == 'E'){
+    }else if (program[left-1] == 'E' || program[left-1] == 'e'){
         return false;
     }else if (isdigit(program[left-1])){
         return false;
@@ -222,7 +222,7 @@ bool isValidTermSign(std::string const& program,
         return false;
     }else if (isdigit(program[left-1]) && isdigit(program[right+1])){
         return false;
-    }else if (program[left-1] == 'E'){
+    }else if (program[left-1] == 'E' || program[left-1] == 'e'){
         return false;
     }
 
@@ -276,7 +276,7 @@ void findTokens(
             right++;
             while (right < length && !isDelimiter(std::string(1,program[right])))
                 right++;
-            if (program[right-1] == 'E'){
+            if (program[right-1] == 'E' || program[right-1] == 'e'){
                 right++;
                 while (right < length && !isDelimiter(std::string(1,program[right])))
                     right++;
@@ -338,7 +338,7 @@ void findTokens(
                 entrada.push_back(id);
             }else if (isConstant(subStr) == true){
                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
-                if (program[right-1] == 'E'){
+                if (program[right-1] == 'E' || program[right-1] == 'e'){
                     right++;
                     while (right < length && !isDelimiter(std::string(1,program[right])))
                         right++;
