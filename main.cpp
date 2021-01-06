@@ -12,6 +12,17 @@
 #include "tests/conj_itens.h"
 #include "tests/action_goto.h"
 
+
+void printPairToken(std::vector<std::shared_ptr<Symbol>>& tokens,
+                    std::vector<std::string>& values)
+{
+    for (int i = 0; i < (int)tokens.size(); i++){
+        Terminal tt = dynamic_cast<Terminal&>(*tokens[i]);
+        std::cout << "(" << tt << ", ";
+        std::cout << values[i] << ")" << std::endl;
+    }
+}
+
 int main(int argc, char* argv[]){
     // Carrega a gramática
     Gramatica G;        // TODO
@@ -42,7 +53,9 @@ int main(int argc, char* argv[]){
         values.clear();
         symbols.clear();
         exprToProcess = findTokens(entrada, symbols, values, left, right, true);
+        printPairToken(symbols, values);
         parser(symbols, G); 
+        std::cout << std::endl;
     }
     
 
