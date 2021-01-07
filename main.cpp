@@ -4,6 +4,7 @@
 #include "lex.h"
 #include "conj.h"
 #include "gram.h"
+#include "tp.h"
 #include "utils.h"
 #include "tabelas.h"
 #include "parser.h"
@@ -26,13 +27,30 @@ void printPairToken(std::vector<std::shared_ptr<Symbol>>& tokens,
 int main(int argc, char* argv[]){
     // Carrega a gramática
     Gramatica G;        // TODO
+    criaGramaticaTP2(G);
+
+
+    // int left = 0;
+    // int right = 0;
+    // std::string program = "1+1";
+    // std::vector<std::shared_ptr<Symbol>> tokens;
+    // std::vector<std::string> values;
+    // Gramatica g;
+    // criaGramaticaTP2(g);
+    // TabelaAction t1;
+    // TabelaGoto t2;
+    // tabActionGoto(t1, t2, g, true);
+
+
+    // findTokens(program, tokens, values, left, right, false);
+    // (parser(tokens,g));
 
 
     
     // Inicialização e entrada do usuário
     std::cout << "==========AVALIADOR DE EXPRESSÕES==========" << std::endl;
     std::cout << "Digite a expressão: ";
-    std::string entrada = "vart+12,sin 90";
+    std::string entrada = "1+1,1+1,7E10,cos(10,14)";
     // std::string entrada;
     // std::getline(std::cin, entrada);
 
@@ -43,6 +61,9 @@ int main(int argc, char* argv[]){
         TabelaGoto t2;
         tabActionGoto(t1, t2, G, true);
         exprToProcess = false;
+    }
+    if (entrada == "print"){
+        exit(EXIT_SUCCESS);
     }
     
     int left = 0;

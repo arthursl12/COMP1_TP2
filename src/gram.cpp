@@ -123,6 +123,8 @@ void Gramatica::firstString(std::shared_ptr<Producao> p, std::set<Terminal>& out
         }else{
             NaoTerminal& nt = dynamic_cast<NaoTerminal&>(cad[0]);
             cadk = std::make_shared<NaoTerminal>(nt);
+            // Se o não-terminal for o mesmo da esquerda da produção, pare
+            if (*cadk == p->label()){ continue;}
         }
         first(cadk, out1);
         std::set<Terminal> out2 = out1;

@@ -108,6 +108,10 @@ void actionReduce(
                 int actionIdx = g.getProdIndex(A, cad);
                 if (actionIdx == -1)
                     throw "Problema na busca pela produção";
+                if (actionIdx == 0){
+                    // Reduzir a produção inicial não pode
+                    continue;
+                }
                 // ACTION[i,a] = reduce
                 auto ptr_vec = tabAction[idx];
                 auto vec = *ptr_vec;
@@ -117,10 +121,11 @@ void actionReduce(
                         break;
                     }
                 }
+                std::shared_ptr<Acao> act = std::make_shared<Reduce>(actionIdx);
                 std::pair<Terminal,std::shared_ptr<Acao>> newPair = 
-                    std::make_pair<Terminal,std::shared_ptr<Acao>>(
+                    std::make_pair<Terminal,std::shared_ptr<Acao>&>(
                         Terminal(a),
-                        std::make_shared<Reduce>(actionIdx)
+                        act
                     );
                 ptr_vec->at(k) = newPair;
                 vec = *ptr_vec;
