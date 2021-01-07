@@ -1,5 +1,6 @@
 #include "lex.h"
 #include "symbol.h"
+#include "utils.h"
 
 #include <iostream>
 #include <memory>
@@ -357,9 +358,11 @@ bool findTokens(
                 std::shared_ptr<Symbol> id = std::make_shared<Terminal>("id");
                 symbols.push_back(id);
                 if (askUser){
-                    throw "TODO: Pedir do usuário";
+                    inputId(subStr, subStr);
                 }
                 values.push_back(subStr);
+                std::cout << "Valid idName : " << subStr << std::endl;
+
             }else if (isConstant(subStr) == true){
                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
                 if (program[right-1] == 'E' || program[right-1] == 'e'){

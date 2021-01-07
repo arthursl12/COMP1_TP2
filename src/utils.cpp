@@ -203,4 +203,34 @@ void inputFile(std::vector<std::string>& programas, std::string filename){
     }
 }
 
+void inputId(std::string& out, std::string idName){
+    bool isValid = false;
+    std::string in;
+    while (!isValid){
+        std::cout << "Valor de <" << idName << ">: ";
+        std::getline(std::cin, in);
+
+        if (in == "true" || in == "false"){
+            out = in;
+            isValid = true;
+            break;
+        }
+
+        try{
+            std::stoi(in);
+            out = in;
+            break;
+        }catch(std::exception& e){
+            try{
+                std::stof(in);
+                out = in;
+                break;
+            }catch(std::exception& e){
+                continue;
+            }
+        }
+    }
+}
+
+
 

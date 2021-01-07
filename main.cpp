@@ -32,7 +32,7 @@ int main(int argc, char* argv[]){
     // Inicialização e entrada do usuário
     std::cout << "==========AVALIADOR DE EXPRESSÕES==========" << std::endl;
     std::cout << "Digite a expressão: ";
-    std::string entrada = "12+12,sin 90";
+    std::string entrada = "vart+12,sin 90";
     // std::string entrada;
     // std::getline(std::cin, entrada);
 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]){
         tabActionGoto(t1, t2, G, true);
         exprToProcess = false;
     }
-
+    
     int left = 0;
     int right = 0;
     while(exprToProcess){

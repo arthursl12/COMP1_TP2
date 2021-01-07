@@ -18,6 +18,6 @@ void funcaoGoto(std::set<std::shared_ptr<Item>>& in,
                 std::set<std::shared_ptr<Item>>& out);
 void conjuntosItens(ConjuntoItens& conjs, Gramatica& g);
 void inputFile(std::vector<std::string>& programas, std::string filename);
-
+void inputId(std::string& out, std::string idName);
 
 #endif /* UTILS_H */
