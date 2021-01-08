@@ -3,6 +3,7 @@
 #include "lex.h"
 #include "parser.h"
 #include "tp.h"
+#include <iostream>
 
 void clearSetStr(std::string str, 
                  std::string& program, 
@@ -16,6 +17,7 @@ void clearSetStr(std::string str,
     vals.clear();
     left = 0;
     right = 0;
+    std::cout.setstate(std::ios::failbit);
 }
 
 TEST_CASE("Tokens Simples"){
@@ -165,69 +167,88 @@ TEST_CASE("Expressões com Terminais Puros"){
     std::vector<std::shared_ptr<Symbol>> tokens;
     int left = 0;
     int right = 0;
-    Gramatica g;
-    criaGramaticaTP2(g);
 
     SUBCASE("1"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("1+(1)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
     SUBCASE("2"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("(1+1)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
     SUBCASE("3"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("cos(9.0E2-(2*var))",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
     SUBCASE("4"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("1+(1)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
     SUBCASE("5"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("1+(1)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
     SUBCASE("6"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("1+(1)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
 
     SUBCASE("Correto e Corrige"){
+        Gramatica g;
+        criaGramaticaTP2(g);
         clearSetStr("1+1,7E10,cos(10,14)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         findTokens(program, tokens, values, left, right, false);
         CHECK_FALSE(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         findTokens(program, tokens, values, left, right, false);
         CHECK_FALSE(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         clearSetStr("1+1,7E10,cos(10),(14)",program,tokens,values,left,right);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
 
+        criaGramaticaTP2(g);
         findTokens(program, tokens, values, left, right, false);
         CHECK(parser(tokens,g));
     }
 }
-/*
+
 
 TEST_CASE("Questão do Sign"){
     std::string program;
@@ -238,19 +259,23 @@ TEST_CASE("Questão do Sign"){
     Gramatica g;
     criaGramaticaTP2(g);
 
-    clearSetStr("1+ +(1)",program,tokens,values,left,right);
+    criaGramaticaTP2(g);
+    clearSetStr("1+(+(1))",program,tokens,values,left,right);
     findTokens(program, tokens, values, left, right, false);
     CHECK(parser(tokens,g));
 
-    clearSetStr("1+ -var",program,tokens,values,left,right);
+    criaGramaticaTP2(g);
+    clearSetStr("1+(-var)",program,tokens,values,left,right);
     findTokens(program, tokens, values, left, right, false);
     CHECK(parser(tokens,g));
 
+    criaGramaticaTP2(g);
     clearSetStr("1+(-var2)",program,tokens,values,left,right);
     findTokens(program, tokens, values, left, right, false);
     CHECK(parser(tokens,g));
-
-    clearSetStr("1 + -cos(2+4.0)",program,tokens,values,left,right);
+    
+    criaGramaticaTP2(g);
+    clearSetStr("1 + (-cos(2+4.0))",program,tokens,values,left,right);
     findTokens(program, tokens, values, left, right, false);
     CHECK(parser(tokens,g));
 }
@@ -265,16 +290,19 @@ TEST_CASE("Continuar de 'findTokens'"){
     Gramatica g;
     criaGramaticaTP2(g);
 
-    entrada = "12+21,sin 90,tes*te";
+    entrada = "12+21,sin(90),tes*te";
     findTokens(entrada, symbols, values, left, right, false);
     CHECK(parser(symbols,g));
-
+    
+    criaGramaticaTP2(g);
     symbols.clear();
     findTokens(entrada, symbols, values, left, right, false);
     CHECK(parser(symbols,g));
-
+    
+    criaGramaticaTP2(g);
     symbols.clear();
     findTokens(entrada, symbols, values, left, right, false);
     CHECK(parser(symbols,g));
+    std::cout.clear();
 }
-*/
+

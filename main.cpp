@@ -26,8 +26,8 @@ void printPairToken(std::vector<std::shared_ptr<Symbol>>& tokens,
 
 int main(int argc, char* argv[]){
     // Carrega a gramática
-    Gramatica G;        // TODO
-    criaGramaticaTP2(G);
+    // Gramatica G;        // TODO
+    // criaGramaticaTP2(G);
 
 
     // int left = 0;
@@ -50,13 +50,15 @@ int main(int argc, char* argv[]){
     // Inicialização e entrada do usuário
     std::cout << "==========AVALIADOR DE EXPRESSÕES==========" << std::endl;
     std::cout << "Digite a expressão: ";
-    std::string entrada = "1+1,1+1,7E10,cos(10,14)";
+    std::string entrada = "1+1,1+1,7E10,cos(10)";
     // std::string entrada;
     // std::getline(std::cin, entrada);
 
     bool exprToProcess = true;
 
     if (entrada == "print"){
+        Gramatica G;        // TODO
+        criaGramaticaTP2(G);
         TabelaAction t1;
         TabelaGoto t2;
         tabActionGoto(t1, t2, G, true);
@@ -69,6 +71,8 @@ int main(int argc, char* argv[]){
     int left = 0;
     int right = 0;
     while(exprToProcess){
+        Gramatica G;        // TODO
+        criaGramaticaTP2(G);
         std::vector<std::shared_ptr<Symbol>> symbols;
         std::vector<std::string> values;
         values.clear();
