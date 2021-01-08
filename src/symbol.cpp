@@ -60,4 +60,6 @@ std::ostream& operator<< (std::ostream &out, const NaoTerminal &nt){
     out << "<" << nt.symbol << ">";
     return out; 
 }
-
+int NaoTerminal::labelSize(){
+    return symbol.size();
+}

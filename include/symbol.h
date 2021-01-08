@@ -30,6 +30,7 @@ class NaoTerminal : public Symbol {
     public:
         NaoTerminal(std::string _symbol);
         virtual bool isTerminal() override;
+        int labelSize();
         friend std::ostream& operator<< (
             std::ostream &out, const NaoTerminal &nt); 
 

@@ -203,6 +203,24 @@ void inputFile(std::vector<std::string>& programas, std::string filename){
     }
 }
 
+void outputTables(Gramatica& g, std::string filename){
+    std::cout << "Imprimindo tabelas e estados no arquivo ";
+    std::cout << filename << std::endl;
+
+    std::ofstream out(filename);
+    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+
+
+    TabelaAction t1;
+    TabelaGoto t2;
+    tabActionGoto(t1, t2, g, true);
+
+    std::cout.rdbuf(coutbuf); //reset to standard output again
+
+}
+
+
 void inputId(std::string& out, std::string idName){
     bool isValid = false;
     std::string in;

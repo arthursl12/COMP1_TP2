@@ -120,3 +120,10 @@ TEST_CASE("Symbol: copy-constructor"){
         CHECK_FALSE(*ptr == NaoTerminal("id"));
     }
 }
+TEST_CASE("Nao-Terminal: labelsize"){
+    CHECK(NaoTerminal("a").labelSize() == 1);
+    CHECK(NaoTerminal("a1").labelSize() == 2);
+    CHECK(NaoTerminal("B").labelSize() == 1);
+    CHECK(NaoTerminal("B1").labelSize() == 2);
+    CHECK(NaoTerminal("expresao").labelSize() == 8);
+}

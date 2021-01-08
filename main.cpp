@@ -50,21 +50,19 @@ int main(int argc, char* argv[]){
     // Inicialização e entrada do usuário
     std::cout << "==========AVALIADOR DE EXPRESSÕES==========" << std::endl;
     std::cout << "Digite a expressão: ";
-    std::string entrada = "1+1,1+1,7E10,cos(10)";
-    // std::string entrada;
-    // std::getline(std::cin, entrada);
+    // std::string entrada = "1+1,1+1,7E10,cos(10)";
+    std::string entrada;
+    std::getline(std::cin, entrada);
 
     bool exprToProcess = true;
 
     if (entrada == "print"){
-        Gramatica G;        // TODO
+        Gramatica G;       
         criaGramaticaTP2(G);
-        TabelaAction t1;
-        TabelaGoto t2;
-        tabActionGoto(t1, t2, G, true);
+        outputTables(G, "print.txt");
         exprToProcess = false;
     }
-    if (entrada == "print"){
+    if (entrada == "quit"){
         exit(EXIT_SUCCESS);
     }
     

@@ -1,0 +1,232 @@
+======ACTION======
+|          I          |          $          |          (          |          )          |          +          |          ,          |          -          |      ADDOP          |      MULOP          |        NOT          |      RELOP          |     SPECOP          |   constant          |         id          |
+|         I0          |                     |      Shift: 1       |                     |      Shift: 5       |                     |      Shift: 2       |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|         I1          |                     |      Shift: 1       |                     |      Shift: 5       |                     |      Shift: 2       |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|         I2          |                     |    Reduce: 16       |                     |                     |                     |                     |                     |                     |    Reduce: 16       |                     |    Reduce: 16       |    Reduce: 16       |    Reduce: 16       |
+|         I3          |                     |     Shift: 15       |                     |                     |                     |                     |                     |                     |                     |                     |                     |                     |                     |
+|         I4          |                     |      Shift: 1       |                     |                     |                     |                     |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|         I5          |                     |    Reduce: 15       |                     |                     |                     |                     |                     |                     |    Reduce: 15       |                     |    Reduce: 15       |    Reduce: 15       |    Reduce: 15       |
+|         I6          |    Reduce: 10       |                     |    Reduce: 10       |                     |    Reduce: 10       |                     |    Reduce: 10       |    Reduce: 10       |                     |    Reduce: 10       |                     |                     |                     |
+|         I7          |     Reduce: 9       |                     |     Reduce: 9       |                     |     Reduce: 9       |                     |     Reduce: 9       |     Reduce: 9       |                     |     Reduce: 9       |                     |                     |                     |
+|         I8          |     Accept          |                     |                     |                     |                     |                     |                     |                     |                     |                     |                     |                     |                     |
+|         I9          |     Reduce: 7       |                     |     Reduce: 7       |                     |     Reduce: 7       |                     |     Reduce: 7       |     Reduce: 7       |                     |     Reduce: 7       |                     |                     |                     |
+|        I10          |    Reduce: 12       |                     |    Reduce: 12       |                     |    Reduce: 12       |                     |    Reduce: 12       |    Reduce: 12       |                     |    Reduce: 12       |                     |                     |                     |
+|        I11          |                     |      Shift: 1       |                     |                     |                     |                     |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|        I12          |     Reduce: 2       |                     |     Reduce: 2       |                     |     Reduce: 2       |                     |     Shift: 18       |                     |                     |     Shift: 19       |                     |                     |                     |
+|        I13          |     Reduce: 4       |                     |     Reduce: 4       |                     |     Reduce: 4       |                     |     Reduce: 4       |     Shift: 20       |                     |     Reduce: 4       |                     |                     |                     |
+|        I14          |                     |                     |     Shift: 21       |                     |                     |                     |                     |                     |                     |                     |                     |                     |                     |
+|        I15          |                     |      Shift: 1       |                     |      Shift: 5       |                     |      Shift: 2       |                     |                     |      Shift: 4       |                     |                     |      Shift: 6       |      Shift: 7       |
+|        I16          |    Reduce: 13       |                     |    Reduce: 13       |                     |    Reduce: 13       |                     |    Reduce: 13       |    Reduce: 13       |                     |    Reduce: 13       |                     |                     |                     |
+|        I17          |     Reduce: 5       |                     |     Reduce: 5       |                     |     Reduce: 5       |                     |     Reduce: 5       |     Shift: 20       |                     |     Reduce: 5       |                     |                     |                     |
+|        I18          |                     |      Shift: 1       |                     |                     |                     |                     |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|        I19          |                     |      Shift: 1       |                     |      Shift: 5       |                     |      Shift: 2       |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|        I20          |                     |      Shift: 1       |                     |                     |                     |                     |                     |                     |      Shift: 4       |                     |      Shift: 3       |      Shift: 6       |      Shift: 7       |
+|        I21          |    Reduce: 11       |                     |    Reduce: 11       |                     |    Reduce: 11       |                     |    Reduce: 11       |    Reduce: 11       |                     |    Reduce: 11       |                     |                     |                     |
+|        I22          |                     |                     |     Shift: 26       |                     |                     |                     |     Shift: 18       |                     |                     |                     |                     |                     |                     |
+|        I23          |     Reduce: 6       |                     |     Reduce: 6       |                     |     Reduce: 6       |                     |     Reduce: 6       |     Shift: 20       |                     |     Reduce: 6       |                     |                     |                     |
+|        I24          |     Reduce: 3       |                     |     Reduce: 3       |                     |     Reduce: 3       |                     |     Shift: 18       |                     |                     |                     |                     |                     |                     |
+|        I25          |     Reduce: 8       |                     |     Reduce: 8       |                     |     Reduce: 8       |                     |     Reduce: 8       |     Reduce: 8       |                     |     Reduce: 8       |                     |                     |                     |
+|        I26          |    Reduce: 14       |                     |    Reduce: 14       |                     |    Reduce: 14       |                     |    Reduce: 14       |    Reduce: 14       |                     |    Reduce: 14       |                     |                     |                     |
+
+======GOTO======
+|          I          |      <EXPR>         |   <EXPR_LS>         |        <FA>         |        <FR>         |      <SIGN>         |    <S_EXPR>         |         <T>         |
+|         I0          |          8          |                     |          9          |         10          |         11          |         12          |         13          |
+|         I1          |         14          |                     |          9          |         10          |         11          |         12          |         13          |
+|         I2          |                     |                     |                     |                     |                     |                     |                     |
+|         I3          |                     |                     |                     |                     |                     |                     |                     |
+|         I4          |                     |                     |         16          |         10          |                     |                     |                     |
+|         I5          |                     |                     |                     |                     |                     |                     |                     |
+|         I6          |                     |                     |                     |                     |                     |                     |                     |
+|         I7          |                     |                     |                     |                     |                     |                     |                     |
+|         I8          |                     |                     |                     |                     |                     |                     |                     |
+|         I9          |                     |                     |                     |                     |                     |                     |                     |
+|        I10          |                     |                     |                     |                     |                     |                     |                     |
+|        I11          |                     |                     |          9          |         10          |                     |                     |         17          |
+|        I12          |                     |                     |                     |                     |                     |                     |                     |
+|        I13          |                     |                     |                     |                     |                     |                     |                     |
+|        I14          |                     |                     |                     |                     |                     |                     |                     |
+|        I15          |                     |                     |          9          |         10          |         11          |         22          |         13          |
+|        I16          |                     |                     |                     |                     |                     |                     |                     |
+|        I17          |                     |                     |                     |                     |                     |                     |                     |
+|        I18          |                     |                     |          9          |         10          |                     |                     |         23          |
+|        I19          |                     |                     |          9          |         10          |         11          |         24          |         13          |
+|        I20          |                     |                     |         25          |         10          |                     |                     |                     |
+|        I21          |                     |                     |                     |                     |                     |                     |                     |
+|        I22          |                     |                     |                     |                     |                     |                     |                     |
+|        I23          |                     |                     |                     |                     |                     |                     |                     |
+|        I24          |                     |                     |                     |                     |                     |                     |                     |
+|        I25          |                     |                     |                     |                     |                     |                     |                     |
+|        I26          |                     |                     |                     |                     |                     |                     |                     |
+
+Estado: I0
+	<EXPR> ===> .<S_EXPR>
+	<EXPR_LS> ===> .<EXPR>
+	<T> ===> .<FA>
+	<EXPR> ===> .<S_EXPR>RELOP<S_EXPR>
+	<S_EXPR> ===> .<T>
+	<S_EXPR> ===> .<SIGN><T>
+	<S_EXPR> ===> .<S_EXPR>ADDOP<T>
+	<T> ===> .<T>MULOP<FA>
+	<FA> ===> .id
+	<SIGN> ===> .+
+	<SIGN> ===> .-
+	<FA> ===> .constant
+	<FA> ===> .(<EXPR>)
+	<FA> ===> .<FR>
+	<FA> ===> .NOT<FA>
+	<FR> ===> .SPECOP(<S_EXPR>)
+
+Estado: I1
+	<FA> ===> (.<EXPR>)
+	<S_EXPR> ===> .<T>
+	<T> ===> .<FA>
+	<S_EXPR> ===> .<SIGN><T>
+	<EXPR> ===> .<S_EXPR>
+	<EXPR> ===> .<S_EXPR>RELOP<S_EXPR>
+	<S_EXPR> ===> .<S_EXPR>ADDOP<T>
+	<FR> ===> .SPECOP(<S_EXPR>)
+	<T> ===> .<T>MULOP<FA>
+	<FA> ===> .id
+	<FA> ===> .constant
+	<FA> ===> .(<EXPR>)
+	<FA> ===> .<FR>
+	<FA> ===> .NOT<FA>
+	<SIGN> ===> .+
+	<SIGN> ===> .-
+
+Estado: I2
+	<SIGN> ===> -.
+
+Estado: I3
+	<FR> ===> SPECOP.(<S_EXPR>)
+
+Estado: I4
+	<FA> ===> NOT.<FA>
+	<FA> ===> .constant
+	<FA> ===> .id
+	<FA> ===> .NOT<FA>
+	<FA> ===> .(<EXPR>)
+	<FR> ===> .SPECOP(<S_EXPR>)
+	<FA> ===> .<FR>
+
+Estado: I5
+	<SIGN> ===> +.
+
+Estado: I6
+	<FA> ===> constant.
+
+Estado: I7
+	<FA> ===> id.
+
+Estado: I8
+	<EXPR_LS> ===> <EXPR>.
+
+Estado: I9
+	<T> ===> <FA>.
+
+Estado: I10
+	<FA> ===> <FR>.
+
+Estado: I11
+	<T> ===> .<FA>
+	<T> ===> .<T>MULOP<FA>
+	<FA> ===> .id
+	<S_EXPR> ===> <SIGN>.<T>
+	<FA> ===> .constant
+	<FA> ===> .(<EXPR>)
+	<FA> ===> .<FR>
+	<FA> ===> .NOT<FA>
+	<FR> ===> .SPECOP(<S_EXPR>)
+
+Estado: I12
+	<S_EXPR> ===> <S_EXPR>.ADDOP<T>
+	<EXPR> ===> <S_EXPR>.RELOP<S_EXPR>
+	<EXPR> ===> <S_EXPR>.
+
+Estado: I13
+	<S_EXPR> ===> <T>.
+	<T> ===> <T>.MULOP<FA>
+
+Estado: I14
+	<FA> ===> (<EXPR>.)
+
+Estado: I15
+	<SIGN> ===> .+
+	<T> ===> .<FA>
+	<T> ===> .<T>MULOP<FA>
+	<S_EXPR> ===> .<S_EXPR>ADDOP<T>
+	<FA> ===> .NOT<FA>
+	<SIGN> ===> .-
+	<FA> ===> .(<EXPR>)
+	<FA> ===> .constant
+	<S_EXPR> ===> .<SIGN><T>
+	<S_EXPR> ===> .<T>
+	<FA> ===> .<FR>
+	<FR> ===> SPECOP(.<S_EXPR>)
+	<FA> ===> .id
+
+Estado: I16
+	<FA> ===> NOT<FA>.
+
+Estado: I17
+	<T> ===> <T>.MULOP<FA>
+	<S_EXPR> ===> <SIGN><T>.
+
+Estado: I18
+	<T> ===> .<FA>
+	<FA> ===> .NOT<FA>
+	<FA> ===> .constant
+	<S_EXPR> ===> <S_EXPR>ADDOP.<T>
+	<FA> ===> .id
+	<FA> ===> .(<EXPR>)
+	<T> ===> .<T>MULOP<FA>
+	<FR> ===> .SPECOP(<S_EXPR>)
+	<FA> ===> .<FR>
+
+Estado: I19
+	<FA> ===> .<FR>
+	<FA> ===> .NOT<FA>
+	<FA> ===> .(<EXPR>)
+	<FR> ===> .SPECOP(<S_EXPR>)
+	<FA> ===> .id
+	<FA> ===> .constant
+	<S_EXPR> ===> .<T>
+	<EXPR> ===> <S_EXPR>RELOP.<S_EXPR>
+	<S_EXPR> ===> .<SIGN><T>
+	<T> ===> .<FA>
+	<SIGN> ===> .+
+	<T> ===> .<T>MULOP<FA>
+	<S_EXPR> ===> .<S_EXPR>ADDOP<T>
+	<SIGN> ===> .-
+
+Estado: I20
+	<FA> ===> .id
+	<FA> ===> .constant
+	<FA> ===> .NOT<FA>
+	<T> ===> <T>MULOP.<FA>
+	<FA> ===> .(<EXPR>)
+	<FR> ===> .SPECOP(<S_EXPR>)
+	<FA> ===> .<FR>
+
+Estado: I21
+	<FA> ===> (<EXPR>).
+
+Estado: I22
+	<FR> ===> SPECOP(<S_EXPR>.)
+	<S_EXPR> ===> <S_EXPR>.ADDOP<T>
+
+Estado: I23
+	<T> ===> <T>.MULOP<FA>
+	<S_EXPR> ===> <S_EXPR>ADDOP<T>.
+
+Estado: I24
+	<EXPR> ===> <S_EXPR>RELOP<S_EXPR>.
+	<S_EXPR> ===> <S_EXPR>.ADDOP<T>
+
+Estado: I25
+	<T> ===> <T>MULOP<FA>.
+
+Estado: I26
+	<FR> ===> SPECOP(<S_EXPR>).
+
+

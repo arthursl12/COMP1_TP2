@@ -216,7 +216,7 @@ void printEstados(ConjuntoItens& its){
 
 
 void printActionGoto(TabelaAction& tabAction,TabelaGoto& tabGoto){   
-    int SPC = 7;
+    int SPC = 11;
     std::cout << "======ACTION======" << std::endl;
     auto linha0 = tabAction.begin();
     std::cout << "|" << std::setw(SPC) << "I" << std::setw(SPC);
@@ -234,11 +234,20 @@ void printActionGoto(TabelaAction& tabAction,TabelaGoto& tabGoto){
             }else if (par.second->getTipo() == "Shift"){
                 std::shared_ptr<Shift> sft = \
                             std::dynamic_pointer_cast<Shift>(par.second);
-                std::cout << "|" << std::setw(SPC) << *sft << std::setw(SPC-3);
+                if (sft->getNextIdx() >= 10){
+                    std::cout << "|" << std::setw(SPC-1) << *sft << std::setw(SPC-3);
+                }else{
+                    std::cout << "|" << std::setw(SPC) << *sft << std::setw(SPC-3);
+                }
             }else if (par.second->getTipo() == "Reduce"){
                 std::shared_ptr<Reduce> red = \
                             std::dynamic_pointer_cast<Reduce>(par.second);
-                std::cout << "|" << std::setw(SPC) << *red << std::setw(SPC-3);
+                if (red->getProdIdx() >= 10){
+                    std::cout << "|" << std::setw(SPC-1) << *red << std::setw(SPC-3);
+                }else{
+                    std::cout << "|" << std::setw(SPC) << *red << std::setw(SPC-3);
+                }
+                
             }else{
                 std::cout << "|" << std::setw(SPC) << par.second->getTipo() << std::setw(SPC);
             }
@@ -251,7 +260,7 @@ void printActionGoto(TabelaAction& tabAction,TabelaGoto& tabGoto){
     auto linha1 = tabGoto.begin();
     std::cout << "|" << std::setw(SPC) << "I" << std::setw(SPC);
     for (auto pares0: **linha1){
-        std::cout << "|" << std::setw(SPC-1) << pares0.first << std::setw(SPC-1);
+        std::cout << "|" << std::setw(SPC-pares0.first.labelSize()) << pares0.first << std::setw(SPC-1);
     }
     std::cout << "|" << std::endl;
 
@@ -317,7 +326,8 @@ void tabActionGoto(TabelaAction& tabAction, TabelaGoto& tabGoto,
 
     // Imprimir tabelas e estados se requisitado
     if (apenas_imprimir){
-        printEstados(its);
         printActionGoto(tabAction, tabGoto);
+        std::cout << std::endl;
+        printEstados(its);
     }
 }
