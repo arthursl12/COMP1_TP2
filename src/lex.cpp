@@ -266,17 +266,13 @@ bool findTokens(
     int length = program.length();
     std::cout.setf(std::ios::boolalpha);
 
-    // std::cout << "LEN: " << length << std::endl;
     while (right <= length && left <= right) {
-        // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
         if (!isDelimiter(std::string(1,program[right]))){
             right++;
-            // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::to_string(program[right])) << std::endl;
         }
         if (right > length){
             break;
         }
-        // std::cout << "isDelim?: " << program[right] << " -> " << isDelimiter(std::string(1,program[right])) << std::endl;
         if (isValidConstantSign(program, left, right)){
             right++;
             while (right < length && !isDelimiter(std::string(1,program[right])))
@@ -287,7 +283,6 @@ bool findTokens(
                     right++;
             }
             std::string subStr = subString(program, left, right - 1);
-            // std::cout << "\tsubstr1: " << subStr << std::endl;
             if (isConstant(subStr) == true){
                 std::cout << "Valid Signed Constant : " << subStr << std::endl;
                 std::shared_ptr<Symbol> cst = \
@@ -297,7 +292,6 @@ bool findTokens(
             }
             left = right;
         }else if (isDelimiter(std::string(1,program[right])) && left == right) {
-            // std::cout << "PR1:" << program[right] << std::endl;
             if (isOperator(program.substr(right,2))){
                 std::cout << "Valid operator (2-char): " << \
                     program.substr(right,2) << std::endl;
@@ -317,7 +311,6 @@ bool findTokens(
                 right++;
                 left = right;
             }else{
-                // std::cout << "Delimitador: " << program[right] << std::endl;
                 if (program[right] == ','){
                     // Fim da expressão
                     right++;
@@ -340,14 +333,8 @@ bool findTokens(
             }
         }else if((isDelimiter(std::string(1,program[right])) && 
                  left != right) || (right == length && left != right)){
-            // std::cout << "PR2:" << program[right] << std::endl;
             std::string subStr = subString(program, left, right - 1);
-            // std::cout << "\tsubstr: " << subStr << std::endl;
-            // if (isValidKeyword(subStr) == true)
-            //     printf("Valid keyword : '%s'\n", subStr);
 
-            // else if (isRealNumber(subStr) == true)
-            //     printf("Real Number : '%s'\n", subStr);
             if (isOperator(subStr)){
                 std::cout << "Valid operator (keyword) : " << subStr << std::endl;
                 symbols.push_back(operatorToSymbol(subStr));
@@ -361,7 +348,6 @@ bool findTokens(
                     inputId(subStr, subStr);
                 }
                 values.push_back(subStr);
-                std::cout << "Valid idName : " << subStr << std::endl;
 
             }else if (isConstant(subStr) == true){
                 std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
@@ -380,10 +366,7 @@ bool findTokens(
                 std::cout << "Invalid Identifier : " << subStr << std::endl;
             }
             left = right;
-            // std::cout << std::endl;
         }
-        // std::cout << "right = " << right << " left = " << left << std::endl;
-        
     }
     return false;
 }

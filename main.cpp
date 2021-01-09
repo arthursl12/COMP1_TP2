@@ -77,7 +77,8 @@ int main(int argc, char* argv[]){
         symbols.clear();
         exprToProcess = findTokens(entrada, symbols, values, left, right, true);
         printPairToken(symbols, values);
-        parser(symbols, G); 
+        bool accept = parser(symbols, G); 
+        if (!accept){ exit(EXIT_FAILURE); }
         std::cout << std::endl;
     }
     

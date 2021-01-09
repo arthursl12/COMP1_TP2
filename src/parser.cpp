@@ -71,7 +71,7 @@ bool parser(std::vector<std::shared_ptr<Symbol>>& entrada, Gramatica& g){
             int idxGoto = it->second;
             pEstados.push(idxGoto);
         }else if (it->second->getTipo() == "Accept"){
-            std::cout << "Aceito" << std::endl;
+            std::cout << "Programa Aceito" << std::endl;
             break;
         }else{
             std::cout << "Erro de Sintaxe Geral" << std::endl;

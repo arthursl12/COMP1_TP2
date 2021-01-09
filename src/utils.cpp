@@ -225,7 +225,7 @@ void inputId(std::string& out, std::string idName){
     bool isValid = false;
     std::string in;
     while (!isValid){
-        std::cout << "Valor de <" << idName << ">: ";
+        std::cout << "\tValor de <" << idName << ">: ";
         std::getline(std::cin, in);
 
         if (in == "true" || in == "false"){
