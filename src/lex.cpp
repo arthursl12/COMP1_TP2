@@ -281,6 +281,7 @@ void findTokensLong(std::string program,
     }else if (!isIdentifier(subStr) && 
                 !isDelimiter(std::to_string(program[right - 1]))){
         std::cout << "Invalid Identifier : " << subStr << std::endl;
+        exit(EXIT_FAILURE);
     }
     left = right;
 }

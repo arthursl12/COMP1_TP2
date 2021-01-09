@@ -2,16 +2,7 @@
 #define TP_H
 
 #include "gram.h"
-/*
-TOKENS:
-RELOP, ADDOP, MULOP, SPECOP, identifier, constant, NOT
 
-N-Ts: 
-EXPR_LS, EXPR, S_EXPR, T, FA, FR, SIGN
-
-T-s:
-(, ), ,, +, - 
-*/
 void criaGramaticaTP2(Gramatica& gram){
     std::vector<std::shared_ptr<Producao>> prods;
     prods.clear();
