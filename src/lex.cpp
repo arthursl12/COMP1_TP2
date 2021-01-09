@@ -241,16 +241,50 @@ bool isValidTermSign(std::string const& program,
     return false;
 }
 
-/*
-TOKENS:
-RELOP, ADDOP, MULOP, SPECOP, identifier, constant, NOT
 
-N-Ts: 
-EXPR_LS, EXPR, S_EXPR, T, FA, FR, SIGN
-
-T-s:
-(, ), ,, +, - 
+/* Função auxiliar de findTokens, usada para tokens maiores, principalmente de 
+identificadores e constantes
 */
+void findTokensLong(std::string program,
+                    std::vector<std::shared_ptr<Symbol>>& symbols,
+                    std::vector<std::string>& values, 
+                    int& left, int& right, bool askUser)
+{
+    int length = program.length();
+    std::string subStr = subString(program, left, right - 1);
+    if (isOperator(subStr)){
+        std::cout << "Valid operator (keyword) : " << subStr << std::endl;
+        symbols.push_back(operatorToSymbol(subStr));
+        values.push_back(subStr);
+    }else if (isIdentifier(subStr) &&
+        !isDelimiter(std::to_string(program[right - 1]))){
+        std::cout << "Valid Identifier : " << subStr << std::endl;
+        std::shared_ptr<Symbol> id = std::make_shared<Terminal>("id");
+        symbols.push_back(id);
+        if (askUser){
+            inputId(subStr, subStr);
+        }
+        values.push_back(subStr);
+
+    }else if (isConstant(subStr) == true){
+        std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
+        if (program[right-1] == 'E' || program[right-1] == 'e'){
+            right++;
+            while (right < length && !isDelimiter(std::string(1,program[right])))
+                right++;
+        }
+        subStr = subString(program, left, right - 1);
+        std::shared_ptr<Symbol> cst = \
+                                std::make_shared<Terminal>("constant");
+        symbols.push_back(cst);
+        values.push_back(subStr);
+    }else if (!isIdentifier(subStr) && 
+                !isDelimiter(std::to_string(program[right - 1]))){
+        std::cout << "Invalid Identifier : " << subStr << std::endl;
+    }
+    left = right;
+}
+
 /*
 Retorna 'true' se há expressões à frente. 'false' do contrário.
 */
@@ -333,39 +367,7 @@ bool findTokens(
             }
         }else if((isDelimiter(std::string(1,program[right])) && 
                  left != right) || (right == length && left != right)){
-            std::string subStr = subString(program, left, right - 1);
-
-            if (isOperator(subStr)){
-                std::cout << "Valid operator (keyword) : " << subStr << std::endl;
-                symbols.push_back(operatorToSymbol(subStr));
-                values.push_back(subStr);
-            }else if (isIdentifier(subStr) &&
-                !isDelimiter(std::to_string(program[right - 1]))){
-                std::cout << "Valid Identifier : " << subStr << std::endl;
-                std::shared_ptr<Symbol> id = std::make_shared<Terminal>("id");
-                symbols.push_back(id);
-                if (askUser){
-                    inputId(subStr, subStr);
-                }
-                values.push_back(subStr);
-
-            }else if (isConstant(subStr) == true){
-                std::cout << "Valid Unsigned Constant : " << subStr << std::endl;
-                if (program[right-1] == 'E' || program[right-1] == 'e'){
-                    right++;
-                    while (right < length && !isDelimiter(std::string(1,program[right])))
-                        right++;
-                }
-                subStr = subString(program, left, right - 1);
-                std::shared_ptr<Symbol> cst = \
-                                        std::make_shared<Terminal>("constant");
-                symbols.push_back(cst);
-                values.push_back(subStr);
-            }else if (!isIdentifier(subStr) && 
-                     !isDelimiter(std::to_string(program[right - 1]))){
-                std::cout << "Invalid Identifier : " << subStr << std::endl;
-            }
-            left = right;
+            findTokensLong(program, symbols, values, left, right, askUser);
         }
     }
     return false;
