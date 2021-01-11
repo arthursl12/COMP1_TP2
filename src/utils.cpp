@@ -183,26 +183,6 @@ void conjuntosItens(ConjuntoItens& conjs, Gramatica& g){
     }
 }
 
-/*
-Lê o arquivo 'filename' e coloca cada linha (cada programa) em uma posição do
-vector de strings informado
-*/
-void inputFile(std::vector<std::string>& programas, std::string filename){
-    std::ifstream infile(filename);
-    if (!infile.is_open()) throw "Problema na abertura do arquivo";
-
-    std::string line;
-    programas.clear();
-    // Lê o arquivo linha por linha
-    while (std::getline(infile, line)){
-        if (line[0] == '#' ||  line.size() == 0){
-            // Linhas começando com '#' são comentários
-            continue;
-        }
-        programas.push_back(line);
-    }
-}
-
 void outputTables(Gramatica& g, std::string filename){
     std::cout << "Imprimindo tabelas e estados no arquivo ";
     std::cout << filename << std::endl;
